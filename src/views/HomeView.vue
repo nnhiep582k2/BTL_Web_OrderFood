@@ -1,30 +1,36 @@
 <template>
-    <h2 class="m-b-10">DEMO CONTROL - nnhiep</h2>
-    <base-button class="m-b-10" :type="ButtonType.warning" text="Order Now" />
-    <div class="d-flex m-b-10">
-        <base-ads
-            v-for="(item, index) in DataBaseAds"
+    <div class="home-view">
+        <h2 class="m-b-10">DEMO CONTROL - nnhiep</h2>
+        <base-button
+            class="m-b-10"
+            :type="ButtonType.warning"
+            text="Order Now"
+        />
+        <div class="d-flex m-b-10">
+            <base-ads
+                v-for="(item, index) in DataBaseAds"
+                :src="item.src"
+                :key="index"
+            >
+                <template #content>
+                    <div class="title">{{ item.title }}</div>
+                    <div class="discount">{{ item.discount }}</div>
+                    <base-button
+                        :type="item.button.type"
+                        :text="item.button.text"
+                    />
+                </template>
+            </base-ads>
+        </div>
+        <base-promotion
+            class="m-b-10"
+            v-for="(item, index) in DataBasePromotions"
             :src="item.src"
             :key="index"
-        >
-            <template #content>
-                <div class="title">{{ item.title }}</div>
-                <div class="discount">{{ item.discount }}</div>
-                <base-button
-                    :type="item.button.type"
-                    :text="item.button.text"
-                />
-            </template>
-        </base-ads>
+            :title="item.title"
+            :datas="item.datas"
+        />
     </div>
-    <base-promotion
-        class="m-b-10"
-        v-for="(item, index) in DataBasePromotions"
-        :src="item.src"
-        :key="index"
-        :title="item.title"
-        :datas="item.datas"
-    />
 </template>
 
 <script setup lang="ts">
