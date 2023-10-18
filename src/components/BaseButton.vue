@@ -30,6 +30,7 @@ const props = withDefaults(defineProps<IProps>(), {
     height: var(--height-control);
     font-size: var(--fontsize-control);
     user-select: none;
+    width: fit-content;
     &:hover {
         cursor: pointer;
     }

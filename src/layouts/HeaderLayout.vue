@@ -6,6 +6,7 @@
 
 <style lang="scss" scoped>
 .header {
+    z-index: 10;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -15,6 +16,6 @@
     width: 100%;
     height: 56px;
     color: white;
-    background-color: teal;
+    background-color: var(--color-primary);
 }
 </style>
