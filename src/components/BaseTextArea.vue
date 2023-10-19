@@ -1,10 +1,9 @@
 <template>
-    <div class="base-text-box">
-        <input
-            type="text"
+    <div class="base-text-area">
+        <textarea
             :value="modelValue"
-            :style="`width: ${width}`"
-            @change="handleChangeValue"
+            :style="`width: ${width};height: ${height}`"
+            @input="handleChangeValue"
         />
     </div>
 </template>
@@ -13,10 +12,12 @@
 interface IProps {
     modelValue: string;
     width?: string;
+    height?: string;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
     width: '236px',
+    height: '80px',
 });
 
 const emit = defineEmits(['update:modelValue']);
@@ -27,15 +28,14 @@ const handleChangeValue = (e: Event) => {
 </script>
 
 <style lang="scss" scoped>
-.base-text-box {
-    input {
+.base-text-area {
+    textarea {
         display: block;
         padding: 8px 10px;
-        font-size: 14px;
         background-color: white;
         border-radius: 4px;
+        font-size: 14px;
         border: 1px solid #ccc;
-        height: var(--height-control);
         outline-color: var(--color-primary);
     }
 }
