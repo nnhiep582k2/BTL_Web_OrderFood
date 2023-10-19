@@ -15,6 +15,9 @@
         v-model="testing.radioCheck"
         value="second"
     />
+
+    <BaseMap width="500" height="600"  />
+
 </template>
 
 <script setup lang="ts">
@@ -24,6 +27,7 @@ import { reactive, watch } from "vue";
 import BaseSelectBox from "@/components/BaseSelectBox.vue";
 import BaseCheckbox from "@/components/BaseCheckbox.vue";
 import BaseRadioGroup from "@/components/BaseRadioGroup.vue";
+import BaseMap from "@/components/BaseMap.vue";
 const testing = reactive({
     value: "",
     selected: "",
