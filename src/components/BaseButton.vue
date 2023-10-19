@@ -31,6 +31,9 @@ const props = withDefaults(defineProps<IProps>(), {
     font-size: var(--fontsize-control);
     user-select: none;
     width: fit-content;
+    & + .base-button {
+        margin-left: 10px;
+    }
     &:hover {
         cursor: pointer;
     }
