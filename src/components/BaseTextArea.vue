@@ -3,6 +3,7 @@
         <textarea
             :value="modelValue"
             :style="`width: ${width};height: ${height}`"
+            :placeholder="placeholder"
             @input="handleChangeValue"
         />
     </div>
@@ -13,6 +14,7 @@ interface IProps {
     modelValue: string;
     width?: string;
     height?: string;
+    placeholder?: string;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
