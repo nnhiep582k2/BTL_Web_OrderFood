@@ -1,12 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import HomeView from '../views/HomeView.vue';
-import AboutView from '@/views/AboutView.vue';
-import PromotionsView from '@/views/PromotionsView.vue';
-import MenuView from '@/views/MenuView.vue';
-import TableView from '@/views/TableView.vue';
-import LoginView from '@/views/auth/LoginView.vue';
-import RegisterView from '@/views/auth/RegisterView.vue';
-import DemoView from '@/views/demo/DemoView.vue';
+import HomeView from '../views/home-view/HomeView.vue';
+import AboutView from '@/views/about-view/AboutView.vue';
+import PromotionsView from '@/views/promotion-view/PromotionsView.vue';
+import MenuView from '@/views/menu-view/MenuView.vue';
+import TableView from '@/views/table-view/TableView.vue';
+import LoginView from '@/views/auth-view/LoginView.vue';
+import RegisterView from '@/views/auth-view/RegisterView.vue';
+import DemoView from '@/views/demo-view/DemoView.vue';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -53,7 +53,7 @@ const router = createRouter({
         },
         {
             path: '/:catchAll(.*)',
-            component: () => import('@/views/NotFoundView.vue'),
+            component: () => import('@/views/notfound-view/NotFoundView.vue'),
         },
     ],
 });
