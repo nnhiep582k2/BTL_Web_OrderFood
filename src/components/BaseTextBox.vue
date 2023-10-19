@@ -8,6 +8,7 @@
             :value="modelValue"
             :style="`width: ${width}`"
             :placeholder="placeholder"
+            :class="classes"
             @change="handleChangeValue"
         />
         <BaseButton
@@ -27,6 +28,7 @@ import BaseButton from './BaseButton.vue';
 interface IProps {
     modelValue: string;
     width?: string;
+    classes?: string
     type?: TextBoxType;
     buttonType?: ButtonType;
     buttonText?: string;
@@ -53,6 +55,7 @@ const handleClickButton = () => {
 
 <style lang="scss" scoped>
 .base-text-box {
+    width: 100%;
     input {
         display: block;
         padding: 8px 10px;
