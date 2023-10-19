@@ -8,7 +8,8 @@
 
 <style lang="scss" scoped>
 .content {
-    margin: 56px 0 0;
+    margin: 60px 0 0;
+    padding: 20px 80px;
     min-height: calc(100vh - 56px - 56px);
 }
 </style>

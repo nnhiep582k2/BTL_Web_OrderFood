@@ -1,5 +1,7 @@
 <template>
-    <div class="base-button" :class="type">{{ text }}</div>
+    <div class="base-button" :class="[type, disabled ? 'disabled' : '']">
+        {{ text }}
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -8,11 +10,13 @@ import { ButtonType } from '@/enums/ButtonType.ts';
 interface IProps {
     type: ButtonType;
     text: string;
+    disabled?: boolean;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
     type: ButtonType.default,
     text: 'Button',
+    disabled: false,
 });
 </script>
 
@@ -26,6 +30,7 @@ const props = withDefaults(defineProps<IProps>(), {
     height: var(--height-control);
     font-size: var(--fontsize-control);
     user-select: none;
+    width: fit-content;
     &:hover {
         cursor: pointer;
     }
@@ -62,6 +67,13 @@ const props = withDefaults(defineProps<IProps>(), {
         background-color: var(--color-information);
         &:hover {
             background-color: var(--color-information-bolder);
+        }
+    }
+    &.disabled {
+        cursor: not-allowed;
+        background-color: var(--color-disabled);
+        &:hover {
+            background-color: var(--color-disabled);
         }
     }
 }

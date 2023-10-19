@@ -9,12 +9,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    position: fixed;
-    botom: 0;
-    left: 0;
     width: 100%;
-    height: 56px;
-    color: white;
-    background-color: teal;
+    height: 100px;
+    background-color: var(--color-background);
 }
 </style>
