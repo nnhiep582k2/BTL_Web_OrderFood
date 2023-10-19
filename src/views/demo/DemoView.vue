@@ -6,7 +6,8 @@
             text="Order Now"
             :type="ButtonType.warning"
         />
-        <BaseTextBox class="m-b-10" :model-value="textBoxValue" />
+        <BaseTextBox class="m-b-10" v-model:model-value="textBoxValue" />
+        <BaseTextArea class="m-b-10" v-model:model-value="textBoxValue" />
         <div class="d-flex m-b-10">
             <BaseAds
                 v-for="(item, index) in DataBaseAds"
@@ -69,12 +70,11 @@ import BaseSelectBox from '@/components/BaseSelectBox.vue';
 import BaseCheckbox from '@/components/BaseCheckbox.vue';
 import BaseRadioGroup from '@/components/BaseRadioGroup.vue';
 import BaseTextBox from '@/components/BaseTextBox.vue';
+import BaseTextArea from '@/components/BaseTextArea.vue';
 import { ButtonType } from '@/enums/ButtonType';
 import { DataBaseAds } from '@/mocks/BaseAds';
 import { DataBasePromotions } from '@/mocks/BasePromotions';
 import { reactive, ref, watch } from 'vue';
-
-const textBoxValue = ref<string>('');
 
 const testing = reactive({
     value: '',
@@ -92,9 +92,19 @@ const options = [
         value: 'high',
     },
 ];
+
 watch(testing, (_, __) => {
     console.log(testing);
 });
+
+const textBoxValue = ref<string>('');
+
+watch(
+    () => textBoxValue.value,
+    (newValue) => {
+        console.log(newValue);
+    }
+);
 </script>
 
 <style lang="scss" scoped>
