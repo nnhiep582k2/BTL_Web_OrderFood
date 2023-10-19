@@ -6,12 +6,18 @@ import MenuView from '@/views/MenuView.vue';
 import TableView from '@/views/TableView.vue';
 import LoginView from '@/views/auth/LoginView.vue';
 import RegisterView from '@/views/auth/RegisterView.vue';
+import DemoView from '@/views/demo/DemoView.vue';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
         {
             path: '/',
+            name: 'demo',
+            component: DemoView,
+        },
+        {
+            path: '/home',
             name: 'home',
             component: HomeView,
         },
