@@ -2,10 +2,7 @@
     <div class="header">
         <div class="brand">
             <div class="logo">
-                <img
-                    src="/src/assets/images/common/favicon.png"
-                    alt="logo orod"
-                />
+                <img src="/src/assets/images/common/logo.png" alt="logo orod" />
             </div>
             <div class="name">Orod</div>
         </div>

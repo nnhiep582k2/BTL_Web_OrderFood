@@ -1,9 +1,8 @@
-<!-- Author: NTKIEN -->
 <template>
     <select
+        class="select"
         :id="id"
         :name="name"
-        class="select"
         :class="classes"
         :value="modelValue"
         @input="
@@ -14,9 +13,9 @@
         "
     >
         <option
-            :value="option.value"
             class="option"
             v-for="option in options"
+            :value="option.value"
             :key="JSON.stringify(option)"
         >
             {{ option.label }}
@@ -25,12 +24,13 @@
 </template>
 
 <script setup lang="ts">
-import { PropType } from "vue";
+import type { PropType } from 'vue';
 
 type OptionTypes = {
     label: String;
     value: String;
 };
+
 defineProps({
     id: {
         type: String,
@@ -69,10 +69,9 @@ defineProps({
     font-size: var(--fontsize-control);
     border: 1px solid #ccc;
     padding: 10px 12px 9px;
-
     .option {
-        padding: 10px 12px 9px;
         height: 100%;
+        padding: 10px 12px 9px;
     }
 }
 </style>
