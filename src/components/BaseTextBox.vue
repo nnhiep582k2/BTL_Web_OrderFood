@@ -4,6 +4,8 @@
             type="text"
             :value="modelValue"
             :style="`width: ${width}`"
+            :placeholder="placeholder"
+            :class="classes"
             @change="handleChangeValue"
         />
     </div>
@@ -13,6 +15,8 @@
 interface IProps {
     modelValue: string;
     width?: string;
+    placeholder:String;
+    classes:String
 }
 
 const props = withDefaults(defineProps<IProps>(), {
@@ -26,6 +30,7 @@ const handleChangeValue = (e: Event) => {
 
 <style lang="scss" scoped>
 .base-text-box {
+    width: 100%;
     input {
         display: block;
         padding: 8px 10px;
