@@ -7,6 +7,7 @@ import TableView from '@/views/TableView.vue';
 import LoginView from '@/views/auth/LoginView.vue';
 import RegisterView from '@/views/auth/RegisterView.vue';
 import DemoView from '@/views/demo/DemoView.vue';
+import OrderView from '@/views/OrderView.vue';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -51,6 +52,12 @@ const router = createRouter({
             name: 'login',
             component: LoginView,
         },
+        {
+            path: '/order',
+            name: 'order',
+            component: OrderView,
+        },
+        
         {
             path: '/:catchAll(.*)',
             component: () => import('@/views/NotFoundView.vue'),

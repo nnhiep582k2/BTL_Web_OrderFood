@@ -324,9 +324,7 @@
                     <BaseEmpty/>
                 </div>
                 <div v-if="calculatePages > 1" class="action-row">
-                    <button v-if="pageNum != 0" class="action-btn">
-                        {{ "<" }}
-                    </button>
+                    <BaseButton type="success" v-if="pageNum != 0" text="<" class="action-btn" />
                     <div
                         v-for="(p, i) in calculatePages"
                         :key="i"
@@ -337,12 +335,8 @@
                         }}</span>
                         <span v-else>{{ i + 1 }}</span>
                     </div>
-                    <button
-                        v-if="pageNum != calculatePages - 1"
-                        class="action-btn"
-                    >
-                        {{ ">" }}
-                    </button>
+
+                    <BaseButton type="success" v-if="pageNum != calculatePages - 1" text=">" class="action-btn" />
                 </div>
             </div>
         </div>
@@ -357,6 +351,7 @@
 import BaseTextBox from "@/components/BaseTextBox.vue";
 import { reactive, ref, computed } from "vue";
 import BaseEmpty from "@/components/BaseEmpty.vue";
+import BaseButton from "@/components/BaseButton.vue";
 /**----------interface----------*/
 interface IFoodObj {
     name: String;
@@ -379,7 +374,7 @@ const showQuickView = ref<Boolean>(false);
 const showDropDown = ref<Boolean>(false);
 const endId = ref<string | null>(null);
 const perPage = ref<Number>(6);
-const pageNum = ref<Number>(0);
+const pageNum = ref<Number>(2);
 const previousCategoryClicked = ref<String>("");
 const previousPriceClicked = ref<String>("");
 const previousTypeClicked = ref<String>("");
@@ -391,7 +386,7 @@ const filterFoods = computed(() => {
 const currentPageItems = computed(() => {});
 
 const calculatePages = computed(() => {
-    return 0;
+    return 10;
 });
 </script>
 
