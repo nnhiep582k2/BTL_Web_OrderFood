@@ -1,4 +1,3 @@
-<!-- Author: NTKIEN -->
 <template>
     <div>
         <input
@@ -45,7 +44,7 @@ defineProps({
 
 <style lang="scss" scoped>
 @supports (-webkit-appearance: none) or (-moz-appearance: none) {
-    input[type="checkbox"] {
+    input[type='checkbox'] {
         --active-inner: #fff;
         --focus: 2px rgba(39, 94, 254, 0.3);
         --border: #bbc1e1;
@@ -55,6 +54,7 @@ defineProps({
         --disabled-inner: #e1e6f9;
         -webkit-appearance: none;
         -moz-appearance: none;
+        appearance: none;
         height: 21px;
         outline: none;
         display: inline-block;
@@ -65,7 +65,7 @@ defineProps({
         border: 1px solid var(--bc, var(--border));
         background: var(--b, var(--background));
         &:after {
-            content: "";
+            content: '';
             display: block;
             left: 0;
             top: 0;
@@ -74,13 +74,12 @@ defineProps({
                 opacity var(--d-o, 0.2s);
         }
         &:checked {
-            --b: var(--active);
-            --bc: var(--active);
+            --b: var(--color-primary);
+            --bc: var(--color-primary);
             --d-o: 0.3s;
             --d-t: 0.6s;
             --d-t-e: cubic-bezier(0.2, 0.85, 0.32, 1.2);
         }
-
         &:not(.switch) {
             width: 21px;
             &:after {
@@ -95,11 +94,11 @@ defineProps({
             line-height: 21px;
             display: inline-block;
             vertical-align: top;
-            cursor: pointer;
             margin-left: 4px;
+            cursor: pointer;
         }
     }
-    input[type="checkbox"] {
+    input[type='checkbox'] {
         &:not(.switch) {
             border-radius: 7px;
             &:after {
@@ -108,8 +107,8 @@ defineProps({
                 border: 2px solid var(--active-inner);
                 border-top: 0;
                 border-left: 0;
-                left: 7px;
-                top: 4px;
+                left: 6px;
+                top: 3px;
                 transform: rotate(var(--r, 20deg));
             }
             &:checked {

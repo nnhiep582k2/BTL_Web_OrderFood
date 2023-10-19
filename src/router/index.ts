@@ -34,15 +34,16 @@ const router = createRouter({
             path: '/table',
             name: 'table',
             component: TableView,
-        }, {
-            path: '/login',
-            name: 'login',
-            component: LoginView,
         },
         {
             path: '/register',
             name: 'register',
             component: RegisterView,
+        },
+        {
+            path: '/login',
+            name: 'login',
+            component: LoginView,
         },
         {
             path: '/:catchAll(.*)',
