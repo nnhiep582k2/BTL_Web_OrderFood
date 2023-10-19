@@ -4,6 +4,8 @@ import AboutView from '@/views/AboutView.vue';
 import PromotionsView from '@/views/PromotionsView.vue';
 import MenuView from '@/views/MenuView.vue';
 import TableView from '@/views/TableView.vue';
+import LoginView from '@/views/auth/LoginView.vue';
+import RegisterView from '@/views/auth/RegisterView.vue';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -32,6 +34,15 @@ const router = createRouter({
             path: '/table',
             name: 'table',
             component: TableView,
+        }, {
+            path: '/login',
+            name: 'login',
+            component: LoginView,
+        },
+        {
+            path: '/register',
+            name: 'register',
+            component: RegisterView,
         },
         {
             path: '/:catchAll(.*)',
