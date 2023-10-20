@@ -19,7 +19,7 @@
                     <BaseButton
                         type="warning"
                         text="show order details"
-                        @click="sendBillId(b?.bill_id)"
+                        @click="()=> sendBillId(b?.bill_id)"
                     />
                 </div>
 
@@ -126,16 +126,16 @@
         </div>
 
         <OrderDetails v-if="showOrderDetails" :bill="sendId">
-            <button class="btn" @click="closeView">X</button>
+            <BaseButton  @click="()=> closeView()" text="X" type="success"></BaseButton>
         </OrderDetails>
     </div>
 </template>
 
 <script setup lang="ts">
 import BaseButton from "@/components/BaseButton.vue";
-import { watch } from "fs";
-import { computed, reactive, ref } from "vue";
+import { computed, reactive, ref,watch } from "vue";
 import OrderDetails from "./OrderDetails.vue";
+
 
 /**----------variable----------*/
 const avaiableStatus = reactive([
@@ -157,21 +157,26 @@ const filterBills = computed(() => {
     return new Array(3);
 });
 
+watch(
+    () => showOrderDetails.value,
+    (newValue) => {
+        console.log(newValue);
+    }
+);
+
 /**----------method----------*/
 const getAllBills = async () => {};
 
 const closeView = () => {
-    showOrderDetails.value = !showOrderDetails.value;
+    showOrderDetails.value = false;
 };
 
 const sendBillId = (id?: String) => {
     sendId.value = id || '23423';
-    showOrderDetails.value = !showOrderDetails.value;
+    showOrderDetails.value = true;
 };
 
-watch(()=>{
-    
-})
+
 </script>
 
 <style lang="scss" scoped>

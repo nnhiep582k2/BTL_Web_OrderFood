@@ -194,7 +194,7 @@
                             <label
                                 for="mtPrice"
                                 class="d-flex justify-content-between"
-                                >{{ '>' }} $12
+                                >{{ ">" }} $12
                                 <button class="unselect-btn">X</button></label
                             >
                         </li>
@@ -210,7 +210,7 @@
                             <label
                                 for="ltPrice"
                                 class="d-flex justify-content-between"
-                                >{{ '<' }} $2
+                                >{{ "<" }} $2
                                 <button class="unselect-btn">X</button></label
                             >
                         </li>
@@ -317,11 +317,71 @@
                 </div>
 
                 <div class="row box-container">
+                    <BaseEmpty v-if="!currentPageItems.length" />
+
                     <!-- Hiển thị danh sách currentPageItems -->
-                    <BaseEmpty />
+                    <div v-else v-for="(f, index) in currentPageItems" :key="index">
+                        <div class="box">
+                            <a href="" class="fas fa-heart"></a>
+                            <div class="image">
+                                <img
+                                    :src="`../assets/images/${f?.food_src}`"
+                                    alt=""
+                                />
+                            </div>
+                            <div class="content">
+                                <h3>{{ f?.food_name }}</h3>
+                                <div class="stars">
+                                    <div
+                                        v-for="s in Math.floor(
+                                            parseFloat(f?.food_star)
+                                        )"
+                                        :key="s"
+                                        class="d-inline"
+                                    >
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                    <div
+                                        v-if="
+                                            parseFloat(f?.food_star) -
+                                                Math.floor(
+                                                    parseFloat(f?.food_star)
+                                                ) ==
+                                            0.5
+                                        "
+                                        class="d-inline"
+                                    >
+                                        <i class="fas fa-star-half-alt"></i>
+                                    </div>
+                                    <span> ({{ f?.food_vote }}) </span>
+                                </div>
+                                <div class="desc">
+                                    <p>{{ f?.food_desc }}</p>
+                                </div>
+                                <div class="price">
+                                    ${{
+                                        parseFloat(f?.food_price) -
+                                        parseFloat(f?.food_discount)
+                                    }}
+                                    <span
+                                        v-if="
+                                            parseFloat(f?.food_discount) != 0.0
+                                        "
+                                        >${{ parseFloat(f?.food_price) }}</span
+                                    >
+                                </div>
+                                <BaseButton class="btn" type="success" @click="()=> addItem(index)" text="Add to cart" />
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div v-if="calculatePages > 1" class="action-row">
-                    <BaseButton type="success" v-if="pageNum != 0" text="<" class="action-btn" />
+                    <BaseButton
+                        type="success"
+                        v-if="pageNum != 0"
+                        text="<"
+                        class="action-btn"
+                    />
                     <div
                         v-for="(p, i) in calculatePages"
                         :key="i"
@@ -333,14 +393,19 @@
                         <span v-else>{{ i + 1 }}</span>
                     </div>
 
-                    <BaseButton type="success" v-if="pageNum != calculatePages - 1" text=">" class="action-btn" />
+                    <BaseButton
+                        type="success"
+                        v-if="pageNum != calculatePages - 1"
+                        text=">"
+                        class="action-btn"
+                    />
                 </div>
             </div>
         </div>
 
-        <!-- <QuickView v-if="showQuickView" :food="sendId">
-            <button class="btn">X</button>
-        </QuickView> -->
+        <QuickView v-if="showQuickView" :food="sendId">
+            <BaseButton class="btn" type="success" @click="closeView" text="X"></BaseButton>
+        </QuickView>
     </div>
 </template>
 
@@ -349,6 +414,8 @@ import BaseTextBox from "@/components/BaseTextBox.vue";
 import { reactive, ref, computed } from "vue";
 import BaseEmpty from "@/components/BaseEmpty.vue";
 import BaseButton from "@/components/BaseButton.vue";
+import QuickView from "./QuickView.vue";
+
 /**----------interface----------*/
 interface IFoodObj {
     name: string;
@@ -358,40 +425,72 @@ interface IFoodObj {
     type: string;
 }
 
+interface IcurrentPageItems {
+    food_src: string;
+    food_name: string;
+    food_star: string;
+    food_vote: string;
+    food_desc: string;
+    food_price: string;
+    food_discount: string;
+}
+
 /**----------variable----------*/
 const foodObj = reactive<IFoodObj>({
-    name: '',
-    category: '',
+    name: "",
+    category: "",
     status: [],
-    price: '',
-    type: '',
+    price: "",
+    type: "",
 });
 
 const showQuickView = ref<Boolean>(false);
 const showDropDown = ref<Boolean>(false);
 const endId = ref<string | null>(null);
+const sendId = ref<string | null>(null);
 const perPage = ref<Number>(6);
-<<<<<<< HEAD:src/views/MenuView.vue
 const pageNum = ref<Number>(2);
 const previousCategoryClicked = ref<String>("");
 const previousPriceClicked = ref<String>("");
 const previousTypeClicked = ref<String>("");
-=======
-const pageNum = ref<Number>(0);
-const previousCategoryClicked = ref<String>('');
-const previousPriceClicked = ref<String>('');
-const previousTypeClicked = ref<String>('');
->>>>>>> a878ad1fffe0dc81861f12ca4dab2b6cc9dec940:src/views/menu-view/MenuView.vue
 
 /**----------computed----------*/
 const filterFoods = computed(() => {
     return Array;
 });
-const currentPageItems = computed(() => {});
-
+const currentPageItems = computed<IcurrentPageItems[]>(() => {
+    return [
+        {
+            food_src: "",
+            food_name: "",
+            food_star: "2",
+            food_vote: "",
+            food_desc: "",
+            food_price: "",
+            food_discount: "",
+        },
+        {
+            food_src: "",
+            food_name: "",
+            food_star: "5",
+            food_vote: "",
+            food_desc: "",
+            food_price: "",
+            food_discount: "",
+        },
+    ];
+});
 const calculatePages = computed(() => {
     return 10;
 });
+
+/**----------methods----------*/
+const addItem = (index: Number) => {
+    showQuickView.value = true;
+};
+const closeView = () => {
+    showQuickView.value = false;
+};
 </script>
 
 <style lang="scss" scoped>
