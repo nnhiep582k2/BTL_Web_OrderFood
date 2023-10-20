@@ -1,5 +1,5 @@
 <template>
-    <div class="header">
+    <div class="header p-x-80">
         <div class="brand">
             <div class="logo">
                 <img src="/src/assets/images/common/logo.png" alt="logo orod" />
@@ -50,7 +50,6 @@ const setActiveTab = (tab: string) => {
     align-items: center;
     justify-content: space-between;
     position: fixed;
-    padding: 0 80px;
     top: 0;
     left: 0;
     width: 100%;

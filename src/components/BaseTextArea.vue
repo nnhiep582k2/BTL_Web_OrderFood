@@ -1,11 +1,14 @@
 <template>
     <div class="base-text-area">
-        <textarea
-            :value="modelValue"
-            :style="`width: ${width};height: ${height}`"
-            :placeholder="placeholder"
-            @input="handleChangeValue"
-        />
+        <label>
+            <span v-show="label">{{ label }}</span>
+            <textarea
+                :value="modelValue"
+                :style="`width: ${width};height: ${height}`"
+                :placeholder="placeholder"
+                @input="handleChangeValue"
+            />
+        </label>
     </div>
 </template>
 
@@ -15,6 +18,7 @@ interface IProps {
     width?: string;
     height?: string;
     placeholder?: string;
+    label?: string;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
@@ -31,6 +35,10 @@ const handleChangeValue = (e: Event) => {
 
 <style lang="scss" scoped>
 .base-text-area {
+    label span {
+        display: block;
+        margin-bottom: 8px;
+    }
     textarea {
         display: block;
         padding: 8px 10px;

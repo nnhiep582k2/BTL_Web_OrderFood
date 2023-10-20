@@ -1,5 +1,5 @@
 <template>
-    <div class="demo-view">
+    <div class="demo-view p-x-80">
         <h2 class="m-b-10">DEMO CONTROL - nnhiep</h2>
         <BaseButton
             class="m-b-10"
@@ -75,6 +75,8 @@ import { ButtonType } from '@/enums/ButtonType';
 import { DataBaseAds } from '@/mocks/BaseAds';
 import { DataBasePromotions } from '@/mocks/BasePromotions';
 import { reactive, ref, watch } from 'vue';
+
+window.scrollTo(0, 0);
 
 const testing = reactive({
     value: '',
