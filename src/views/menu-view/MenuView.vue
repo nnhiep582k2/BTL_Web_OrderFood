@@ -1,5 +1,5 @@
 <template>
-    <div class="menu-section">
+    <div class="menu-section p-x-80">
         <div class="heading">
             <span>Menu</span>
             <h3>Our Special <Dfn></Dfn>Dishes</h3>
@@ -355,6 +355,8 @@ import BaseTextBox from '@/components/BaseTextBox.vue';
 import { reactive, ref, computed } from 'vue';
 import BaseEmpty from '@/components/BaseEmpty.vue';
 
+window.scrollTo(0, 0);
+
 /**----------interface----------*/
 interface IFoodObj {
     name: string;
@@ -373,14 +375,14 @@ const foodObj = reactive<IFoodObj>({
     type: '',
 });
 
-const showQuickView = ref<Boolean>(false);
-const showDropDown = ref<Boolean>(false);
+const showQuickView = ref<boolean>(false);
+const showDropDown = ref<boolean>(false);
 const endId = ref<string | null>(null);
-const perPage = ref<Number>(6);
-const pageNum = ref<Number>(0);
-const previousCategoryClicked = ref<String>('');
-const previousPriceClicked = ref<String>('');
-const previousTypeClicked = ref<String>('');
+const perPage = ref<number>(6);
+const pageNum = ref<number>(0);
+const previousCategoryClicked = ref<string>('');
+const previousPriceClicked = ref<string>('');
+const previousTypeClicked = ref<string>('');
 
 /**----------computed----------*/
 const filterFoods = computed(() => {

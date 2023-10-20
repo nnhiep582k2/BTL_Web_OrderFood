@@ -1,7 +1,7 @@
 import { ButtonType } from '@/enums/ButtonType';
-import Ads1 from '@/assets/images/demo/dis-1.jpg';
-import Ads2 from '@/assets/images/demo/dis-2.png';
-import Ads3 from '@/assets/images/demo/dis-3.jpg';
+import Ads1 from '@/assets/images/template/dis-1.jpg';
+import Ads2 from '@/assets/images/template/dis-2.png';
+import Ads3 from '@/assets/images/template/dis-3.jpg';
 
 interface IDataBasePromotions {
     src: string;

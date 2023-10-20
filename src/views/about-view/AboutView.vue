@@ -1,5 +1,5 @@
 <template>
-    <section class="about-section">
+    <section class="about-section p-x-80">
         <div class="heading">
             <span>About Us</span>
             <h3>Good Quality Dishes</h3>
@@ -39,22 +39,48 @@
 
         <div class="row gallery">
             <div class="wrapper">
-                <img src="/src/assets/images/demo/taco-2.jpg" alt="" />
-                <img src="/src/assets/images/demo/taco-4.jpg" alt="" />
-                <img src="/src/assets/images/demo/burrito-6.jpg" alt="" />
-                <img src="/src/assets/images/demo/burrito-2.jpg" alt="" />
-                <img src="/src/assets/images/demo/burrito-3.jpg" alt="" />
-                <img src="/src/assets/images/demo/nachos-1.jpg" alt="" />
-                <img src="/src/assets/images/demo/nachos-2.jpg" alt="" />
-                <img src="/src/assets/images/demo/nachos-3.jpg" alt="" />
-                <img src="/src/assets/images/demo/dessert-2.jpg" alt="" />
-                <img src="/src/assets/images/demo/dessert-6.jpg" alt="" />
+                <img src="/src/assets/images/template/taco/taco-2.jpg" alt="" />
+                <img src="/src/assets/images/template/taco/taco-4.jpg" alt="" />
+                <img
+                    src="/src/assets/images/template/burrito/burrito-6.jpg"
+                    alt=""
+                />
+                <img
+                    src="/src/assets/images/template/burrito/burrito-2.jpg"
+                    alt=""
+                />
+                <img
+                    src="/src/assets/images/template/burrito/burrito-3.jpg"
+                    alt=""
+                />
+                <img
+                    src="/src/assets/images/template/nachos/nachos-1.jpg"
+                    alt=""
+                />
+                <img
+                    src="/src/assets/images/template/nachos/nachos-2.jpg"
+                    alt=""
+                />
+                <img
+                    src="/src/assets/images/template/nachos/nachos-3.jpg"
+                    alt=""
+                />
+                <img
+                    src="/src/assets/images/template/dessert/dessert-2.jpg"
+                    alt=""
+                />
+                <img
+                    src="/src/assets/images/template/dessert/dessert-6.jpg"
+                    alt=""
+                />
             </div>
         </div>
     </section>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+window.scrollTo(0, 0);
+</script>
 
 <style lang="scss" scoped>
 @import url(./style.scss);
