@@ -1,17 +1,31 @@
 <template>
-     <div class="order-details">
+    <div class="order-details">
         <div class="order-details-inner">
-            <h2 class="d-flex justify-content-between">Order summary
+            <h2 class="d-flex justify-content-between">
+                Order summary
                 <slot></slot>
             </h2>
-            <div class="d-flex flex-wrap h-50 flex-row" style="overflow-y: auto;">
-                <div style="flex: 50%;" v-for="(f, index) in filterFoods" :key="f?.food_id">
+            <div
+                class="d-flex flex-wrap h-50 flex-row"
+                style="overflow-y: auto"
+            >
+                <div
+                    style="flex: 50%"
+                    v-for="(f, index) in filterFoods"
+                    :key="f?.food_id"
+                >
                     <div class="product-detail d-flex">
                         <div class="image">
-                            <img :src="`../assets/images/${f?.food_src}`" alt="" />
+                            <img
+                                :src="`/src/assets/images/template/${f?.food_src}`"
+                                alt=""
+                            />
                         </div>
                         <div class="content">
-                            <p class="name">{{ f?.food_name }} <span>X {{ item_qty[index] }}</span></p>
+                            <p class="name">
+                                {{ f?.food_name }}
+                                <span>X {{ item_qty[index] }}</span>
+                            </p>
                             <p class="desc">{{ f?.food_desc }}</p>
                         </div>
                     </div>
@@ -30,32 +44,31 @@
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue';
 defineProps({
-    bill:{
+    bill: {
         type: String,
-        required: true
-    }
-})
+        required: true,
+    },
+});
 
 interface IBillMatch {
-    bill_discount: String,
-    bill_delivery: String,
-    bill_total: String
+    bill_discount: String;
+    bill_delivery: String;
+    bill_total: String;
 }
 
 /**----------variable----------*/
-const allFoodsInBill = reactive([])
-const item_qty =  reactive([])
+const allFoodsInBill = reactive([]);
+const item_qty = reactive([]);
 const billMatch = ref<IBillMatch>({
-    bill_discount:'',
-    bill_delivery:'',
-    bill_total:''
-})
-
+    bill_discount: '',
+    bill_delivery: '',
+    bill_total: '',
+});
 
 /**----------computed----------*/
-const filterFoods = computed(()=>{
-    return new Array(3)
-})
+const filterFoods = computed(() => {
+    return new Array(3);
+});
 </script>
 
 <style lang="scss" scoped>
@@ -80,14 +93,12 @@ const filterFoods = computed(()=>{
     padding: 32px;
 }
 
-
 .order-details .order-details-inner h2 {
     margin: 0;
     font-size: 32px;
     color: #27ae60;
     margin-bottom: 20px;
 }
-
 
 .order-details .order-details-inner .product-detail .image img {
     height: 8rem;
@@ -116,13 +127,10 @@ const filterFoods = computed(()=>{
     font-size: 16px;
 }
 
-
 @media (max-width: 768px) {
-
     .order-details .order-details-inner {
         width: 80vw;
         height: 60vh;
-
     }
 
     .order-details .order-details-inner h2 {
@@ -137,8 +145,6 @@ const filterFoods = computed(()=>{
     .order-details .order-details-inner .product-detail .content .name {
         font-size: 14px !important;
     }
-
-
 }
 
 @media (max-width: 576px) {
@@ -162,7 +168,5 @@ const filterFoods = computed(()=>{
     .order-details .order-details-inner .product-detail .content .name {
         font-size: 12px !important;
     }
-
-
 }
 </style>

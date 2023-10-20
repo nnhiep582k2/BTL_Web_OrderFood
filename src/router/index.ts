@@ -53,6 +53,7 @@ const router = createRouter({
             name: 'order',
             component: OrderView,
         },
+        {
             path: '/cart',
             name: 'cart',
             component: CartView,

@@ -12,7 +12,10 @@
             </h2>
             <div class="product-detail d-flex">
                 <div class="image">
-                    <img :src="`../assets/images/${f?.food_src}`" alt="" />
+                    <img
+                        :src="`/src/assets/images/template/${f?.food_src}`"
+                        alt=""
+                    />
                 </div>
                 <div class="content">
                     <p class="desc">{{ f?.food_desc }}</p>
@@ -40,7 +43,7 @@
                         class="btn"
                         @click="addToCart"
                         text="Add to cart"
-                        type="success"
+                        :type="ButtonType.success"
                     ></BaseButton>
                 </div>
             </div>
@@ -68,9 +71,10 @@
 </template>
 
 <script setup lang="ts">
-import BaseButton from "@/components/BaseButton.vue";
-import { computed, ref } from "vue";
-import VueBasicAlert from "vue-basic-alert";
+import BaseButton from '@/components/BaseButton.vue';
+import { computed, ref } from 'vue';
+import VueBasicAlert from 'vue-basic-alert';
+import { ButtonType } from '@/enums/ButtonType';
 
 defineProps({
     food: {
@@ -88,17 +92,17 @@ interface IFood {
 
 /**----------variable----------*/
 const qty = ref<Number>(1);
-const user = ref("5345");
+const user = ref('5345');
 
 /**----------computed----------*/
 const selectedFood = computed<IFood[]>(() => {
     return [
         {
-            food_name: "345345",
-            food_src: "",
-            food_desc: "",
-            food_price: "",
-            food_discount: "",
+            food_name: '345345',
+            food_src: '',
+            food_desc: '',
+            food_price: '',
+            food_discount: '',
         },
     ];
 });
