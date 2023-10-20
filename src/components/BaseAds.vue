@@ -1,5 +1,5 @@
 <template>
-    <div class="base-ads">
+    <div class="base-ads" :style="{ width: width }">
         <div class="base-ads-img">
             <img :src="src" :alt="alt" />
         </div>
@@ -13,17 +13,18 @@
 interface IProps {
     src: string;
     alt?: string;
+    width?: string;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
     src: '',
     alt: '',
+    width: '350px',
 });
 </script>
 
 <style lang="scss">
 .base-ads {
-    width: 350px;
     height: 450px;
     border-radius: 6px;
     position: relative;

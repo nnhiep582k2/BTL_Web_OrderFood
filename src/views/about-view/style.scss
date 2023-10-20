@@ -1,5 +1,10 @@
 .about-section {
+    padding-top: 20px;
     width: 100%;
+    .about-title {
+        font-family: 'Satisfy', cursive;
+        font-weight: normal;
+    }
     .about-content {
         display: flex;
         width: 100%;
@@ -19,6 +24,7 @@
         text-align: center;
         background-color: #27ae60;
         width: 100%;
+        font-family: 'Satisfy', cursive;
         h3 {
             font-size: 32px;
             color: white;

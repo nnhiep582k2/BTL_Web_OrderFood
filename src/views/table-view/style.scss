@@ -1,0 +1,107 @@
+.table-section {
+    padding-bottom: 60px;
+    padding-top: 20px;
+}
+
+.table-title {
+    font-family: 'Satisfy', cursive;
+    font-weight: normal;
+}
+
+.order-section .icons-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.order-section .icons-container .icons {
+    border-radius: 0.5rem;
+    padding: 2rem;
+    text-align: center;
+    background: #f7f7f7;
+}
+
+.order-section .icons-container .icons img {
+    height: 10rem;
+}
+
+.order-section .icons-container .icons h3 {
+    font-size: 20px;
+    color: #130f40;
+    margin-top: 0.5rem;
+}
+
+.order-section form {
+    background: #f7f7f7;
+    padding: 2rem;
+    border-radius: 0.5rem;
+}
+
+.order-section form .row {
+    justify-content: space-between;
+}
+
+.order-section form .row .input-box {
+    width: 49%;
+    padding: 1.8rem 0;
+}
+
+.order-section form .row label {
+    font-size: 1.7rem;
+    color: #666;
+}
+
+.order-section form .row p {
+    font-size: 1.5rem;
+    position: absolute;
+    color: rgb(243, 47, 47);
+    margin: 0;
+    padding-top: 5px;
+}
+
+.order-section form .row input,
+.order-section form .row textarea {
+    width: 100%;
+    margin-top: 0.5rem;
+    padding: 1rem 1.2rem;
+    width: 100%;
+    border-radius: 0.5rem;
+    font-size: 1.6rem;
+    text-transform: none;
+    color: #130f40;
+}
+
+.order-section form .row textarea {
+    height: 20rem;
+    resize: none;
+}
+
+.order-section form .row .map {
+    height: 100%;
+    width: 100%;
+    border-radius: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .order form .row .input-box {
+        width: 100%;
+    }
+
+    .order-section form .row {
+        display: block;
+        max-width: 100%;
+        width: 100%;
+        margin: 0;
+    }
+
+    .order-section form .row .input-box {
+        width: 100%;
+    }
+}
+
+@media (max-width: 576px) {
+    .order-section .icons-container {
+        grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+    }
+}

@@ -1,16 +1,22 @@
 <template>
     <div
         class="base-text-box"
+        :style="`width: ${width}`"
         :class="{ 'd-flex': type == TextBoxType.hasButton }"
     >
-        <input
-            type="text"
-            :value="modelValue"
-            :style="`width: ${width}`"
-            :placeholder="placeholder"
-            :class="classes"
-            @change="handleChangeValue"
-        />
+        <label :style="`width: ${width}`">
+            <span :style="`font-size: ${labelSize}`" v-show="label">{{
+                label
+            }}</span>
+            <input
+                :type="inputType"
+                :value="modelValue"
+                :style="`width: ${width}`"
+                :placeholder="placeholder"
+                :class="classes"
+                @change="handleChangeValue"
+            />
+        </label>
         <BaseButton
             v-if="type == TextBoxType.hasButton"
             :text="buttonText"
@@ -22,17 +28,20 @@
 
 <script setup lang="ts">
 import { ButtonType } from '@/enums/ButtonType';
-import { TextBoxType } from '@/enums/TextBoxType';
+import { InputType, TextBoxType } from '@/enums/TextBoxType';
 import BaseButton from './BaseButton.vue';
 
 interface IProps {
     modelValue: string;
     width?: string;
-    classes?: string
+    classes?: string;
     type?: TextBoxType;
+    inputType?: InputType;
     buttonType?: ButtonType;
     buttonText?: string;
     placeholder?: string;
+    label?: string;
+    labelSize?: string;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
@@ -40,6 +49,8 @@ const props = withDefaults(defineProps<IProps>(), {
     type: TextBoxType.default,
     buttonType: ButtonType.success,
     buttonText: 'Subscribe',
+    inputType: InputType.text,
+    labelSize: '20px',
 });
 
 const emit = defineEmits(['update:modelValue', 'clickButton']);
@@ -55,7 +66,10 @@ const handleClickButton = () => {
 
 <style lang="scss" scoped>
 .base-text-box {
-    width: 100%;
+    label span {
+        display: block;
+        margin-bottom: 8px;
+    }
     input {
         display: block;
         padding: 8px 10px;

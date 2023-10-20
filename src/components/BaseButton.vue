@@ -31,6 +31,7 @@ const props = withDefaults(defineProps<IProps>(), {
     font-size: var(--fontsize-control);
     user-select: none;
     width: fit-content;
+    font-weight: 500;
     & + .base-button {
         margin-left: 10px;
     }

@@ -9,6 +9,10 @@ hr {
     border-top: 3px solid var(--color-primary);
     width: 100%;
 }
+.menu-title {
+    font-family: 'Satisfy', cursive;
+    font-weight: normal;
+}
 .unselect-btn {
     background: transparent;
     padding-right: 10px;
@@ -23,14 +27,12 @@ hr {
     padding-top: 30px;
 }
 .filter-heading h1 {
+    font-size: 28px;
     color: var(--color-primary);
 }
 .filter-option {
     list-style-type: none;
     width: inherit;
-    li {
-        padding: 0 10px;
-    }
     label {
         width: 100%;
         font-size: 15px;
@@ -63,7 +65,8 @@ hr {
     padding-left: 0;
 }
 .menu-section {
-    width: 100%;
+    padding-top: 20px;
+    padding-bottom: 60px;
     .menu-tabs {
         margin-bottom: 30px;
         flex: 0 0 100%;
