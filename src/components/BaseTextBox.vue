@@ -1,10 +1,13 @@
 <template>
     <div
         class="base-text-box"
+        :style="`width: ${width}`"
         :class="{ 'd-flex': type == TextBoxType.hasButton }"
     >
-        <label>
-            <span v-show="label">{{ label }}</span>
+        <label :style="`width: ${width}`">
+            <span :style="`font-size: ${labelSize}`" v-show="label">{{
+                label
+            }}</span>
             <input
                 :type="inputType"
                 :value="modelValue"
@@ -38,6 +41,7 @@ interface IProps {
     buttonText?: string;
     placeholder?: string;
     label?: string;
+    labelSize?: string;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
@@ -46,6 +50,7 @@ const props = withDefaults(defineProps<IProps>(), {
     buttonType: ButtonType.success,
     buttonText: 'Subscribe',
     inputType: InputType.text,
+    labelSize: '20px',
 });
 
 const emit = defineEmits(['update:modelValue', 'clickButton']);
@@ -61,7 +66,6 @@ const handleClickButton = () => {
 
 <style lang="scss" scoped>
 .base-text-box {
-    width: 100%;
     label span {
         display: block;
         margin-bottom: 8px;

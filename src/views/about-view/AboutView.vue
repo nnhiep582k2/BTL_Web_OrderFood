@@ -1,14 +1,14 @@
 <template>
     <section class="about-section p-x-80">
         <div class="heading">
-            <span>About Us</span>
+            <span class="about-title">About Us</span>
             <h3>Good Quality Dishes</h3>
         </div>
 
         <div class="row">
             <div class="about-content">
                 <img
-                    src="/src/assets/images/demo/taco-chefcartoon.png"
+                    src="/src/assets/images/template/taco-chefcartoon.png"
                     alt=""
                 />
                 <div class="about-content-text">
@@ -80,6 +80,8 @@
 
 <script setup lang="ts">
 window.scrollTo(0, 0);
+
+document.title = 'About | Orod - Order Food';
 </script>
 
 <style lang="scss" scoped>

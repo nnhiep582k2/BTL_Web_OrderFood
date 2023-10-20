@@ -14,7 +14,11 @@
                     {{ data }}
                 </div>
             </div>
-            <base-button :type="buttonType" :text="buttonText" />
+            <base-button
+                :type="buttonType"
+                :text="buttonText"
+                @click="emit('onClick')"
+            />
         </div>
     </div>
 </template>
@@ -31,6 +35,8 @@ interface IProps {
     buttonText?: string;
     datas?: string[];
 }
+
+const emit = defineEmits(['onClick']);
 
 const props = withDefaults(defineProps<IProps>(), {
     src: '',

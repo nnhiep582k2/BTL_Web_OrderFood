@@ -1,48 +1,40 @@
 <template>
-    <div class="base-button" :class="[type, disabled ? 'disabled' : '']">
-        {{ text }}
+    <div class="base-icon" :class="type">
+        <slot />
     </div>
 </template>
 
 <script setup lang="ts">
-import { ButtonType } from '@/enums/ButtonType.ts';
+import { IconType } from '@/enums/IconType';
 
 interface IProps {
-    type: ButtonType;
-    text: string;
-    disabled?: boolean;
+    type?: IconType;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
-    type: ButtonType.default,
-    text: 'Button',
-    disabled: false,
+    type: IconType.default,
 });
 </script>
 
 <style lang="scss" scoped>
-.base-button {
-    display: inline-flex;
+.base-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 6px;
+    display: flex;
     align-items: center;
     justify-content: center;
-    padding: 10px 12px 14px;
-    border-radius: 6px;
-    height: var(--height-control);
-    font-size: var(--fontsize-control);
-    user-select: none;
-    width: fit-content;
-    font-weight: 500;
-    & + .base-button {
-        margin-left: 10px;
-    }
-    &:hover {
-        cursor: pointer;
+    cursor: pointer;
+    font-size: 18px;
+    & + .base-icon {
+        margin-left: 6px;
     }
     &.default {
-        color: white;
-        background-color: var(--color-default);
+        color: black;
+        background-color: #e7e7e7;
         &:hover {
-            background-color: var(--color-default-bolder);
+            color: white;
+            background-color: var(--color-primary);
         }
     }
     &.success {
@@ -71,13 +63,6 @@ const props = withDefaults(defineProps<IProps>(), {
         background-color: var(--color-information);
         &:hover {
             background-color: var(--color-information-bolder);
-        }
-    }
-    &.disabled {
-        cursor: not-allowed;
-        background-color: var(--color-disabled);
-        &:hover {
-            background-color: var(--color-disabled);
         }
     }
 }

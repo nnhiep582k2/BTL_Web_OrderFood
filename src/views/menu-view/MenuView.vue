@@ -1,8 +1,8 @@
 <template>
     <div class="menu-section p-x-80">
         <div class="heading">
-            <span>Menu</span>
-            <h3>Our Special <Dfn></Dfn>Dishes</h3>
+            <span class="menu-title">Menu</span>
+            <h3>Our Special Dishes</h3>
         </div>
 
         <div class="row">
@@ -10,6 +10,7 @@
                 <div class="row search-box">
                     <BaseTextBox
                         v-model:model-value="foodObj.name"
+                        width="100%"
                         placeholder="Search.."
                     />
                 </div>
@@ -352,12 +353,13 @@
 
 <script setup lang="ts">
 import BaseTextBox from '@/components/BaseTextBox.vue';
-import { reactive, ref, computed } from 'vue';
 import BaseEmpty from '@/components/BaseEmpty.vue';
+import { reactive, ref, computed } from 'vue';
 
 window.scrollTo(0, 0);
 
-/**----------interface----------*/
+document.title = 'Menu | Orod - Order Food';
+
 interface IFoodObj {
     name: string;
     category: string;
@@ -366,7 +368,6 @@ interface IFoodObj {
     type: string;
 }
 
-/**----------variable----------*/
 const foodObj = reactive<IFoodObj>({
     name: '',
     category: '',
@@ -384,10 +385,10 @@ const previousCategoryClicked = ref<string>('');
 const previousPriceClicked = ref<string>('');
 const previousTypeClicked = ref<string>('');
 
-/**----------computed----------*/
 const filterFoods = computed(() => {
     return Array;
 });
+
 const currentPageItems = computed(() => {});
 
 const calculatePages = computed(() => {

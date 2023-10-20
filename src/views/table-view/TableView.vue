@@ -1,9 +1,9 @@
 <template>
-    <div class="table-view p-x-80">
+    <div class="table-section p-x-80">
         <vue-basic-alert :duration="300" :closeIn="2000" ref="alert" />
         <section class="order-section">
             <div class="heading">
-                <span>Book A Table</span>
+                <span class="table-title">Book A Table</span>
                 <h3>Enjoy your moment</h3>
             </div>
 
@@ -32,9 +32,10 @@
                 <div class="row">
                     <div class="input-box">
                         <BaseTextBox
+                            width="100%"
+                            label="Your name"
                             :inputType="InputType.text"
                             v-model:model-value="orderObj.name"
-                            label="Your name"
                         />
                         <p v-if="errorObj.nameErr.length > 0">
                             {{ errorObj.nameErr[0] }}
@@ -42,9 +43,10 @@
                     </div>
                     <div class="input-box">
                         <BaseTextBox
+                            width="100%"
+                            label="Your phone number"
                             :inputType="InputType.text"
                             v-model:model-value="orderObj.phone"
-                            label="Your phone number"
                         />
                         <p v-if="errorObj.phoneErr.length > 0">
                             {{ errorObj.phoneErr[0] }}
@@ -55,9 +57,10 @@
                 <div class="row">
                     <div class="input-box">
                         <BaseTextBox
-                            :inputType="InputType.text"
-                            v-model:model-value="orderObj.people"
+                            width="100%"
                             label="How many people"
+                            :inputType="InputType.number"
+                            v-model:model-value="orderObj.people"
                         />
                         <p v-if="errorObj.peopleErr.length > 0">
                             {{ errorObj.peopleErr[0] }}
@@ -65,9 +68,10 @@
                     </div>
                     <div class="input-box">
                         <BaseTextBox
+                            width="100%"
+                            label="How many tables"
                             :inputType="InputType.number"
                             v-model:model-value="orderObj.tables"
-                            label="How many tables"
                         />
                         <p v-if="errorObj.tablesErr.length > 0">
                             {{ errorObj.tablesErr[0] }}
@@ -78,9 +82,10 @@
                 <div class="row">
                     <div class="input-box">
                         <BaseTextBox
+                            width="100%"
+                            label="Your membership card"
                             :inputType="InputType.text"
                             v-model:model-value="orderObj.card"
-                            label="Your membership card"
                         />
                         <p v-if="errorObj.cardErr.length > 0">
                             {{ errorObj.cardErr[0] }}
@@ -88,9 +93,10 @@
                     </div>
                     <div class="input-box">
                         <BaseTextBox
+                            width="100%"
+                            label="When"
                             :inputType="InputType.datetimeLocal"
                             v-model:model-value="orderObj.when"
-                            label="When"
                             @click="availableTime()"
                         />
                         <p v-if="errorObj.whenErr.length > 0">
@@ -102,13 +108,17 @@
                 <div class="row">
                     <div class="input-box">
                         <BaseTextArea
+                            width="100%"
+                            height="180px"
                             label="Note"
                             class="m-b-10"
                             v-model:model-value="orderObj.note"
                             placeholder="Your message, do you want to decorate your table?"
                         />
                     </div>
-                    <BaseMap width="400" height="300" />
+                    <div class="input-box">
+                        <BaseMap width="100%" height="220" />
+                    </div>
                 </div>
 
                 <BaseButton text="Book Now" :type="ButtonType.success" />
@@ -129,6 +139,8 @@ import BaseMap from '@/components/BaseMap.vue';
 import { InputType } from '@/enums/TextBoxType';
 
 window.scrollTo(0, 0);
+
+document.title = 'Table | Orod - Order Food';
 
 const orderObj = {
     name: '',
