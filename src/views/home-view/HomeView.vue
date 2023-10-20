@@ -9,9 +9,9 @@
                     Customers will enjoy Mexican cuisine with explosive,
                     sophisticated flavors.
                 </p>
-                <router-link to="/menu" class="btn" @click="scrollToTop()">
+                <RouterLink to="/menu" class="btn" @click="scrollToTop()">
                     <BaseButton text="Order Now" :type="ButtonType.success" />
-                </router-link>
+                </RouterLink>
             </div>
             <div class="image">
                 <img
@@ -28,7 +28,7 @@
         </div>
 
         <div class="home-category">
-            <router-link
+            <RouterLink
                 v-for="(item, index) in DataHomeCategory"
                 to="/menu"
                 class="box"
@@ -37,7 +37,7 @@
             >
                 <img :src="item.src" alt="" />
                 <h3>{{ item.name }}</h3>
-            </router-link>
+            </RouterLink>
         </div>
 
         <div class="home-banner d-flex">
@@ -50,10 +50,12 @@
                 <template #content>
                     <div class="title">{{ item.title }}</div>
                     <div class="discount">{{ item.discount }}</div>
-                    <base-button
-                        :type="item.button.type"
-                        :text="item.button.text"
-                    />
+                    <RouterLink to="/menu">
+                        <BaseButton
+                            :type="item.button.type"
+                            :text="item.button.text"
+                        />
+                    </RouterLink>
                 </template>
             </BaseAds>
         </div>
@@ -72,9 +74,9 @@
                     Our delivery service is very professional, customers can
                     enjoy the same quality at the restaurant
                 </p>
-                <router-link @click="scrollToTop()" to="/about" class="btn">
+                <RouterLink @click="scrollToTop()" to="/about" class="btn">
                     <BaseButton text="Read More" :type="ButtonType.success"
-                /></router-link>
+                /></RouterLink>
                 <div class="icons-container">
                     <div class="icons">
                         <img
@@ -110,7 +112,7 @@
     </div>
 </template>
 
-<script lang="ts" setup>
+<script setup lang="ts">
 import { ButtonType } from '@/enums/ButtonType';
 import { DataBaseAds } from '@/mocks/BaseAds';
 import BaseButton from '@/components/BaseButton.vue';
@@ -120,6 +122,10 @@ import { DataHomeCategory } from '@/mocks/HomeCategory';
 const scrollToTop = () => {
     window.scrollTo(0, 0);
 };
+
+scrollToTop();
+
+document.title = 'Home | Orod - Order Food';
 </script>
 
 <style scoped lang="scss">

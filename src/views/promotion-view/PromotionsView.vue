@@ -1,7 +1,7 @@
 <template>
     <div class="promotions p-x-80">
         <div class="heading">
-            <span>Promotions</span>
+            <span class="promotions-title">Promotions</span>
             <h3>Best quality with reasonable price</h3>
         </div>
 
@@ -146,6 +146,7 @@
             :key="index"
             :title="item.title"
             :datas="item.datas"
+            @onClick="handleClickButton"
         />
     </div>
 </template>
@@ -153,9 +154,18 @@
 <script setup lang="ts">
 import BasePromotion from '@/components/BasePromotion.vue';
 import { DataBasePromotions } from '@/mocks/BasePromotions';
+import { useRouter } from 'vue-router';
 
-const scrollToTop = () => {
-    window.scrollTo(0, 0);
+const router = useRouter();
+
+window.scrollTo(0, 0);
+
+document.title = 'Promotions | Orod - Order Food';
+
+const handleClickButton = () => {
+    router.push({
+        name: 'menu',
+    });
 };
 </script>
 

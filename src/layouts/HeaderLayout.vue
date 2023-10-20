@@ -1,11 +1,16 @@
 <template>
     <div class="header p-x-80">
-        <div class="brand">
-            <div class="logo">
-                <img src="/src/assets/images/common/logo.png" alt="logo orod" />
+        <RouterLink to="/">
+            <div class="brand">
+                <div class="logo">
+                    <img
+                        src="/src/assets/images/common/logo.png"
+                        alt="logo orod"
+                    />
+                </div>
+                <div class="name">Orod</div>
             </div>
-            <div class="name">Orod</div>
-        </div>
+        </RouterLink>
         <div class="list d-flex">
             <div
                 class="item"
@@ -18,16 +23,25 @@
             </div>
         </div>
         <div class="options d-flex">
-            <div class="option">Cart</div>
-            <div class="option">User</div>
+            <div class="option">
+                <RouterLink to="/cart">
+                    <BaseIcon>
+                        <i class="fa-solid fa-cart-shopping"></i
+                    ></BaseIcon>
+                </RouterLink>
+            </div>
+            <div class="option">
+                <BaseIcon><i class="fa-solid fa-user"></i></BaseIcon>
+            </div>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
 import { HeaderItem } from '@/mocks/HeaderItem';
-import { useRouter } from 'vue-router';
-import { ref } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import { ref, watch } from 'vue';
+import BaseIcon from '@/components/BaseIcon.vue';
 
 const router = useRouter();
 
@@ -36,11 +50,23 @@ const currentTab = ref(HeaderItem[0]);
 const isCurrentTab = (tab: string) => currentTab.value === tab;
 
 const setActiveTab = (tab: string) => {
-    currentTab.value = tab;
     router.push({
         name: tab.toLowerCase(),
     });
 };
+
+const route = useRoute();
+
+watch(
+    () => route.name,
+    (newValue) => {
+        if (newValue) {
+            currentTab.value =
+                newValue.toString().slice(0, 1).toLocaleUpperCase() +
+                newValue.toString().slice(1);
+        }
+    }
+);
 </script>
 
 <style lang="scss" scoped>
@@ -56,6 +82,11 @@ const setActiveTab = (tab: string) => {
     height: 60px;
     background-color: white;
     box-shadow: 0 6px 6px rgba(0, 0, 0, 0.05);
+    a {
+        color: black;
+        display: block;
+        text-decoration: none;
+    }
     .brand {
         user-select: none;
         font-size: 25px;
@@ -65,6 +96,7 @@ const setActiveTab = (tab: string) => {
         .logo {
             width: 30px;
             overflow: hidden;
+            display: flex;
             margin-right: 6px;
             img {
                 width: 100%;
@@ -91,6 +123,11 @@ const setActiveTab = (tab: string) => {
     }
     .options {
         align-items: center;
+        .option {
+            & + .option {
+                margin-left: 6px;
+            }
+        }
     }
 }
 </style>

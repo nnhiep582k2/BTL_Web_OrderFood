@@ -1,7 +1,9 @@
 <template>
-    <div class="base-text-area">
-        <label>
-            <span v-show="label">{{ label }}</span>
+    <div class="base-text-area" :style="`width: ${width};height: ${height}`">
+        <label :style="`width: ${width};height: ${height}`">
+            <span :style="`font-size: ${labelSize}`" v-show="label">{{
+                label
+            }}</span>
             <textarea
                 :value="modelValue"
                 :style="`width: ${width};height: ${height}`"
@@ -19,11 +21,13 @@ interface IProps {
     height?: string;
     placeholder?: string;
     label?: string;
+    labelSize?: string;
 }
 
 const props = withDefaults(defineProps<IProps>(), {
     width: '236px',
     height: '80px',
+    labelSize: '20px',
 });
 
 const emit = defineEmits(['update:modelValue']);

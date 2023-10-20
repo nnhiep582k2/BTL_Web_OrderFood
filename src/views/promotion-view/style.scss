@@ -1,10 +1,15 @@
 .promotions {
+    padding-top: 20px;
     padding-bottom: 60px;
     .promotions-item {
         width: 100%;
         margin-bottom: 20px;
         position: relative;
         display: flex;
+    }
+    .promotions-title {
+        font-family: 'Satisfy', cursive;
+        font-weight: normal;
     }
 }
 
