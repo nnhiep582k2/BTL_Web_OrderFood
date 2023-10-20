@@ -1,20 +1,17 @@
 <template>
     <div class="menu-section">
         <div class="heading">
-            <span>menu</span>
-            <h3>our special dishes</h3>
+            <span>Menu</span>
+            <h3>Our Special <Dfn></Dfn>Dishes</h3>
         </div>
 
         <div class="row">
             <div class="col-sm-4 col-12 filter-box">
                 <div class="row search-box">
                     <BaseTextBox
-                        v-model="foodObj.name"
+                        v-model:model-value="foodObj.name"
                         placeholder="Search.."
-                        width="100%"
                     />
-
-
                 </div>
 
                 <div class="row filter-drop-down">
@@ -197,7 +194,7 @@
                             <label
                                 for="mtPrice"
                                 class="d-flex justify-content-between"
-                                >{{ ">" }} $12
+                                >{{ '>' }} $12
                                 <button class="unselect-btn">X</button></label
                             >
                         </li>
@@ -213,7 +210,7 @@
                             <label
                                 for="ltPrice"
                                 class="d-flex justify-content-between"
-                                >{{ "<" }} $2
+                                >{{ '<' }} $2
                                 <button class="unselect-btn">X</button></label
                             >
                         </li>
@@ -264,7 +261,7 @@
                 </div>
             </div>
 
-            <div class="col-sm-8">
+            <div class="col-sm-8 p-r-0">
                 <div class="row">
                     <div class="menu-tabs">
                         <input
@@ -321,7 +318,7 @@
 
                 <div class="row box-container">
                     <!-- Hiển thị danh sách currentPageItems -->
-                    <BaseEmpty/>
+                    <BaseEmpty />
                 </div>
                 <div v-if="calculatePages > 1" class="action-row">
                     <BaseButton type="success" v-if="pageNum != 0" text="<" class="action-btn" />
@@ -354,30 +351,37 @@ import BaseEmpty from "@/components/BaseEmpty.vue";
 import BaseButton from "@/components/BaseButton.vue";
 /**----------interface----------*/
 interface IFoodObj {
-    name: String;
-    category: String;
+    name: string;
+    category: string;
     status: [];
-    price: String;
-    type: String;
+    price: string;
+    type: string;
 }
 
 /**----------variable----------*/
 const foodObj = reactive<IFoodObj>({
-    name: "",
-    category: "",
+    name: '',
+    category: '',
     status: [],
-    price: "",
-    type: "",
+    price: '',
+    type: '',
 });
 
 const showQuickView = ref<Boolean>(false);
 const showDropDown = ref<Boolean>(false);
 const endId = ref<string | null>(null);
 const perPage = ref<Number>(6);
+<<<<<<< HEAD:src/views/MenuView.vue
 const pageNum = ref<Number>(2);
 const previousCategoryClicked = ref<String>("");
 const previousPriceClicked = ref<String>("");
 const previousTypeClicked = ref<String>("");
+=======
+const pageNum = ref<Number>(0);
+const previousCategoryClicked = ref<String>('');
+const previousPriceClicked = ref<String>('');
+const previousTypeClicked = ref<String>('');
+>>>>>>> a878ad1fffe0dc81861f12ca4dab2b6cc9dec940:src/views/menu-view/MenuView.vue
 
 /**----------computed----------*/
 const filterFoods = computed(() => {
@@ -391,305 +395,5 @@ const calculatePages = computed(() => {
 </script>
 
 <style lang="scss" scoped>
-.unselect-btn:active,
-.unselect-btn:focus,
-.action-btn:active,
-.action-btn:focus {
-    border: none;
-    outline: none;
-}
-
-hr {
-    border-top: 3px solid var(--color-primary);
-    width: 100%;
-}
-
-.unselect-btn {
-    background: transparent;
-    padding-right: 10px;
-    cursor: pointer;
-    color: inherit;
-    display: none;
-}
-
-.filter-section {
-    width: inherit;
-}
-
-.filter-heading {
-    padding-top: 30px;
-}
-
-.filter-heading h1 {
-    color: var(--color-primary);
-}
-
-.filter-option {
-    list-style-type: none;
-    width: inherit;
-
-    li{
-        padding: 0 10px;
-    }
-
-    label {
-        width: 100%;
-        font-size: 15px;
-        padding: 3px 0px;
-        &:hover {
-            color: white;
-            background-color: #f38609 !important;
-            transition: all 0.5s ease;
-        }
-    }
-}
-
-.search-box {
-    width: 100%;
-    justify-content: center;
-    position: relative;
-    display: flex;
-}
-
-.search-input {
-    margin: 0;
-    width: 100%;
-    height: 40px;
-    font-size: 20px;
-    color: white;
-    background: var(--color-primary);
-}
-
-::placeholder {
-    color: white;
-}
-
-.menu-section {
-    padding: 2rem 9%;
-
-    .menu-tabs {
-        margin-bottom: 30px;
-        flex: 0 0 100%;
-        max-width: 100%;
-        text-align: center;
-        background-color: var(--color-primary);
-
-        .menu-tab-item {
-            display: inline-block;
-            cursor: pointer;
-            padding: 5px 20px;
-            font-size: 20px;
-            color: whitesmoke;
-            font-weight: 500;
-            text-transform: capitalize;
-            transition: all 0.3s ease;
-            margin: 0;
-            background: transparent;
-            border: none;
-            border-radius: 3px;
-
-            &:hover {
-                background-color: #f38609 !important;
-            }
-
-            p {
-                padding: none;
-                margin: none;
-            }
-        }
-    }
-
-    .box-container {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
-        gap: 1.5rem;
-
-        .box {
-            border-radius: 0.5rem;
-            position: relative;
-            background: #f7f7f7;
-            padding: 2rem;
-            text-align: center;
-
-            .fa-heart {
-                position: absolute;
-                top: 1.5rem;
-                right: 1.5rem;
-                font-size: 2.5rem;
-                color: #666;
-                cursor: pointer;
-
-                &:hover {
-                    color: var(--color-primary);
-                }
-            }
-
-            .image {
-                margin: 1rem 0;
-
-                img {
-                    height: 15rem;
-                }
-            }
-
-            .content {
-                h3 {
-                    font-size: 2rem;
-                    color: #130f40;
-                }
-                .stars {
-                    padding: 1rem 0;
-                    font-size: 1.7rem;
-
-                    i {
-                        color: gold;
-                    }
-
-                    span {
-                        color: #666;
-                    }
-                }
-
-                .desc p {
-                    font-size: 14px;
-                    margin: 0;
-                }
-
-                .price {
-                    font-size: 2rem;
-                    color: #130f40;
-
-                    span {
-                        font-size: 1.5rem;
-                        color: #666;
-                        text-decoration: line-through;
-                    }
-                }
-            }
-        }
-    }
-
-    .action-row {
-        padding-top: 30px;
-        width: 100%;
-        text-align: center;
-        font-size: 20px;
-
-        .action-btn {
-            background-color: var(--color-primary);
-            padding: 3px;
-            border: 2px solid var(--color-primary);
-            border-radius: 30%;
-            color: white;
-        }
-
-        span {
-            margin-right: 15px;
-
-            &:hover {
-                cursor: pointer;
-            }
-
-            &.highlight {
-                color: #f38609;
-            }
-
-            &:first-of-type {
-                margin-left: 15px;
-            }
-        }
-    }
-}
-
-.filter-drop-down {
-    display: none;
-}
-
-@media (min-width: 576px) {
-    .filter-heading,
-    .filter-section {
-        display: block !important;
-    }
-}
-
-@media (max-width: 768px) {
-    .menu-section .box-container {
-        grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
-        gap: 1rem;
-
-        .box .content h3 {
-            height: 4rem;
-        }
-    }
-}
-
-@media (max-width: 576px) {
-    .search-box,
-    .filter-heading,
-    .filter-section {
-        width: auto;
-    }
-
-    .filter-option {
-        width: 100%;
-    }
-
-    .filter-drop-down {
-        display: block;
-        background-color: #27ae60;
-        color: white;
-        font-weight: 400;
-        margin-bottom: 15px;
-        margin-top: 15px;
-    }
-
-    .filter-drop-down p {
-        font-size: 20px;
-        padding: 5px 0px;
-        margin: 0;
-        display: flex;
-        justify-content: space-between;
-        span {
-            font-size: 20px;
-            padding-right: 10px;
-            text-transform: lowercase;
-            font-weight: 300;
-        }
-    }
-
-    .filter-heading,
-    .filter-section {
-        display: none;
-    }
-
-    .menu-tabs .menu-tab-item {
-        font-size: 12px !important;
-        padding: 5px 20px !important;
-    }
-
-    .menu-section {
-        .action-row {
-            font-size: 16px !important;
-
-            span {
-                margin-right: 5px;
-            }
-        }
-
-        .box-container {
-            .box .image img {
-                height: 10rem;
-            }
-            .box .content h3 {
-                font-size: 14px !important;
-                height: 28px;
-            }
-        }
-
-        .menu-section .box-container .box .desc p,
-        .box-container .box .content .stars {
-            font-size: 10px !important;
-        }
-    }
-}
+@import url(./style.scss);
 </style>

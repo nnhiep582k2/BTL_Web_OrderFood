@@ -107,8 +107,8 @@ defineProps({
                 border: 2px solid var(--active-inner);
                 border-top: 0;
                 border-left: 0;
-                left: 6px;
-                top: 3px;
+                left: 7px;
+                top: 4px;
                 transform: rotate(var(--r, 20deg));
             }
             &:checked {

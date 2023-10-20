@@ -60,7 +60,7 @@ const router = createRouter({
         
         {
             path: '/:catchAll(.*)',
-            component: () => import('@/views/NotFoundView.vue'),
+            component: () => import('@/views/notfound-view/NotFoundView.vue'),
         },
     ],
 });
