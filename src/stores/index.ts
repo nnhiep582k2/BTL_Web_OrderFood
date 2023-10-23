@@ -1,6 +1,6 @@
-import { ref } from "vue";
-import { createStore } from "vuex";
-import { SET_LOADING } from "./storeConstants";
+import { ref } from 'vue';
+import { createStore } from 'vuex';
+import { SET_LOADING } from './storeConstants';
 interface IAuthData {
     userId: string;
     username: string;
@@ -13,9 +13,9 @@ interface IRootState {
 export default createStore<IRootState>({
     state: {
         authData: ref<IAuthData>({
-            userId: "",
-            username: "",
-            email: "",
+            userId: '',
+            username: '',
+            email: '',
         }),
         isLoading: ref<boolean>(false),
     },
@@ -27,7 +27,7 @@ export default createStore<IRootState>({
     },
     actions: {
         [SET_LOADING]({ commit }: any, isOpen: boolean) {
-            commit("toggleLoading", isOpen);
+            commit('toggleLoading', isOpen);
         },
     },
     modules: {},

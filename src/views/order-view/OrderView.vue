@@ -127,9 +127,9 @@
 
         <OrderDetails v-if="showOrderDetails" :bill="sendId">
             <BaseButton
-                @click="() => closeView()"
                 text="X"
                 :type="ButtonType.success"
+                @click="() => closeView()"
             />
         </OrderDetails>
     </div>
