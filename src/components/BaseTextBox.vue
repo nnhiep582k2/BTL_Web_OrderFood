@@ -4,19 +4,14 @@
         :style="`width: ${width}`"
         :class="{ 'd-flex': type == TextBoxType.hasButton }"
     >
-        <label :style="`width: ${width}`">
-            <span :style="`font-size: ${labelSize}`" v-show="label">{{
-                label
-            }}</span>
-            <input
-                :type="inputType"
-                :value="modelValue"
-                :style="`width: ${width}`"
-                :placeholder="placeholder"
-                :class="classes"
-                @change="handleChangeValue"
-            />
-        </label>
+        <input
+            :type="typeInput"
+            :value="modelValue"
+            :style="`width: ${width}`"
+            :placeholder="placeholder"
+            :class="classes"
+            @change="handleChangeValue"
+        />
         <BaseButton
             v-if="type == TextBoxType.hasButton"
             :text="buttonText"
@@ -40,8 +35,7 @@ interface IProps {
     buttonType?: ButtonType;
     buttonText?: string;
     placeholder?: string;
-    label?: string;
-    labelSize?: string;
+    typeInput?:String
 }
 
 const props = withDefaults(defineProps<IProps>(), {
@@ -49,8 +43,7 @@ const props = withDefaults(defineProps<IProps>(), {
     type: TextBoxType.default,
     buttonType: ButtonType.success,
     buttonText: 'Subscribe',
-    inputType: InputType.text,
-    labelSize: '20px',
+    typeInput:'text'
 });
 
 const emit = defineEmits(['update:modelValue', 'clickButton']);
