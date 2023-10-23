@@ -4,7 +4,7 @@
         :class="{ 'd-flex': type == TextBoxType.hasButton }"
     >
         <input
-            type="text"
+            :type="typeInput"
             :value="modelValue"
             :style="`width: ${width}`"
             :placeholder="placeholder"
@@ -33,6 +33,7 @@ interface IProps {
     buttonType?: ButtonType;
     buttonText?: string;
     placeholder?: string;
+    typeInput?:String
 }
 
 const props = withDefaults(defineProps<IProps>(), {
@@ -40,6 +41,7 @@ const props = withDefaults(defineProps<IProps>(), {
     type: TextBoxType.default,
     buttonType: ButtonType.success,
     buttonText: 'Subscribe',
+    typeInput:'text'
 });
 
 const emit = defineEmits(['update:modelValue', 'clickButton']);

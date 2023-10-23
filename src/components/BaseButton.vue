@@ -1,5 +1,5 @@
 <template>
-    <div class="base-button" :class="[type, disabled ? 'disabled' : '']" @click="$emit('click')">
+    <div class="base-button" :class="[type, disabled ? 'disabled' : '', classCustom]" @click="$emit('click')">
         {{ text }}
     </div>
 </template>
@@ -11,6 +11,7 @@ interface IProps {
     type: ButtonType;
     text: string;
     disabled?: boolean;
+    classCustom: string
 }
 
 const props = withDefaults(defineProps<IProps>(), {
