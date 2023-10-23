@@ -10,7 +10,8 @@
 html {
     font-size: 14px;
     font-weight: normal;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Poppins', sans-serif;
+    scroll-behavior: smooth;
 }
 
 ::-webkit-scrollbar {
@@ -30,7 +31,7 @@ html {
     background: var(--color-primary-bolder);
 }
 
-img{
+img {
     vertical-align: middle;
     border-style: none;
 }
@@ -45,9 +46,13 @@ img{
         font-weight: 600;
     }
 
-    h3{
+    h3 {
         font-size: 3rem;
         font-weight: 500;
-
     }
+}
+
+.p-x-80 {
+    padding-left: 80px;
+    padding-right: 80px;
 }

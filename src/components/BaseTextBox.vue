@@ -1,6 +1,7 @@
 <template>
     <div
         class="base-text-box"
+        :style="`width: ${width}`"
         :class="{ 'd-flex': type == TextBoxType.hasButton }"
     >
         <input
@@ -22,14 +23,15 @@
 
 <script setup lang="ts">
 import { ButtonType } from '@/enums/ButtonType';
-import { TextBoxType } from '@/enums/TextBoxType';
+import { InputType, TextBoxType } from '@/enums/TextBoxType';
 import BaseButton from './BaseButton.vue';
 
 interface IProps {
     modelValue: string;
     width?: string;
-    classes?: string
+    classes?: string;
     type?: TextBoxType;
+    inputType?: InputType;
     buttonType?: ButtonType;
     buttonText?: string;
     placeholder?: string;
@@ -57,7 +59,10 @@ const handleClickButton = () => {
 
 <style lang="scss" scoped>
 .base-text-box {
-    width: 100%;
+    label span {
+        display: block;
+        margin-bottom: 8px;
+    }
     input {
         display: block;
         padding: 8px 10px;

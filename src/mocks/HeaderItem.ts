@@ -1,8 +1,1 @@
-export const HeaderItem = [
-    'Demo',
-    'Home',
-    'About',
-    'Promotions',
-    'Menu',
-    'Table',
-];
+export const HeaderItem = ['Home', 'About', 'Promotions', 'Menu', 'Table'];

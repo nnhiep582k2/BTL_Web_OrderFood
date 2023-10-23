@@ -1,8 +1,8 @@
 <template>
-    <div class="menu-section">
+    <div class="menu-section p-x-80">
         <div class="heading">
-            <span>Menu</span>
-            <h3>Our Special <Dfn></Dfn>Dishes</h3>
+            <span class="menu-title">Menu</span>
+            <h3>Our Special Dishes</h3>
         </div>
 
         <div class="row">
@@ -10,6 +10,7 @@
                 <div class="row search-box">
                     <BaseTextBox
                         v-model:model-value="foodObj.name"
+                        width="100%"
                         placeholder="Search.."
                     />
                 </div>
@@ -416,7 +417,10 @@ import BaseEmpty from "@/components/BaseEmpty.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import QuickView from "./QuickView.vue";
 
-/**----------interface----------*/
+window.scrollTo(0, 0);
+
+document.title = 'Menu | Orod - Order Food';
+
 interface IFoodObj {
     name: string;
     category: string;
@@ -435,7 +439,6 @@ interface IcurrentPageItems {
     food_discount: string;
 }
 
-/**----------variable----------*/
 const foodObj = reactive<IFoodObj>({
     name: "",
     category: "",
@@ -444,20 +447,20 @@ const foodObj = reactive<IFoodObj>({
     type: "",
 });
 
-const showQuickView = ref<Boolean>(false);
-const showDropDown = ref<Boolean>(false);
+const showQuickView = ref<boolean>(false);
+const showDropDown = ref<boolean>(false);
 const endId = ref<string | null>(null);
 const sendId = ref<string | null>(null);
-const perPage = ref<Number>(6);
-const pageNum = ref<Number>(2);
-const previousCategoryClicked = ref<String>("");
-const previousPriceClicked = ref<String>("");
-const previousTypeClicked = ref<String>("");
+const perPage = ref<number>(6);
+const pageNum = ref<number>(0);
+const previousCategoryClicked = ref<string>('');
+const previousPriceClicked = ref<string>('');
+const previousTypeClicked = ref<string>('');
 
-/**----------computed----------*/
 const filterFoods = computed(() => {
     return Array;
 });
+
 const currentPageItems = computed<IcurrentPageItems[]>(() => {
     return [
         {
@@ -480,11 +483,13 @@ const currentPageItems = computed<IcurrentPageItems[]>(() => {
         },
     ];
 });
+
+const currentPageItems = computed(() => {});
+
 const calculatePages = computed(() => {
     return 10;
 });
 
-/**----------methods----------*/
 const addItem = (index: Number) => {
     showQuickView.value = true;
 };

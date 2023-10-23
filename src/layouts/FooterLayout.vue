@@ -18,10 +18,18 @@
             />
         </div>
         <div class="d-flex link">
-            <BaseButton text="Facebook" :type="ButtonType.success" />
-            <BaseButton text="Twitter" :type="ButtonType.success" />
-            <BaseButton text="Instagram" :type="ButtonType.success" />
-            <BaseButton text="Tiktok" :type="ButtonType.success" />
+            <BaseIcon :type="IconType.success"
+                ><i class="fa-brands fa-facebook-f"></i
+            ></BaseIcon>
+            <BaseIcon :type="IconType.success"
+                ><i class="fa-brands fa-twitter"></i
+            ></BaseIcon>
+            <BaseIcon :type="IconType.success"
+                ><i class="fa-brands fa-instagram"></i
+            ></BaseIcon>
+            <BaseIcon :type="IconType.success"
+                ><i class="fa-brands fa-youtube"></i
+            ></BaseIcon>
         </div>
     </div>
 </template>
@@ -29,11 +37,11 @@
 <script setup lang="ts">
 import BaseTextBox from '@/components/BaseTextBox.vue';
 import BaseListFooter from '@/components/BaseListFooter.vue';
-import BaseButton from '@/components/BaseButton.vue';
-import { ButtonType } from '@/enums/ButtonType';
+import BaseIcon from '@/components/BaseIcon.vue';
 import { DataListFooter } from '@/mocks/ListFooter';
 import { TextBoxType } from '@/enums/TextBoxType';
 import { ref } from 'vue';
+import { IconType } from '@/enums/IconType';
 
 const emailValue = ref<string>('');
 </script>

@@ -5,7 +5,10 @@
                 <h1>No match found!</h1>
             </div>
             <div class="image">
-                <img src="/src/assets/images/demo/notfound.png" alt="no data" />
+                <img
+                    src="/src/assets/images/template/notfound.png"
+                    alt="no data"
+                />
             </div>
         </div>
     </div>
