@@ -406,7 +406,6 @@
                     <BaseButton
                         v-if="pageNum != calculatePages - 1"
                         :type="ButtonType.success"
-                        s
                         text=">"
                         class="action-btn"
                     />

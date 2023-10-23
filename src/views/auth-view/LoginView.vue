@@ -3,15 +3,15 @@
         <div class="login-form-container">
             <form
                 id="loginForm"
-                @submit="handleSubmit"
                 novalidate
                 autocomplete="off"
+                @submit="handleSubmit"
             >
                 <h3>LOGIN</h3>
 
                 <div v-if="errors.length" class="error-box">
                     <ul>
-                        <li v-for="error in errors" :key="error">
+                        <li v-for="(error, index) in errors" :key="index">
                             {{ error }}
                         </li>
                     </ul>
@@ -19,7 +19,7 @@
 
                 <div class="form-group">
                     <BaseTextBox
-                        typeInput="email"
+                        :input-type="InputType.email"
                         classes="form-control"
                         placeholder="enter your email"
                         v-model="loginObj.email"
@@ -30,7 +30,7 @@
                 <div class="form-group">
                     <BaseTextBox
                         classes="form-control"
-                        typeInput="password"
+                        :input-type="InputType.passwords"
                         placeholder="enter your password"
                         v-model="loginObj.password"
                         width="100%"
@@ -40,7 +40,7 @@
                 <div class="form-group">
                     <BaseButton
                         text="login now"
-                        type="success"
+                        :type="ButtonType.success"
                         classCustom="btn"
                         @click="handleSubmit"
                     />
@@ -58,9 +58,11 @@
 </template>
 
 <script setup lang="ts">
-import BaseButton from "@/components/BaseButton.vue";
-import BaseTextBox from "@/components/BaseTextBox.vue";
-import { reactive, ref } from "vue";
+import BaseButton from '@/components/BaseButton.vue';
+import BaseTextBox from '@/components/BaseTextBox.vue';
+import { ButtonType } from '@/enums/ButtonType';
+import { reactive, ref } from 'vue';
+import { InputType } from '@/enums/TextBoxType';
 
 interface ILoginObj {
     email: string;
@@ -70,10 +72,10 @@ interface ILoginObj {
 /**----------variable----------*/
 
 const loginObj = reactive<ILoginObj>({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
 });
-const matchUser = ref("");
+const matchUser = ref('');
 
 const errors = reactive<String[]>([]);
 
@@ -82,22 +84,22 @@ const errors = reactive<String[]>([]);
 /**----------methods----------*/
 const handleSubmit = async (e: Event) => {
     if (!loginObj.email) {
-        if (!errors.find((el) => el === "Email is required")) {
-            errors.push("Email is required");
+        if (!errors.find((el) => el === 'Email is required')) {
+            errors.push('Email is required');
         }
     } else {
         if (!/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/.test(loginObj.email)) {
-            if (errors.find((el) => el === "Email is required")) {
+            if (errors.find((el) => el === 'Email is required')) {
                 const indexEmail = errors.findIndex(
-                    (el) => el === "Email is required"
+                    (el) => el === 'Email is required'
                 );
                 errors.splice(indexEmail, 1);
             }
-            if (!errors.find((el) => el === "Email must be valid")) {
-                errors.push("Email must be valid");
-            }else{
+            if (!errors.find((el) => el === 'Email must be valid')) {
+                errors.push('Email must be valid');
+            } else {
                 const indexEmail = errors.findIndex(
-                    (el) => el === "Email must be valid"
+                    (el) => el === 'Email must be valid'
                 );
                 errors.splice(indexEmail, 1);
             }
@@ -105,13 +107,13 @@ const handleSubmit = async (e: Event) => {
     }
 
     if (!loginObj.password) {
-        if (!errors.find((el) => el === "Password is required")) {
-            errors.push("Password is required");
+        if (!errors.find((el) => el === 'Password is required')) {
+            errors.push('Password is required');
         }
     } else {
-        if (errors.find((el) => el === "Password is required")) {
+        if (errors.find((el) => el === 'Password is required')) {
             const indexEmail = errors.findIndex(
-                (el) => el === "Password is required"
+                (el) => el === 'Password is required'
             );
             errors.splice(indexEmail, 1);
         }
@@ -129,7 +131,7 @@ const handleSubmit = async (e: Event) => {
 
 const getMatchUser = async (email: string) => {
     // call API lấy thông user
-    matchUser.value = "";
+    matchUser.value = '';
 };
 
 const scrollToTop = () => {
@@ -143,12 +145,10 @@ const scrollToTop = () => {
 }
 .login-container {
     padding: 2rem 9%;
-
     .login-form-container {
         background-color: #fff;
         height: 90vh;
     }
-
     form {
         position: absolute;
         top: 50%;
@@ -161,7 +161,6 @@ const scrollToTop = () => {
         padding: 2rem;
         border-radius: 0.5rem;
         animation: fadeUp 0.4s linear;
-
         h3 {
             padding-bottom: 1rem;
             font-size: 2rem;
@@ -171,7 +170,6 @@ const scrollToTop = () => {
             margin: 0;
             text-align: center;
         }
-
         .form-control {
             margin: 0.7rem 0;
             border-radius: 0.5rem;
@@ -183,29 +181,24 @@ const scrollToTop = () => {
             width: 100%;
             border: none;
         }
-
         .btn {
             margin-bottom: 1rem;
             margin-top: 1rem;
             width: 100%;
         }
-
         p {
             padding-top: 1rem;
             font-size: 1.5rem;
             color: #666;
             margin: 0;
-
             a {
                 color: var(--color-primary);
             }
-
             &:hover {
                 color: #130f40;
                 text-decoration: underline;
             }
         }
-
         .error-box {
             background-color: #fff9fa;
             box-sizing: border-box;
@@ -213,12 +206,10 @@ const scrollToTop = () => {
             border-radius: 2px;
             font-size: 12px;
             margin-bottom: 20px;
-
             ul {
                 list-style-type: none;
                 margin: 0;
                 padding: 10px 0px;
-
                 li {
                     padding-left: 10px;
                     color: rgb(182, 0, 0);

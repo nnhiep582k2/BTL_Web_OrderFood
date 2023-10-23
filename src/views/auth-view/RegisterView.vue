@@ -37,7 +37,7 @@
                     <BaseTextBox
                         placeholder="enter your password"
                         classes="form-control"
-                        typeInput="password"
+                        :inputType="InputType.passwords"
                         v-model="registerObj.password"
                         width="100%"
                     />
@@ -54,7 +54,7 @@
                     <BaseTextBox
                         placeholder="enter your password again"
                         classes="form-control"
-                        typeInput="password"
+                        :inputType="InputType.passwords"
                         v-model="registerObj.confirm"
                         width="100%"
                     />
@@ -65,7 +65,9 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="uPhone">Enter your phone number<span>*</span></label>
+                    <label for="uPhone"
+                        >Enter your phone number<span>*</span></label
+                    >
                     <BaseTextBox
                         placeholder="Enter your phone number"
                         classes="form-control"
@@ -78,10 +80,12 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="uBirth">Enter your birthday<span>*</span> </label>
+                    <label for="uBirth"
+                        >Enter your birthday<span>*</span>
+                    </label>
                     <BaseTextBox
                         classes="form-control"
-                        typeInput="date"
+                        :inputType="InputType.date"
                         v-model="registerObj.birth"
                         width="100%"
                     />
@@ -123,7 +127,7 @@
                 <div class="form-group">
                     <BaseButton
                         class="btn"
-                        type="success"
+                        :type="ButtonType.success"
                         text="Signup"
                         @click="handleSubmit"
                     />
@@ -140,13 +144,15 @@
 </template>
 
 <script setup lang="ts">
-import BaseButton from "@/components/BaseButton.vue";
-import { Gender } from "@/enums/Gender";
-import { reactive, ref } from "vue";
-import { useRouter } from "vue-router";
-import BaseTextBox from "@/components/BaseTextBox.vue";
-import BaseRadioGroup from "@/components/BaseRadioGroup.vue";
-import moment from "moment";
+import BaseButton from '@/components/BaseButton.vue';
+import { Gender } from '@/enums/Gender';
+import { reactive, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import BaseTextBox from '@/components/BaseTextBox.vue';
+import BaseRadioGroup from '@/components/BaseRadioGroup.vue';
+import moment from 'moment';
+import { InputType } from '@/enums/TextBoxType';
+import { ButtonType } from '@/enums/ButtonType';
 
 interface IRegisterObj {
     name: string;
@@ -170,12 +176,12 @@ interface IErrorObject {
 
 /**----------variable----------*/
 const registerObj = reactive<IRegisterObj>({
-    name: "",
-    email: "",
-    password: "",
-    confirm: "",
-    phone: "",
-    birth: "",
+    name: '',
+    email: '',
+    password: '',
+    confirm: '',
+    phone: '',
+    birth: '',
     gender: Gender.male,
 });
 
@@ -202,21 +208,21 @@ const checkForm = () => {
 
     // Name validate
     if (!registerObj.name) {
-        errorObj.nameErr.push("Entering a name is required");
+        errorObj.nameErr.push('Entering a name is required');
     } else {
         if (
-            errorObj.nameErr.find((el) => el === "Entering a name is required")
+            errorObj.nameErr.find((el) => el === 'Entering a name is required')
         ) {
             const indexEmail = errorObj.nameErr.findIndex(
-                (el) => el === "Entering a name is required"
+                (el) => el === 'Entering a name is required'
             );
             errorObj.nameErr.splice(indexEmail, 1);
         }
-        if (!/^[A-Za-z]+$/.test(registerObj.name.replace(/\s/g, ""))) {
-            errorObj.nameErr.push("A name can only contain letters");
+        if (!/^[A-Za-z]+$/.test(registerObj.name.replace(/\s/g, ''))) {
+            errorObj.nameErr.push('A name can only contain letters');
         } else {
             const indexEmail = errorObj.nameErr.findIndex(
-                (el) => el === "A name can only contain letters"
+                (el) => el === 'A name can only contain letters'
             );
             errorObj.nameErr.splice(indexEmail, 1);
         }
@@ -224,25 +230,25 @@ const checkForm = () => {
 
     // Email validate
     if (!registerObj.email) {
-        errorObj.emailErr.push("Entering a email is required");
+        errorObj.emailErr.push('Entering a email is required');
     } else {
         if (
             errorObj.emailErr.find(
-                (el) => el === "Entering a email is required"
+                (el) => el === 'Entering a email is required'
             )
         ) {
             const indexEmail = errorObj.emailErr.findIndex(
-                (el) => el === "Entering a email is required"
+                (el) => el === 'Entering a email is required'
             );
             errorObj.emailErr.splice(indexEmail, 1);
         }
         if (
             !/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/.test(registerObj.email)
         ) {
-            errorObj.emailErr.push("Email must be valid");
+            errorObj.emailErr.push('Email must be valid');
         } else {
             const indexEmail = errorObj.emailErr.findIndex(
-                (el) => el === "Email must be valid"
+                (el) => el === 'Email must be valid'
             );
             errorObj.emailErr.splice(indexEmail, 1);
         }
@@ -250,34 +256,34 @@ const checkForm = () => {
 
     // Pass validate
     if (!registerObj.password) {
-        errorObj.passErr.push("Password is required");
+        errorObj.passErr.push('Password is required');
     } else {
-        if (errorObj.passErr.find((el) => el === "Password is required")) {
+        if (errorObj.passErr.find((el) => el === 'Password is required')) {
             const indexEmail = errorObj.passErr.findIndex(
-                (el) => el === "Password is required"
+                (el) => el === 'Password is required'
             );
             errorObj.passErr.splice(indexEmail, 1);
         }
         if (!/[!@#$%^&*]/.test(registerObj.password)) {
             errorObj.passErr.push(
-                "Password must contain at least 1 special character"
+                'Password must contain at least 1 special character'
             );
         } else {
             const indexEmail = errorObj.passErr.findIndex(
                 (el) =>
-                    el === "Password must contain at least 1 special character"
+                    el === 'Password must contain at least 1 special character'
             );
             errorObj.passErr.splice(indexEmail, 1);
         }
 
         if (registerObj.password.length < 8) {
             errorObj.passErr.push(
-                "Password must be more than or equal 8 characters"
+                'Password must be more than or equal 8 characters'
             );
         } else {
             const indexEmail = errorObj.passErr.findIndex(
                 (el) =>
-                    el === "Password must contain at least 1 special character"
+                    el === 'Password must contain at least 1 special character'
             );
             errorObj.passErr.splice(indexEmail, 1);
         }
@@ -285,19 +291,19 @@ const checkForm = () => {
 
     // Confirm Pass validate
     if (!registerObj.confirm) {
-        errorObj.confirmErr.push("Confirm password is required");
+        errorObj.confirmErr.push('Confirm password is required');
     } else {
         const indexEmail = errorObj.confirmErr.findIndex(
-            (el) => el === "Confirm password is required"
+            (el) => el === 'Confirm password is required'
         );
         errorObj.confirmErr.splice(indexEmail, 1);
         if (registerObj.password !== registerObj.confirm) {
             errorObj.confirmErr.push(
-                "Confirm password must be match with password"
+                'Confirm password must be match with password'
             );
         } else {
             const indexEmail = errorObj.confirmErr.findIndex(
-                (el) => el === "Confirm password must be match with password"
+                (el) => el === 'Confirm password must be match with password'
             );
             errorObj.confirmErr.splice(indexEmail, 1);
         }
@@ -305,35 +311,35 @@ const checkForm = () => {
 
     // Phone validate
     if (!registerObj.phone) {
-        errorObj.phoneErr.push("Entering phone number is required");
+        errorObj.phoneErr.push('Entering phone number is required');
     } else {
         const indexEmail = errorObj.phoneErr.findIndex(
-            (el) => el === "Entering phone number is required"
+            (el) => el === 'Entering phone number is required'
         );
         errorObj.phoneErr.splice(indexEmail, 1);
-        if (!registerObj.phone.startsWith("84")) {
-            errorObj.phoneErr.push("Phone numbers must start with 84");
+        if (!registerObj.phone.startsWith('84')) {
+            errorObj.phoneErr.push('Phone numbers must start with 84');
         } else {
             const indexEmail = errorObj.phoneErr.findIndex(
-                (el) => el === "Phone numbers must start with 84"
+                (el) => el === 'Phone numbers must start with 84'
             );
             errorObj.phoneErr.splice(indexEmail, 1);
         }
 
         if (registerObj.phone.length != 11) {
-            errorObj.phoneErr.push("Phone numbers must have exactly 11 digits");
+            errorObj.phoneErr.push('Phone numbers must have exactly 11 digits');
         } else {
             const indexEmail = errorObj.phoneErr.findIndex(
-                (el) => el === "Phone numbers must have exactly 11 digits"
+                (el) => el === 'Phone numbers must have exactly 11 digits'
             );
             errorObj.phoneErr.splice(indexEmail, 1);
         }
 
         if (!/[0-9]{11}/.test(registerObj.phone)) {
-            errorObj.phoneErr.push("Phone numbers can only contain numbers");
+            errorObj.phoneErr.push('Phone numbers can only contain numbers');
         } else {
             const indexEmail = errorObj.phoneErr.findIndex(
-                (el) => el === "Phone numbers can only contain numbers"
+                (el) => el === 'Phone numbers can only contain numbers'
             );
             errorObj.phoneErr.splice(indexEmail, 1);
         }
@@ -341,20 +347,20 @@ const checkForm = () => {
 
     // Birth validate
     if (!registerObj.birth) {
-        errorObj.birthErr.push("Entering birthday is required");
+        errorObj.birthErr.push('Entering birthday is required');
     } else {
         const indexEmail = errorObj.birthErr.findIndex(
-            (el) => el === "Entering birthday is required"
+            (el) => el === 'Entering birthday is required'
         );
         errorObj.phoneErr.splice(indexEmail, 1);
     }
 
     // Gender validate
     if (registerObj.gender) {
-        errorObj.genderErr.push("Please select a gender");
+        errorObj.genderErr.push('Please select a gender');
     } else {
         const indexEmail = errorObj.genderErr.findIndex(
-            (el) => el === "Please select a gender"
+            (el) => el === 'Please select a gender'
         );
         errorObj.genderErr.splice(indexEmail, 1);
     }
@@ -373,13 +379,13 @@ const handleSubmit = async (e: Event) => {
             user_phone: registerObj.phone,
             user_password: registerObj.password,
             user_birth: registerObj.birth
-                ? moment(registerObj?.birth).format("YYYY-MM-DD")
+                ? moment(registerObj?.birth).format('YYYY-MM-DD')
                 : null,
             user_gender: registerObj.gender,
         };
         console.log(data);
         // call API
-        router.push("/login");
+        router.push('/login');
     }
 };
 
@@ -447,8 +453,8 @@ const checkEmptyErr = () => {
                 font-size: 20px;
                 margin: 0;
                 padding: 0;
-                span{
-                    color: rgb(243, 47, 47);;
+                span {
+                    color: rgb(243, 47, 47);
                 }
             }
 
