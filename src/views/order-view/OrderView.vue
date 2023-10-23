@@ -17,9 +17,9 @@
                         <span>{{ b?.bill_id }}</span>
                     </div>
                     <BaseButton
-                        type="warning"
+                        :type="ButtonType.warning"
                         text="show order details"
-                        @click="()=> sendBillId(b?.bill_id)"
+                        @click="() => sendBillId(b?.bill_id)"
                     />
                 </div>
 
@@ -27,11 +27,11 @@
                     class="d-flex flex-wrap flex-sm-nowrap justify-content-between card-summary"
                 >
                     <div class="w-100 text-center py-1 px-2">
-                        <span>Paid:</span>{{ " " + b?.bill_paid }}
+                        <span>Paid:</span>{{ ' ' + b?.bill_paid }}
                     </div>
                     <div class="w-100 text-center py-1 px-2">
                         <span>Status:</span
-                        >{{ " " + avaiableStatus[b?.bill_status] }}
+                        >{{ ' ' + avaiableStatus[b?.bill_status] }}
                     </div>
                     <div class="w-100 text-center py-1 px-2">
                         <span>When:</span> {{ b?.bill_when }}
@@ -44,10 +44,10 @@
                         <span>Total:</span> ${{ b?.bill_total }}
                     </div>
                     <div class="w-100 text-center py-1 px-2">
-                        <span>Address:</span>{{ " " + b?.bill_address }}
+                        <span>Address:</span>{{ ' ' + b?.bill_address }}
                     </div>
                     <div class="w-100 text-center py-1 px-2">
-                        <span>Phone:</span>{{ " " + b?.bill_phone }}
+                        <span>Phone:</span>{{ ' ' + b?.bill_phone }}
                     </div>
                 </div>
 
@@ -120,37 +120,41 @@
                 <h2 style="color: #057835fa">You do not have any orders yet</h2>
             </div>
             <div>
-                <img src="../assets/images/no-orders.png" alt="" />
+                <img src="/src/assets/images/template/no-orders.png" alt="" />
             </div>
             <router-link class="btn" to="/menu">Order now!</router-link>
         </div>
 
         <OrderDetails v-if="showOrderDetails" :bill="sendId">
-            <BaseButton  @click="()=> closeView()" text="X" type="success"></BaseButton>
+            <BaseButton
+                @click="() => closeView()"
+                text="X"
+                :type="ButtonType.success"
+            />
         </OrderDetails>
     </div>
 </template>
 
 <script setup lang="ts">
-import BaseButton from "@/components/BaseButton.vue";
-import { computed, reactive, ref,watch } from "vue";
-import OrderDetails from "./OrderDetails.vue";
-
+import BaseButton from '@/components/BaseButton.vue';
+import { computed, reactive, ref, watch } from 'vue';
+import OrderDetails from './OrderDetails.vue';
+import { ButtonType } from '@/enums/ButtonType';
 
 /**----------variable----------*/
 const avaiableStatus = reactive([
-    "cancel",
-    "confirmed",
-    "preparing",
-    "checking",
-    "delivering",
-    "delivered",
+    'cancel',
+    'confirmed',
+    'preparing',
+    'checking',
+    'delivering',
+    'delivered',
 ]);
 
 const allBills = reactive([]);
-const showOrderDetails = ref<Boolean>(false);
-const sendId = ref<String>('');
-const interval = ref<String>("");
+const showOrderDetails = ref<boolean>(false);
+const sendId = ref<string>('');
+const interval = ref<string>('');
 
 /**----------computed----------*/
 const filterBills = computed(() => {
@@ -171,12 +175,10 @@ const closeView = () => {
     showOrderDetails.value = false;
 };
 
-const sendBillId = (id?: String) => {
+const sendBillId = (id?: string) => {
     sendId.value = id || '23423';
     showOrderDetails.value = true;
 };
-
-
 </script>
 
 <style lang="scss" scoped>
@@ -244,7 +246,7 @@ const sendBillId = (id?: String) => {
         height: 3px;
         margin-top: -1px;
         background-color: #e1e7ec;
-        content: "";
+        content: '';
         z-index: 1;
     }
 
