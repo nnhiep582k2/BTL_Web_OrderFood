@@ -4,7 +4,7 @@
             <form id="registerForm" novalidate autocomplete="off">
                 <h3>Create your account</h3>
                 <div class="form-group">
-                    <label for="uName">Enter your name: </label>
+                    <label for="uName">Enter your name<span>*</span> </label>
                     <BaseTextBox
                         placeholder="your full name"
                         classes="form-control"
@@ -17,7 +17,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="uEmail">Enter your email: </label>
+                    <label for="uEmail">Enter your email<span>*</span></label>
 
                     <BaseTextBox
                         placeholder="your email"
@@ -32,7 +32,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="uPass">Enter your password: </label>
+                    <label for="uPass">Enter your password<span>*</span></label>
 
                     <BaseTextBox
                         placeholder="enter your password"
@@ -48,7 +48,7 @@
 
                 <div class="form-group">
                     <label for="uPassConfirm"
-                        >Check your password again:
+                        >Check your password again<span>*</span>
                     </label>
 
                     <BaseTextBox
@@ -65,7 +65,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="uPhone">Enter your phone number: </label>
+                    <label for="uPhone">Enter your phone number<span>*</span></label>
                     <BaseTextBox
                         placeholder="Enter your phone number"
                         classes="form-control"
@@ -78,7 +78,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="uBirth">Enter your birthday: </label>
+                    <label for="uBirth">Enter your birthday<span>*</span> </label>
                     <BaseTextBox
                         classes="form-control"
                         typeInput="date"
@@ -91,12 +91,12 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="">Select your gender: </label>
+                    <label for="">Select your gender </label>
                     <div class="form-group">
                         <BaseRadioGroup
                             class="m-b-10"
-                            id="Male"
-                            label="Male"
+                            id="male"
+                            label="male"
                             v-model="registerObj.gender"
                             :value="Gender.male"
                         />
@@ -106,6 +106,13 @@
                             label="Female"
                             v-model="registerObj.gender"
                             :value="Gender.female"
+                        />
+                        <BaseRadioGroup
+                            class="m-b-10"
+                            id="other"
+                            label="other"
+                            v-model="registerObj.gender"
+                            :value="Gender.other"
                         />
                     </div>
                     <p class="error-mess" v-if="errorObj.genderErr.length > 0">
@@ -343,7 +350,7 @@ const checkForm = () => {
     }
 
     // Gender validate
-    if (!registerObj.gender) {
+    if (registerObj.gender) {
         errorObj.genderErr.push("Please select a gender");
     } else {
         const indexEmail = errorObj.genderErr.findIndex(
@@ -370,6 +377,7 @@ const handleSubmit = async (e: Event) => {
                 : null,
             user_gender: registerObj.gender,
         };
+        console.log(data);
         // call API
         router.push("/login");
     }
@@ -439,6 +447,9 @@ const checkEmptyErr = () => {
                 font-size: 20px;
                 margin: 0;
                 padding: 0;
+                span{
+                    color: rgb(243, 47, 47);;
+                }
             }
 
             span {
@@ -471,11 +482,11 @@ const checkEmptyErr = () => {
             .form-group {
                 margin: 10px 0 0 0;
                 .error-mess {
-                    font-size: 1.5rem;
                     position: relative;
                     color: rgb(243, 47, 47);
                     margin: 0;
                     padding: 0;
+                    font-size: 14px;
                 }
             }
         }
