@@ -41,9 +41,9 @@
                     </div>
                     <BaseButton
                         class="btn"
-                        @click="addToCart"
                         text="Add to cart"
                         :type="ButtonType.success"
+                        @click="addToCart"
                     ></BaseButton>
                 </div>
             </div>

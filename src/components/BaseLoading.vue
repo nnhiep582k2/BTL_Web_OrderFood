@@ -1,6 +1,6 @@
 <template>
     <Teleport to="body">
-      <div class="lds-dual-ring"></div>
+        <div class="lds-dual-ring"></div>
     </Teleport>
 </template>
 
@@ -20,11 +20,10 @@ defineProps({
     position: fixed;
     top: 0;
     left: 0;
-    background: rgba(0,0,0,0.32);
+    background: rgba(0, 0, 0, 0.32);
     z-index: 99;
-
     &:after {
-        content: " ";
+        content: ' ';
         display: block;
         width: 64px;
         height: 64px;

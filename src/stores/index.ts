@@ -1,9 +1,11 @@
+
 import { ref } from "vue";
 import { createStore } from "vuex";
 import { LOGIN_ACTION, SET_AUTH_DATA_ACTION, SET_LOADING } from "./storeConstants";
 import axios from "axios";
 import { notify } from "@/services/Toast";
 import { TypeToast } from "@/enums/TypeToast";
+
 interface IAuthData {
     userId: string;
     fullName: string;
@@ -45,7 +47,7 @@ export default createStore<IRootState>({
     },
     actions: {
         [SET_LOADING]({ commit }: any, isOpen: boolean) {
-            commit("toggleLoading", isOpen);
+            commit('toggleLoading', isOpen);
         },
 
         async [LOGIN_ACTION]({ commit }: any, payload: object) {
