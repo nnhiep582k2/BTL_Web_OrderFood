@@ -19,10 +19,9 @@
 
                 <div class="form-group">
                     <BaseTextBox
-                        typeInput="email"
                         classes="form-control"
-                        placeholder="enter your email"
-                        v-model="loginObj.email"
+                        placeholder="enter your username"
+                        v-model="loginObj.username"
                         width="100%"
                     />
                 </div>
@@ -38,12 +37,7 @@
                 </div>
 
                 <div class="form-group">
-                    <BaseButton
-                        text="login now"
-                        type="success"
-                        classCustom="btn"
-                        @click="handleSubmit"
-                    />
+                    <button @click="handleSubmit" class="btn">Login</button>
                     <p>
                         don't have an account?
                         <router-link @click="scrollToTop()" to="/register"
@@ -60,48 +54,42 @@
 <script setup lang="ts">
 import BaseButton from "@/components/BaseButton.vue";
 import BaseTextBox from "@/components/BaseTextBox.vue";
-import { reactive, ref } from "vue";
-
+import { TypeToast } from "@/enums/TypeToast";
+import { notify } from "@/services/Toast";
+import { LOGIN_ACTION, SET_LOADING } from "@/stores/storeConstants";
+import { computed, reactive, ref } from "vue";
+import { useRouter } from "vue-router";
+import { useStore } from "vuex";
 interface ILoginObj {
-    email: string;
+    username: string;
     password: string;
 }
 
 /**----------variable----------*/
-
+const store = useStore();
+const router = useRouter();
 const loginObj = reactive<ILoginObj>({
-    email: "",
+    username: "",
     password: "",
 });
-const matchUser = ref("");
 
 const errors = reactive<String[]>([]);
 
 /**----------computed----------*/
-
+const authData = computed(() => store.getters["getAuthData"]);
 /**----------methods----------*/
 const handleSubmit = async (e: Event) => {
-    if (!loginObj.email) {
-        if (!errors.find((el) => el === "Email is required")) {
-            errors.push("Email is required");
+    if (!loginObj.username) {
+        if (!errors.find((el) => el === "username is required")) {
+            errors.push("username is required");
         }
     } else {
-        if (!/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/.test(loginObj.email)) {
-            if (errors.find((el) => el === "Email is required")) {
-                const indexEmail = errors.findIndex(
-                    (el) => el === "Email is required"
+        if (errors.find((el) => el === "username is required")) {
+                const indexusername = errors.findIndex(
+                    (el) => el === "username is required"
                 );
-                errors.splice(indexEmail, 1);
+                errors.splice(indexusername, 1);
             }
-            if (!errors.find((el) => el === "Email must be valid")) {
-                errors.push("Email must be valid");
-            }else{
-                const indexEmail = errors.findIndex(
-                    (el) => el === "Email must be valid"
-                );
-                errors.splice(indexEmail, 1);
-            }
-        }
     }
 
     if (!loginObj.password) {
@@ -110,26 +98,37 @@ const handleSubmit = async (e: Event) => {
         }
     } else {
         if (errors.find((el) => el === "Password is required")) {
-            const indexEmail = errors.findIndex(
+            const indexusername = errors.findIndex(
                 (el) => el === "Password is required"
             );
-            errors.splice(indexEmail, 1);
+            errors.splice(indexusername, 1);
         }
     }
 
     if (errors.length == 0) {
-        e.preventDefault();
-    } else {
-        e.preventDefault();
-
+        e?.preventDefault();
         // call API login
-        await getMatchUser(loginObj.email);
+        try {
+            const payload = {
+                username: loginObj.username.trim(),
+                password: loginObj.password.trim(),
+            };
+            store.dispatch(SET_LOADING, true);
+            await store.dispatch(`${LOGIN_ACTION}`, payload);
+            if (authData.value?.userId) {
+                router.push({ path: "/" });
+                localStorage.setItem("userId", authData.value?.userId);
+            }
+            // call API login
+        } catch (error: any) {
+            store.dispatch(SET_LOADING, false);
+            notify(`${error.message}`, TypeToast.error);
+        } finally {
+            store.dispatch(SET_LOADING, false);
+        }
+    } else {
+        e?.preventDefault();
     }
-};
-
-const getMatchUser = async (email: string) => {
-    // call API lấy thông user
-    matchUser.value = "";
 };
 
 const scrollToTop = () => {
@@ -185,9 +184,11 @@ const scrollToTop = () => {
         }
 
         .btn {
-            margin-bottom: 1rem;
-            margin-top: 1rem;
+            margin: 1rem 0;
             width: 100%;
+            text-align: center;
+            background: var(--color-primary);
+            color: #fff;
         }
 
         p {

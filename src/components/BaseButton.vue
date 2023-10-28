@@ -1,7 +1,6 @@
 <template>
 
-    <div class="base-button" :class="[type, disabled ? 'disabled' : '', classCustom]" @click="$emit('click')">
-
+    <div class="base-button" :class="[type, disabled ? 'disabled' : '', classCustom]" @click="($event) => $emit('click', $event)">
         {{ text }}
     </div>
 </template>

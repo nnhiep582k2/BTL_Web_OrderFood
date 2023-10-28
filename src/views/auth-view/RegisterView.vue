@@ -4,15 +4,38 @@
             <form id="registerForm" novalidate autocomplete="off">
                 <h3>Create your account</h3>
                 <div class="form-group">
-                    <label for="uName">Enter your name<span>*</span> </label>
+                    <label for="uName"
+                        >Enter your fullname<span>*</span>
+                    </label>
                     <BaseTextBox
                         placeholder="your full name"
                         classes="form-control"
-                        v-model="registerObj.name"
+                        v-model="registerObj.FullName"
                         width="100%"
                     />
-                    <p class="error-mess" v-if="errorObj.nameErr.length > 0">
-                        {{ errorObj.nameErr[0] }}
+                    <p
+                        class="error-mess"
+                        v-if="errorObj.fullNameError.length > 0"
+                    >
+                        {{ errorObj.fullNameError[0] }}
+                    </p>
+                </div>
+
+                <div class="form-group">
+                    <label for="uName"
+                        >Enter your username<span>*</span>
+                    </label>
+                    <BaseTextBox
+                        placeholder="your user name"
+                        classes="form-control"
+                        v-model="registerObj.UserName"
+                        width="100%"
+                    />
+                    <p
+                        class="error-mess"
+                        v-if="errorObj.userNameErr.length > 0"
+                    >
+                        {{ errorObj.userNameErr[0] }}
                     </p>
                 </div>
 
@@ -65,7 +88,9 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="uPhone">Enter your phone number<span>*</span></label>
+                    <label for="uPhone"
+                        >Enter your phone number<span>*</span></label
+                    >
                     <BaseTextBox
                         placeholder="Enter your phone number"
                         classes="form-control"
@@ -74,19 +99,6 @@
                     />
                     <p class="error-mess" v-if="errorObj.phoneErr.length > 0">
                         {{ errorObj.phoneErr[0] }}
-                    </p>
-                </div>
-
-                <div class="form-group">
-                    <label for="uBirth">Enter your birthday<span>*</span> </label>
-                    <BaseTextBox
-                        classes="form-control"
-                        typeInput="date"
-                        v-model="registerObj.birth"
-                        width="100%"
-                    />
-                    <p class="error-mess" v-if="errorObj.birthErr.length > 0">
-                        {{ errorObj.birthErr[0] }}
                     </p>
                 </div>
 
@@ -121,12 +133,9 @@
                 </div>
 
                 <div class="form-group">
-                    <BaseButton
-                        class="btn"
-                        type="success"
-                        text="Signup"
-                        @click="handleSubmit"
-                    />
+                    <button @click="handleSubmitSignUp" class="btn">
+                        Signup
+                    </button>
                     <p>
                         have an account?
                         <router-link @click="scrollToTop()" to="/login"
@@ -146,47 +155,49 @@ import { reactive, ref } from "vue";
 import { useRouter } from "vue-router";
 import BaseTextBox from "@/components/BaseTextBox.vue";
 import BaseRadioGroup from "@/components/BaseRadioGroup.vue";
-import moment from "moment";
-
+import { useStore } from "vuex";
+import { notify } from "@/services/Toast";
+import axios from "axios";
+import { TypeToast } from "@/enums/TypeToast";
 interface IRegisterObj {
-    name: string;
+    FullName: string;
+    UserName: string;
     email: string;
     password: string;
     confirm: string;
     phone: string;
-    birth: string;
     gender: Gender;
 }
 
 interface IErrorObject {
-    nameErr: Array<string>;
+    userNameErr: Array<string>;
+    fullNameError: Array<string>;
     emailErr: Array<string>;
     passErr: Array<String>;
     confirmErr: Array<string>;
     phoneErr: Array<string>;
-    birthErr: Array<string>;
     genderErr: Array<string>;
 }
 
 /**----------variable----------*/
 const registerObj = reactive<IRegisterObj>({
-    name: "",
+    FullName: "",
+    UserName: "",
     email: "",
     password: "",
     confirm: "",
     phone: "",
-    birth: "",
     gender: Gender.male,
 });
-
+const store = useStore();
 const router = useRouter();
 const errorObj = reactive<IErrorObject>({
-    nameErr: [],
+    userNameErr: [],
+    fullNameError: [],
     emailErr: [],
     passErr: new Array(3),
     confirmErr: [],
     phoneErr: [],
-    birthErr: [],
     genderErr: [],
 });
 
@@ -200,25 +211,43 @@ const scrollToTop = () => {
 const checkForm = () => {
     resetCheckErr();
 
-    // Name validate
-    if (!registerObj.name) {
-        errorObj.nameErr.push("Entering a name is required");
+    // FullName validate
+    if (!registerObj.FullName) {
+        errorObj.fullNameError.push("Entering a FullName is required");
     } else {
         if (
-            errorObj.nameErr.find((el) => el === "Entering a name is required")
+            errorObj.fullNameError.find(
+                (el) => el === "Entering a FullName is required"
+            )
         ) {
-            const indexEmail = errorObj.nameErr.findIndex(
-                (el) => el === "Entering a name is required"
+            const indexEmail = errorObj.fullNameError.findIndex(
+                (el) => el === "Entering a FullName is required"
             );
-            errorObj.nameErr.splice(indexEmail, 1);
+            errorObj.fullNameError.splice(indexEmail, 1);
         }
-        if (!/^[A-Za-z]+$/.test(registerObj.name.replace(/\s/g, ""))) {
-            errorObj.nameErr.push("A name can only contain letters");
+        if (!/^[A-Za-z]+$/.test(registerObj.FullName.replace(/\s/g, ""))) {
+            errorObj.fullNameError.push("A FullName can only contain letters");
         } else {
-            const indexEmail = errorObj.nameErr.findIndex(
-                (el) => el === "A name can only contain letters"
+            const indexEmail = errorObj.fullNameError.findIndex(
+                (el) => el === "A FullName can only contain letters"
             );
-            errorObj.nameErr.splice(indexEmail, 1);
+            errorObj.fullNameError.splice(indexEmail, 1);
+        }
+    }
+
+    // check username
+    if (!registerObj.UserName) {
+        errorObj.userNameErr.push("Entering a UserName is required");
+    } else {
+        if (
+            errorObj.userNameErr.find(
+                (el) => el === "Entering a UserName is required"
+            )
+        ) {
+            const indexEmail = errorObj.userNameErr.findIndex(
+                (el) => el === "Entering a UserName is required"
+            );
+            errorObj.userNameErr.splice(indexEmail, 1);
         }
     }
 
@@ -339,16 +368,6 @@ const checkForm = () => {
         }
     }
 
-    // Birth validate
-    if (!registerObj.birth) {
-        errorObj.birthErr.push("Entering birthday is required");
-    } else {
-        const indexEmail = errorObj.birthErr.findIndex(
-            (el) => el === "Entering birthday is required"
-        );
-        errorObj.phoneErr.splice(indexEmail, 1);
-    }
-
     // Gender validate
     if (registerObj.gender) {
         errorObj.genderErr.push("Please select a gender");
@@ -360,36 +379,51 @@ const checkForm = () => {
     }
 };
 
-const handleSubmit = async (e: Event) => {
+const handleSubmitSignUp = async (event: Event): Promise<void> => {
     checkForm();
 
+    event.preventDefault();
     if (!checkEmptyErr()) {
-        e.preventDefault();
     } else {
-        e.preventDefault();
-        let data = {
-            user_name: registerObj.name,
-            user_email: registerObj.email,
-            user_phone: registerObj.phone,
-            user_password: registerObj.password,
-            user_birth: registerObj.birth
-                ? moment(registerObj?.birth).format("YYYY-MM-DD")
-                : null,
-            user_gender: registerObj.gender,
-        };
-        console.log(data);
-        // call API
-        router.push("/login");
+        try {
+            let payload = {
+                fullName: registerObj.FullName,
+                username: registerObj.UserName,
+                passwordHash: registerObj.password,
+                email: registerObj.email,
+                phoneNumber: registerObj.phone,
+                gender: registerObj.gender,
+            };
+            const data: any = await axios.post(
+                "https://localhost:7276/api/v1/Auth/register",
+                payload
+            );
+
+            if (data.status === 200) {
+                router.push({ path: "/login" });
+            } else {
+                notify(`${data?.response?.data?.message}`, TypeToast.error);
+            }
+        } catch (error: any) {
+            if (error.response.status === 400) {
+                notify(
+                    `${error?.response?.data?.message}`,
+                    TypeToast.error
+                );
+            } else {
+                notify(`${error}`, TypeToast.error);
+            }
+        }
     }
 };
 
 const resetCheckErr = () => {
-    errorObj.nameErr = [];
+    errorObj.fullNameError = [];
+    errorObj.userNameErr = [];
     errorObj.emailErr = [];
     errorObj.passErr = [];
     errorObj.confirmErr = [];
     errorObj.phoneErr = [];
-    errorObj.birthErr = [];
     errorObj.genderErr = [];
 };
 
@@ -447,8 +481,8 @@ const checkEmptyErr = () => {
                 font-size: 20px;
                 margin: 0;
                 padding: 0;
-                span{
-                    color: rgb(243, 47, 47);;
+                span {
+                    color: rgb(243, 47, 47);
                 }
             }
 
@@ -462,6 +496,8 @@ const checkEmptyErr = () => {
                 margin: 1rem 0;
                 width: 100%;
                 text-align: center;
+                background: var(--color-primary);
+                color: #fff;
             }
 
             p {
