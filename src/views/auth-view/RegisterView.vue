@@ -103,7 +103,6 @@
                 </div>
 
                 <div class="form-group">
-
                     <label for="">Select your gender </label>
                     <div class="form-group">
                         <BaseRadioGroup
@@ -151,17 +150,16 @@
 </template>
 
 <script setup lang="ts">
-
-import BaseButton from "@/components/BaseButton.vue";
-import { Gender } from "@/enums/Gender";
-import { reactive, ref } from "vue";
-import { useRouter } from "vue-router";
-import BaseTextBox from "@/components/BaseTextBox.vue";
-import BaseRadioGroup from "@/components/BaseRadioGroup.vue";
-import { useStore } from "vuex";
-import { notify } from "@/services/Toast";
-import axios from "axios";
-import { TypeToast } from "@/enums/TypeToast";
+import { Gender } from '@/enums/Gender';
+import { reactive, ref } from 'vue';
+import { useRouter } from 'vue-router';
+import BaseTextBox from '@/components/BaseTextBox.vue';
+import BaseRadioGroup from '@/components/BaseRadioGroup.vue';
+import { useStore } from 'vuex';
+import { notify } from '@/services/Toast';
+import axios from 'axios';
+import { TypeToast } from '@/enums/TypeToast';
+import { InputType } from '@/enums/TextBoxType';
 
 interface IRegisterObj {
     FullName: string;
@@ -185,13 +183,12 @@ interface IErrorObject {
 
 /**----------variable----------*/
 const registerObj = reactive<IRegisterObj>({
-
-    FullName: "",
-    UserName: "",
-    email: "",
-    password: "",
-    confirm: "",
-    phone: "",
+    FullName: '',
+    UserName: '',
+    email: '',
+    password: '',
+    confirm: '',
+    phone: '',
     gender: Gender.male,
 });
 const store = useStore();
@@ -218,25 +215,24 @@ const checkForm = () => {
 
     // FullName validate
     if (!registerObj.FullName) {
-        errorObj.fullNameError.push("Entering a FullName is required");
+        errorObj.fullNameError.push('Entering a FullName is required');
     } else {
         if (
             errorObj.fullNameError.find(
-                (el) => el === "Entering a FullName is required"
+                (el) => el === 'Entering a FullName is required'
             )
         ) {
             const indexEmail = errorObj.fullNameError.findIndex(
-                (el) => el === "Entering a FullName is required"
-
+                (el) => el === 'Entering a FullName is required'
             );
             errorObj.fullNameError.splice(indexEmail, 1);
         }
 
-        if (!/^[A-Za-z]+$/.test(registerObj.FullName.replace(/\s/g, ""))) {
-            errorObj.fullNameError.push("A FullName can only contain letters");
+        if (!/^[A-Za-z]+$/.test(registerObj.FullName.replace(/\s/g, ''))) {
+            errorObj.fullNameError.push('A FullName can only contain letters');
         } else {
             const indexEmail = errorObj.fullNameError.findIndex(
-                (el) => el === "A FullName can only contain letters"
+                (el) => el === 'A FullName can only contain letters'
             );
             errorObj.fullNameError.splice(indexEmail, 1);
         }
@@ -244,15 +240,15 @@ const checkForm = () => {
 
     // check username
     if (!registerObj.UserName) {
-        errorObj.userNameErr.push("Entering a UserName is required");
+        errorObj.userNameErr.push('Entering a UserName is required');
     } else {
         if (
             errorObj.userNameErr.find(
-                (el) => el === "Entering a UserName is required"
+                (el) => el === 'Entering a UserName is required'
             )
         ) {
             const indexEmail = errorObj.userNameErr.findIndex(
-                (el) => el === "Entering a UserName is required"
+                (el) => el === 'Entering a UserName is required'
             );
             errorObj.userNameErr.splice(indexEmail, 1);
         }
@@ -375,7 +371,6 @@ const checkForm = () => {
         }
     }
 
-
     // Gender validate
     if (registerObj.gender) {
         errorObj.genderErr.push('Please select a gender');
@@ -393,7 +388,6 @@ const handleSubmitSignUp = async (event: Event): Promise<void> => {
     event.preventDefault();
     if (!checkEmptyErr()) {
     } else {
-
         try {
             let payload = {
                 fullName: registerObj.FullName,
@@ -404,26 +398,22 @@ const handleSubmitSignUp = async (event: Event): Promise<void> => {
                 gender: registerObj.gender,
             };
             const data: any = await axios.post(
-                "https://localhost:7276/api/v1/Auth/register",
+                'https://localhost:7276/api/v1/Auth/register',
                 payload
             );
 
             if (data.status === 200) {
-                router.push({ path: "/login" });
+                router.push({ path: '/login' });
             } else {
                 notify(`${data?.response?.data?.message}`, TypeToast.error);
             }
         } catch (error: any) {
             if (error.response.status === 400) {
-                notify(
-                    `${error?.response?.data?.message}`,
-                    TypeToast.error
-                );
+                notify(`${error?.response?.data?.message}`, TypeToast.error);
             } else {
                 notify(`${error}`, TypeToast.error);
             }
         }
-
     }
 };
 
