@@ -37,7 +37,6 @@
                 </div>
 
                 <div class="form-group">
-
                     <button @click="handleSubmit" class="btn">Login</button>
 
                     <p>
@@ -54,15 +53,14 @@
 </template>
 
 <script setup lang="ts">
-
-import BaseButton from "@/components/BaseButton.vue";
-import BaseTextBox from "@/components/BaseTextBox.vue";
-import { TypeToast } from "@/enums/TypeToast";
-import { notify } from "@/services/Toast";
-import { LOGIN_ACTION, SET_LOADING } from "@/stores/storeConstants";
-import { computed, reactive, ref } from "vue";
-import { useRouter } from "vue-router";
-import { useStore } from "vuex";
+import BaseTextBox from '@/components/BaseTextBox.vue';
+import { TypeToast } from '@/enums/TypeToast';
+import { notify } from '@/services/Toast';
+import { LOGIN_ACTION, SET_LOADING } from '@/stores/storeConstants';
+import { computed, reactive } from 'vue';
+import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
+import { InputType } from '@/enums/TextBoxType';
 
 interface ILoginObj {
     username: string;
@@ -73,31 +71,27 @@ interface ILoginObj {
 const store = useStore();
 const router = useRouter();
 const loginObj = reactive<ILoginObj>({
-
-    username: "",
-    password: "",
+    username: '',
+    password: '',
 });
-
 
 const errors = reactive<String[]>([]);
 
 /**----------computed----------*/
-const authData = computed(() => store.getters["getAuthData"]);
+const authData = computed(() => store.getters['getAuthData']);
 /**----------methods----------*/
 const handleSubmit = async (e: Event) => {
-
     if (!loginObj.username) {
-        if (!errors.find((el) => el === "username is required")) {
-            errors.push("username is required");
+        if (!errors.find((el) => el === 'username is required')) {
+            errors.push('username is required');
         }
     } else {
-        if (errors.find((el) => el === "username is required")) {
-                const indexusername = errors.findIndex(
-                    (el) => el === "username is required"
-                );
-                errors.splice(indexusername, 1);
-            }
-
+        if (errors.find((el) => el === 'username is required')) {
+            const indexusername = errors.findIndex(
+                (el) => el === 'username is required'
+            );
+            errors.splice(indexusername, 1);
+        }
     }
 
     if (!loginObj.password) {
@@ -105,9 +99,9 @@ const handleSubmit = async (e: Event) => {
             errors.push('Password is required');
         }
     } else {
-        if (errors.find((el) => el === "Password is required")) {
+        if (errors.find((el) => el === 'Password is required')) {
             const indexusername = errors.findIndex(
-                (el) => el === "Password is required"
+                (el) => el === 'Password is required'
             );
             errors.splice(indexusername, 1);
         }
@@ -124,8 +118,8 @@ const handleSubmit = async (e: Event) => {
             store.dispatch(SET_LOADING, true);
             await store.dispatch(`${LOGIN_ACTION}`, payload);
             if (authData.value?.userId) {
-                router.push({ path: "/" });
-                localStorage.setItem("userId", authData.value?.userId);
+                router.push({ path: '/' });
+                localStorage.setItem('userId', authData.value?.userId);
             }
             // call API login
         } catch (error: any) {
@@ -138,7 +132,6 @@ const handleSubmit = async (e: Event) => {
         e?.preventDefault();
     }
 };
-
 
 const scrollToTop = () => {
     window.scrollTo(0, 0);
