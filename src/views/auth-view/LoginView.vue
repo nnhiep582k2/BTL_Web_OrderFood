@@ -120,8 +120,8 @@ const handleSubmit = async (e: Event) => {
             if (authData.value?.userId) {
                 router.push({ path: '/' });
                 localStorage.setItem('userId', authData.value?.userId);
+                localStorage.setItem('jwtToken', authData.value?.token);
             }
-            // call API login
         } catch (error: any) {
             store.dispatch(SET_LOADING, false);
             notify(`${error.message}`, TypeToast.error);
