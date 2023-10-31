@@ -5,7 +5,7 @@ import { LOGIN_ACTION, SET_AUTH_DATA_ACTION, SET_LOADING } from "./storeConstant
 import axios from "axios";
 import { notify } from "@/services/Toast";
 import { TypeToast } from "@/enums/TypeToast";
-
+import http from '@/services/http/http'
 interface IAuthData {
     userId: string;
     fullName: string;
@@ -52,7 +52,7 @@ export default createStore<IRootState>({
 
         async [LOGIN_ACTION]({ commit }: any, payload: object) {
             try {
-                const { data } = await axios.post("https://localhost:7276/api/v1/Auth/login", payload)
+                const { data } = await http.post("/Auth/login",  JSON.stringify(payload))
                 if (data.success) {
                     commit(SET_AUTH_DATA_ACTION, data.data)
                 }
