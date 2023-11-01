@@ -78,33 +78,13 @@
                     <BaseButton text="Read More" :type="ButtonType.success"
                 /></RouterLink>
                 <div class="icons-container">
-                    <div class="icons">
-                        <img
-                            src="/src/assets/images/template/serv-1.png"
-                            alt=""
-                        />
-                        <h3>Fast Delivery</h3>
-                    </div>
-                    <div class="icons">
-                        <img
-                            src="/src/assets/images/template/serv-2.png"
-                            alt=""
-                        />
-                        <h3>Fresh Food</h3>
-                    </div>
-                    <div class="icons">
-                        <img
-                            src="/src/assets/images/template/serv-3.png"
-                            alt=""
-                        />
-                        <h3>Best Quality</h3>
-                    </div>
-                    <div class="icons">
-                        <img
-                            src="/src/assets/images/template/serv-4.png"
-                            alt=""
-                        />
-                        <h3>24/7 Support</h3>
+                    <div
+                        class="icons"
+                        v-for="(item, index) in ServicesData"
+                        :key="index"
+                    >
+                        <img :src="item.src" alt="" />
+                        <h3>{{ item.text }}</h3>
                     </div>
                 </div>
             </div>
@@ -117,6 +97,7 @@ import { ButtonType } from '@/enums/ButtonType';
 import { DataBaseAds } from '@/mocks/BaseAds';
 import BaseButton from '@/components/BaseButton.vue';
 import BaseAds from '@/components/BaseAds.vue';
+import { ServicesData } from '@/mocks/HomeServices';
 import { DataHomeCategory } from '@/mocks/HomeCategory';
 
 const scrollToTop = () => {

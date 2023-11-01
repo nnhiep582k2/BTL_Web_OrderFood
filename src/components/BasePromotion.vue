@@ -14,7 +14,7 @@
                     {{ data }}
                 </div>
             </div>
-            <base-button
+            <BaseButton
                 :type="buttonType"
                 :text="buttonText"
                 @click="emit('onClick')"

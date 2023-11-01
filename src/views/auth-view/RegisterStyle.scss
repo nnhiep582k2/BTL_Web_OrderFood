@@ -1,0 +1,90 @@
+.register-container {
+    padding: 2rem 9%;
+
+    .register-form-container {
+        background: #fff;
+
+        form {
+            position: relative;
+            left: 50%;
+            transform: translate(-50%, 0%);
+            max-width: 70rem;
+            width: 100%;
+            box-shadow: 0 1rem 1rem rgba(0, 0, 0, 0.05);
+            border: 0.1rem solid rgba(0, 0, 0, 0.2);
+            padding: 2rem;
+            border-radius: 0.5rem;
+            animation: fadeUp 0.4s linear;
+
+            h3 {
+                padding-bottom: 1rem;
+                font-size: 2rem;
+                text-transform: uppercase;
+                color: #130f40;
+                margin: 0;
+                text-align: center;
+            }
+
+            .form-control {
+                margin: 0.7rem 0;
+                border-radius: 0.5rem;
+                background: #f7f7f7;
+                padding: 2rem 1.2rem;
+                font-size: 1.6rem;
+                color: #130f40;
+                text-transform: none;
+                width: 100%;
+                border: none;
+            }
+
+            label {
+                font-size: 20px;
+                margin: 0;
+                padding: 0;
+                span {
+                    color: rgb(243, 47, 47);
+                }
+            }
+
+            span {
+                font-size: 18px;
+                padding-left: 5px;
+                padding-right: 40px;
+            }
+
+            .btn {
+                margin: 1rem 0;
+                width: 100%;
+                text-align: center;
+                background: var(--color-primary);
+                color: #fff;
+            }
+
+            p {
+                padding-top: 1rem;
+                font-size: 1.5rem;
+                color: #666;
+                margin: 0;
+                a {
+                    color: var(--color-primary);
+
+                    &:hover {
+                        color: #130f40;
+                        text-decoration: underline;
+                    }
+                }
+            }
+
+            .form-group {
+                margin: 10px 0 0 0;
+                .error-mess {
+                    position: relative;
+                    color: rgb(243, 47, 47);
+                    margin: 0;
+                    padding: 0;
+                    font-size: 14px;
+                }
+            }
+        }
+    }
+}

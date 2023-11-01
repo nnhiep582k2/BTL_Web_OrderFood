@@ -39,38 +39,10 @@
 
         <div class="row gallery">
             <div class="wrapper">
-                <img src="/src/assets/images/template/taco/taco-2.jpg" alt="" />
-                <img src="/src/assets/images/template/taco/taco-4.jpg" alt="" />
                 <img
-                    src="/src/assets/images/template/burrito/burrito-6.jpg"
-                    alt=""
-                />
-                <img
-                    src="/src/assets/images/template/burrito/burrito-2.jpg"
-                    alt=""
-                />
-                <img
-                    src="/src/assets/images/template/burrito/burrito-3.jpg"
-                    alt=""
-                />
-                <img
-                    src="/src/assets/images/template/nachos/nachos-1.jpg"
-                    alt=""
-                />
-                <img
-                    src="/src/assets/images/template/nachos/nachos-2.jpg"
-                    alt=""
-                />
-                <img
-                    src="/src/assets/images/template/nachos/nachos-3.jpg"
-                    alt=""
-                />
-                <img
-                    src="/src/assets/images/template/dessert/dessert-2.jpg"
-                    alt=""
-                />
-                <img
-                    src="/src/assets/images/template/dessert/dessert-6.jpg"
+                    v-for="(image, index) in GalleryData"
+                    :key="index"
+                    :src="image"
                     alt=""
                 />
             </div>
@@ -79,6 +51,8 @@
 </template>
 
 <script setup lang="ts">
+import { GalleryData } from '@/mocks/ListGallery';
+
 window.scrollTo(0, 0);
 
 document.title = 'About | Orod - Order Food';
