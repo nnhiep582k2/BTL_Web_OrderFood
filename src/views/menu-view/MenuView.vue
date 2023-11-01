@@ -512,5 +512,5 @@ const closeView = () => {
 </script>
 
 <style lang="scss" scoped>
-@import url(./style.scss);
+@import url(./MenuStyle.scss);
 </style>

@@ -125,9 +125,9 @@
                         </div>
 
                         <div class="box-content row">
-                            <router-link to="/menu" class="btn shop-btn"
+                            <RouterLink to="/menu" class="btn shop-btn"
                                 ><i class="fa fa-arrow-left"></i>Continue
-                                shopping</router-link
+                                shopping</RouterLink
                             >
                             <button
                                 class="btn check-out-btn"
@@ -182,10 +182,10 @@
                                     </button>
                                     <button
                                         class="btn cancel-btn"
-                                        @click="cancelBtn()"
                                         :disabled="
                                             filterFoods.length ? false : true
                                         "
+                                        @click="cancelBtn()"
                                     >
                                         Cancel
                                     </button>
@@ -215,7 +215,6 @@
 </template>
 
 <script setup lang="ts">
-import axios from 'axios';
 import { useRouter } from 'vue-router';
 
 let cartItem: any[] = [];

@@ -1,25 +1,25 @@
-import axios from "axios";
-import { useRouter } from "vue-router";
+import axios from 'axios';
+import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
 const axiosInstance = axios.create({
-    baseURL: "https://localhost:7276/api/v1",
+    baseURL: 'https://localhost:7276/api/v1',
     headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
     },
     withCredentials: true,
 });
 
 const getJwtToken = () => {
-    return localStorage.getItem("jwtToken");
+    return localStorage.getItem('jwtToken');
 };
 
 axiosInstance.interceptors.request.use(
     (config) => {
         const jwtToken = getJwtToken();
         if (jwtToken) {
-            config.headers["Authorization"] = `Bearer ${jwtToken}`;
+            config.headers['Authorization'] = `Bearer ${jwtToken}`;
         }
         return config;
     },
@@ -29,13 +29,11 @@ axiosInstance.interceptors.request.use(
 );
 
 axiosInstance.interceptors.response.use(
-    (resp) => resp,
+    (res) => res.data,
     async (error) => {
         if (error.response.status === 401) {
-            // Chuyển hướng đến trang đăng nhập
-            router.push({ path: "/login" });
+            router.push({ path: '/login' });
         } else if (error.response.status === 403) {
-            // Xử lý trường hợp không có quyền ở đây (nếu cần)
         }
         return Promise.reject(error);
     }

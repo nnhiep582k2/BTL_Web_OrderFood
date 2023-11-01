@@ -44,9 +44,7 @@ import { ref, watch } from 'vue';
 import BaseIcon from '@/components/BaseIcon.vue';
 
 const router = useRouter();
-
 const currentTab = ref(HeaderItem[0]);
-
 const isCurrentTab = (tab: string) => currentTab.value === tab;
 
 const setActiveTab = (tab: string) => {

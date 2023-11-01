@@ -30,29 +30,3 @@ html {
 ::-webkit-scrollbar-thumb:hover {
     background: var(--color-primary-bolder);
 }
-
-img {
-    vertical-align: middle;
-    border-style: none;
-}
-
-.heading {
-    text-align: center;
-    padding-bottom: 2rem;
-
-    span {
-        font-size: 3rem;
-        color: var(--color-primary);
-        font-weight: 600;
-    }
-
-    h3 {
-        font-size: 3rem;
-        font-weight: 500;
-    }
-}
-
-.p-x-80 {
-    padding-left: 80px;
-    padding-right: 80px;
-}
