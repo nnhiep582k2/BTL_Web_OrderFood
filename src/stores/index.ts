@@ -1,13 +1,11 @@
-import {
-    LOGIN_ACTION,
-    SET_AUTH_DATA_ACTION,
-    SET_LOADING,
-} from './storeConstants';
-import { ref } from 'vue';
-import { createStore } from 'vuex';
-import { notify } from '@/services/Toast';
-import { TypeToast } from '@/enums/TypeToast';
-import http from '@/services/http/http';
+
+import { ref } from "vue";
+import { createStore } from "vuex";
+import { LOGIN_ACTION, SET_AUTH_DATA_ACTION, SET_LOADING,FOOD_ACTION, SET_FOOD_LIST } from "./storeConstants";
+import axios from "axios";
+import { notify } from "@/services/Toast";
+import { TypeToast } from "@/enums/TypeToast";
+import http from '@/services/http/http'
 
 interface IAuthData {
     userId: string;
@@ -29,6 +27,8 @@ export default createStore<IRootState>({
             token: '',
         }),
         isLoading: ref<boolean>(false),
+        allFoods:ref([]),
+        admin: undefined,
     },
     getters: {
         getAuthData: (state: any) => {
@@ -48,6 +48,10 @@ export default createStore<IRootState>({
             };
             state.authData = newAuthData;
         },
+        [SET_FOOD_LIST](state: any, data: any) {
+            state.allFoods = data;
+        },
+
     },
     actions: {
         [SET_LOADING]({ commit }: any, isOpen: boolean) {
@@ -65,6 +69,17 @@ export default createStore<IRootState>({
                 }
             } catch (error: any) {
                 notify(`${error?.response?.data?.message}`, TypeToast.error);
+            }
+        },
+
+        async [FOOD_ACTION]({ commit }: any) {
+            try {
+                const { data } = await http.get("/Foods/GetAllRecord")
+                if (data.success) {
+                    commit(SET_FOOD_LIST, data.data)
+                }
+            } catch (error: any) {
+                notify(`${error?.response?.data?.message}`, TypeToast.error)
             }
         },
     },
