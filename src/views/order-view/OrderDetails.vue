@@ -12,38 +12,41 @@
                 <div
                     style="flex: 50%"
                     v-for="(f, index) in filterFoods"
-                    :key="f?.food_id"
+                    :key="f?.foodId"
                 >
                     <div class="product-detail d-flex">
                         <div class="image">
                             <img
-                                :src="`/src/assets/images/template/${f?.food_src}`"
+                                :src="`/src/assets/images/template/${f?.url}`"
                                 alt=""
                             />
                         </div>
                         <div class="content">
                             <p class="name">
-                                {{ f?.food_name }}
+                                {{ f?.foodName }}
                                 <span>X {{ item_qty[index] }}</span>
                             </p>
-                            <p class="desc">{{ f?.food_desc }}</p>
+                            <p class="desc">{{ f?.foodDesc }}</p>
                         </div>
                     </div>
                 </div>
             </div>
 
             <div class="price">
-                <p>Discount: ${{ billMatch.bill_discount }}</p>
-                <p>Delivery Fee: ${{ billMatch.bill_delivery }}</p>
-                <p>Total: ${{ billMatch.bill_total }}</p>
+                <p>Discount: ${{ billMatch.discount }}</p>
+                <p>Delivery Fee: ${{ billMatch.delivery }}</p>
+                <p>Total: ${{ billMatch.total }}</p>
             </div>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { computed, reactive, ref } from 'vue';
-defineProps({
+import { computed, ref } from "vue";
+import http from "@/services/http/http";
+import { useStore } from "vuex";
+
+const props = defineProps({
     bill: {
         type: String,
         required: true,
@@ -51,22 +54,60 @@ defineProps({
 });
 
 interface IBillMatch {
-    bill_discount: String;
-    bill_delivery: String;
-    bill_total: String;
+    discount: String;
+    delivery: String;
+    total: String;
 }
-
-const allFoodsInBill = reactive([]);
-const item_qty = reactive([]);
+const store = useStore();
+const allFoods = computed(() => store.state.allFoods);
+const allFoodsInBill = ref([]);
+const item_qty = ref([]);
 const billMatch = ref<IBillMatch>({
-    bill_discount: '',
-    bill_delivery: '',
-    bill_total: '',
+    discount: "",
+    delivery: "",
+    total: "",
 });
 
 const filterFoods = computed(() => {
-    return new Array(3);
+    if (allFoodsInBill.value) {
+        return allFoods.value.filter((f) => matchID(f, allFoodsInBill.value));
+    }
 });
+
+const matchID = (food, cartArray) => {
+    let temp = null;
+    cartArray.forEach((element) => {
+        if (food.foodId == element) {
+            temp = food;
+        }
+    });
+    return temp;
+};
+
+const getAllBillDetails = async () => {
+    if (props.bill) {
+        let { data } = (
+            await http.get(`/BillDetails/GetAllRecord?recordId=${props.bill}`)
+        ).data;
+        data.forEach((element: any) => {
+            allFoodsInBill.value.push(element?.foodId);
+            item_qty.value.push(element?.quantity);
+        });
+    }
+};
+
+getAllBillDetails();
+
+const getBillStatus = async () => {
+    if (props.bill) {
+        let{data} = (
+            await http.get(`/Bills/GetById?recordId=${ props.bill}`)
+        ).data;
+        billMatch.value = data;
+    }
+};
+
+getBillStatus()
 </script>
 
 <style lang="scss" scoped>

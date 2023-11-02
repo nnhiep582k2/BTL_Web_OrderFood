@@ -2,24 +2,25 @@
     <div
         class="my-order-container"
         :class="filterBills.length > 0 ? '' : 'fit-screen'"
+        v-if="authData?.userId"
     >
         <div v-if="filterBills.length > 0" class="my-order-cards">
             <div
                 v-for="b in filterBills.slice().reverse()"
                 class="card"
-                :key="b?.bill_id"
+                :key="b?.billId"
             >
                 <div
                     class="card-head d-flex flex-wrap flex-sm-nowrap justify-content-between"
                 >
                     <div>
                         <span>Order No - </span>
-                        <span>{{ b?.bill_id }}</span>
+                        <span>{{ b?.billId }}</span>
                     </div>
                     <BaseButton
                         :type="ButtonType.warning"
                         text="show order details"
-                        @click="() => sendBillId(b?.bill_id)"
+                        @click="() => sendBillId(b?.billId)"
                     />
                 </div>
 
@@ -27,27 +28,27 @@
                     class="d-flex flex-wrap flex-sm-nowrap justify-content-between card-summary"
                 >
                     <div class="w-100 text-center py-1 px-2">
-                        <span>Paid:</span>{{ ' ' + b?.bill_paid }}
+                        <span>Paid:</span>{{ " " + b?.paid }}
                     </div>
                     <div class="w-100 text-center py-1 px-2">
                         <span>Status:</span
-                        >{{ ' ' + avaiableStatus[b?.bill_status] }}
+                        >{{ " " + avaiableStatus[b?.status] }}
                     </div>
                     <div class="w-100 text-center py-1 px-2">
-                        <span>When:</span> {{ b?.bill_when }}
+                        <span>When:</span> {{ b?.createdDate }}
                     </div>
                 </div>
                 <div
                     class="d-flex flex-wrap flex-sm-nowrap justify-content-between card-summary"
                 >
                     <div class="w-100 text-center py-1 px-2">
-                        <span>Total:</span> ${{ b?.bill_total }}
+                        <span>Total:</span> ${{ b?.total }}
                     </div>
                     <div class="w-100 text-center py-1 px-2">
-                        <span>Address:</span>{{ ' ' + b?.bill_address }}
+                        <span>Address:</span>{{ " " + b?.address }}
                     </div>
                     <div class="w-100 text-center py-1 px-2">
-                        <span>Phone:</span>{{ ' ' + b?.bill_phone }}
+                        <span>Phone:</span>{{ " " + b?.phoneNumber }}
                     </div>
                 </div>
 
@@ -57,7 +58,7 @@
                     >
                         <div
                             class="step"
-                            :class="b?.bill_status >= 1 ? 'completed' : ''"
+                            :class="b?.status >= 1 ? 'completed' : ''"
                         >
                             <div class="step-icon-wrap">
                                 <div class="step-icon">
@@ -68,7 +69,7 @@
                         </div>
                         <div
                             class="step"
-                            :class="b?.bill_status >= 2 ? 'completed' : ''"
+                            :class="b?.status >= 2 ? 'completed' : ''"
                         >
                             <div class="step-icon-wrap">
                                 <div class="step-icon">
@@ -79,7 +80,7 @@
                         </div>
                         <div
                             class="step"
-                            :class="b?.bill_status >= 3 ? 'completed' : ''"
+                            :class="b?.status >= 3 ? 'completed' : ''"
                         >
                             <div class="step-icon-wrap">
                                 <div class="step-icon">
@@ -90,7 +91,7 @@
                         </div>
                         <div
                             class="step"
-                            :class="b?.bill_status >= 4 ? 'completed' : ''"
+                            :class="b?.status >= 4 ? 'completed' : ''"
                         >
                             <div class="step-icon-wrap">
                                 <div class="step-icon">
@@ -101,7 +102,7 @@
                         </div>
                         <div
                             class="step"
-                            :class="b?.bill_status >= 5 ? 'completed' : ''"
+                            :class="b?.status >= 5 ? 'completed' : ''"
                         >
                             <div class="step-icon-wrap">
                                 <div class="step-icon">
@@ -133,30 +134,48 @@
             />
         </OrderDetails>
     </div>
+
+    <BaseNoPermission v-else />
 </template>
 
 <script setup lang="ts">
-import BaseButton from '@/components/BaseButton.vue';
-import { computed, reactive, ref, watch } from 'vue';
-import OrderDetails from './OrderDetails.vue';
-import { ButtonType } from '@/enums/ButtonType';
-
+import BaseButton from "@/components/BaseButton.vue";
+import { computed, reactive, ref, watch } from "vue";
+import OrderDetails from "./OrderDetails.vue";
+import { ButtonType } from "@/enums/ButtonType";
+import http from "@/services/http/http";
+import { useStore } from "vuex";
+import { notify } from "@/services/Toast";
+import { TypeToast } from "@/enums/TypeToast";
+import { SET_LOADING } from "@/stores/storeConstants";
+import BaseNoPermission from '@/components/BaseNoPermission.vue'
 const avaiableStatus = reactive([
-    'cancel',
-    'confirmed',
-    'preparing',
-    'checking',
-    'delivering',
-    'delivered',
+    "cancel",
+    "confirmed",
+    "preparing",
+    "checking",
+    "delivering",
+    "delivered",
 ]);
 
-const allBills = reactive([]);
-const showOrderDetails = ref<boolean>(false);
-const sendId = ref<string>('');
-const interval = ref<string>('');
+interface IBills{
+    billId: string,
+    paid: string,
+    status: number,
+    createdDate: string,
+    address: string,
+    total: number,
+    phoneNumber: string
+}
 
+const store = useStore();
+const allBills = ref<IBills[]>([]);
+const showOrderDetails = ref<boolean>(false);
+const sendId = ref<string>("");
+const interval = ref<string>("");
+const authData = computed(() => store.getters["getAuthData"]);
 const filterBills = computed(() => {
-    return new Array(3);
+    return allBills.value.filter((b) => b.status < 6 && b.status > 0);
 });
 
 watch(
@@ -166,14 +185,46 @@ watch(
     }
 );
 
-const getAllBills = async () => {};
+
+const getAllBills = async () => {
+    try {
+        store.dispatch(SET_LOADING, true);
+        if (authData.value?.userId) {
+            const { data } = await http.get(
+                `/Bills/GetAllRecord?recordId=${authData.value?.userId}`
+            );
+            if (data?.success) {
+                allBills.value = data.data;
+                allBills.value.map(el=>{
+                    if(el.createdDate){
+                        const dateTime = new Date(el.createdDate);
+                        const date = dateTime.getDate();
+                        const month = dateTime.getMonth() + 1;
+                        const year = dateTime.getFullYear();
+                        const hours = dateTime.getHours();
+                        const minutes = dateTime.getMinutes();
+                        const seconds = dateTime.getSeconds();
+                        el.createdDate =  `${hours}:${minutes}:${seconds} - ${date}/${month}/${year}`;
+                    }
+                    return el;
+                })
+            }
+        }
+    } catch (error: any) {
+        notify(`${error?.response?.data?.message}`, TypeToast.error);
+    } finally {
+        store.dispatch(SET_LOADING, false);
+    }
+};
+
+getAllBills();
 
 const closeView = () => {
     showOrderDetails.value = false;
 };
 
 const sendBillId = (id?: string) => {
-    sendId.value = id || '23423';
+    sendId.value = id || "23423";
     showOrderDetails.value = true;
 };
 </script>

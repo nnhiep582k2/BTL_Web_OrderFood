@@ -29,7 +29,7 @@ axiosInstance.interceptors.request.use(
 );
 
 axiosInstance.interceptors.response.use(
-    (res) => res.data,
+    (res) => res,
     async (error) => {
         if (error.response.status === 401) {
             router.push({ path: '/login' });

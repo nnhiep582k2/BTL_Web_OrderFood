@@ -1,6 +1,7 @@
 
 export const SET_LOADING = 'setLoading'
 export const LOGIN_ACTION = 'login'
-export const SET_AUTH_DATA_ACTION = 'setAuthData'
+export const LOGOUT_ACTION = 'logout'
+export const SET_AUTH_DATA = 'setAuthData'
 export const FOOD_ACTION = 'getFoodList'
 export const SET_FOOD_LIST = 'setFoodList'
