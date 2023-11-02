@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router';
-
 import AboutView from '@/views/about-view/AboutView.vue';
 import PromotionsView from '@/views/promotion-view/PromotionsView.vue';
 import MenuView from '@/views/menu-view/MenuView.vue';
@@ -44,11 +43,6 @@ const router = createRouter({
             component: RegisterView,
         },
         {
-            path: '/login',
-            name: 'login',
-            component: LoginView,
-        },
-        {
             path: '/order',
             name: 'order',
             component: OrderView,
@@ -57,6 +51,11 @@ const router = createRouter({
             path: '/cart',
             name: 'cart',
             component: CartView,
+        },
+        {
+            path: '/login',
+            name: 'login',
+            component: LoginView,
         },
         {
             path: '/:catchAll(.*)',

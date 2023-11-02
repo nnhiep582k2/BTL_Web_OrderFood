@@ -6,6 +6,7 @@ import axios from "axios";
 import { notify } from "@/services/Toast";
 import { TypeToast } from "@/enums/TypeToast";
 import http from '@/services/http/http'
+
 interface IAuthData {
     userId: string;
     fullName: string;
@@ -16,13 +17,14 @@ interface IRootState {
     isLoading: boolean;
     authData: IAuthData;
 }
+
 export default createStore<IRootState>({
     state: {
         authData: ref<IAuthData>({
-            userId: "",
-            fullName: "",
-            email: "",
-            token:""
+            userId: '',
+            fullName: '',
+            email: '',
+            token: '',
         }),
         isLoading: ref<boolean>(false),
         allFoods:ref([]),
@@ -42,9 +44,9 @@ export default createStore<IRootState>({
                 userId: data?.userId,
                 fullName: data?.fullName,
                 email: data?.email,
-                token: data?.token
-            }
-            state.authData = newAuthData
+                token: data?.token,
+            };
+            state.authData = newAuthData;
         },
         [SET_FOOD_LIST](state: any, data: any) {
             state.allFoods = data;
@@ -58,12 +60,15 @@ export default createStore<IRootState>({
 
         async [LOGIN_ACTION]({ commit }: any, payload: object) {
             try {
-                const { data } = await http.post("/Auth/login",  JSON.stringify(payload))
+                const { data } = await http.post(
+                    '/Auth/login',
+                    JSON.stringify(payload)
+                );
                 if (data.success) {
-                    commit(SET_AUTH_DATA_ACTION, data.data)
+                    commit(SET_AUTH_DATA_ACTION, data.data);
                 }
             } catch (error: any) {
-                notify(`${error?.response?.data?.message}`, TypeToast.error)
+                notify(`${error?.response?.data?.message}`, TypeToast.error);
             }
         },
 

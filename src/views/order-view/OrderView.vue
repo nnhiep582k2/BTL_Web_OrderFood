@@ -122,7 +122,7 @@
             <div>
                 <img src="/src/assets/images/template/no-orders.png" alt="" />
             </div>
-            <router-link class="btn" to="/menu">Order now!</router-link>
+            <RouterLink class="btn" to="/menu">Order now!</RouterLink>
         </div>
 
         <OrderDetails v-if="showOrderDetails" :bill="sendId">
@@ -141,7 +141,6 @@ import { computed, reactive, ref, watch } from 'vue';
 import OrderDetails from './OrderDetails.vue';
 import { ButtonType } from '@/enums/ButtonType';
 
-/**----------variable----------*/
 const avaiableStatus = reactive([
     'cancel',
     'confirmed',
@@ -156,7 +155,6 @@ const showOrderDetails = ref<boolean>(false);
 const sendId = ref<string>('');
 const interval = ref<string>('');
 
-/**----------computed----------*/
 const filterBills = computed(() => {
     return new Array(3);
 });
@@ -168,7 +166,6 @@ watch(
     }
 );
 
-/**----------method----------*/
 const getAllBills = async () => {};
 
 const closeView = () => {
@@ -182,197 +179,5 @@ const sendBillId = (id?: string) => {
 </script>
 
 <style lang="scss" scoped>
-.my-order-container {
-    padding: 2rem 9%;
-    background: #fff;
-    height: 100%;
-    &.fit-screen {
-        height: 90vh;
-    }
-}
-
-.my-order-cards {
-    margin-bottom: 2rem;
-}
-
-.card {
-    margin-bottom: 10px;
-    border-radius: 4px;
-}
-
-.card-head {
-    padding: 12px 15px;
-    color: white;
-    font-size: 16px;
-    background: var(--color-primary);
-    button {
-        background-color: inherit;
-        color: white;
-        margin-right: 20px;
-        font-weight: 500;
-
-        &:hover {
-            color: #f38609;
-        }
-    }
-}
-
-.card-summary {
-    padding: 12px 10px;
-    background: #eee;
-    font-size: 14px;
-}
-
-.steps .step {
-    display: block;
-    width: 100%;
-    margin-bottom: 35px;
-    text-align: center;
-}
-
-.steps .step .step-icon-wrap {
-    display: block;
-    position: relative;
-    width: 100%;
-    height: 80px;
-    text-align: center;
-
-    &::before,
-    &::after {
-        display: block;
-        position: absolute;
-        top: 50%;
-        width: 50%;
-        height: 3px;
-        margin-top: -1px;
-        background-color: #e1e7ec;
-        content: '';
-        z-index: 1;
-    }
-
-    &::before {
-        left: 0;
-    }
-
-    &::after {
-        right: 0;
-    }
-}
-
-.steps .step {
-    .step-icon {
-        display: inline-block;
-        position: relative;
-        width: 80px;
-        height: 80px;
-        border: 1px solid #e1e7ec;
-        border-radius: 50%;
-        background-color: #f5f5f5;
-        color: #374250;
-        font-size: 38px;
-        line-height: 81px;
-        z-index: 5;
-    }
-
-    .step-title {
-        margin-top: 16px;
-        margin-bottom: 0;
-        color: #606975;
-        font-size: 14px;
-        font-weight: 500;
-    }
-
-    &:first-child .step-icon-wrap::before {
-        display: none;
-    }
-    &:last-child .step-icon-wrap::after {
-        display: none;
-    }
-}
-
-.steps .step.completed {
-    .step-icon-wrap::before,
-    .step-icon-wrap::after {
-        background-color: #0da9ef;
-    }
-
-    .step-icon {
-        border-color: #0da9ef;
-        background-color: #0da9ef;
-        color: #fff;
-    }
-}
-
-.no-food {
-    text-align: center;
-    justify-content: center;
-    display: block;
-    width: 100%;
-    height: 100%;
-    margin: auto;
-
-    a {
-        margin-top: 20px;
-        margin-left: -10px;
-    }
-}
-
-@media (max-width: 320px) {
-    .my-order-container {
-        padding: 0px;
-    }
-
-    .card-head {
-        font-size: 14px;
-    }
-
-    .no-food .content h2 {
-        font-size: 14px;
-    }
-}
-
-@media (max-width: 576px) {
-    .my-order-container {
-        padding: 1rem 4.5%;
-    }
-
-    .flex-sm-nowrap .step .step-icon-wrap::before,
-    .flex-sm-nowrap .step .step-icon-wrap::after {
-        display: none;
-    }
-
-    .card {
-        margin-top: 20px;
-    }
-
-    .no-food div img {
-        width: 85vw;
-    }
-}
-
-@media (max-width: 768px) {
-    .flex-md-nowrap .step .step-icon-wrap::before,
-    .flex-md-nowrap .step .step-icon-wrap::after {
-        display: none;
-    }
-}
-
-@media (max-width: 991px) {
-    .flex-lg-nowrap .step .step-icon-wrap::before,
-    .flex-lg-nowrap .step .step-icon-wrap::after {
-        display: none;
-    }
-}
-
-@media (max-width: 1200px) {
-    .flex-xl-nowrap .step .step-icon-wrap::before,
-    .flex-xl-nowrap .step .step-icon-wrap::after {
-        display: none;
-    }
-}
-
-.bg-faded,
-.bg-secondary {
-    background-color: #f5f5f5 !important;
-}
+@import url(./OrderViewStyle.scss);
 </style>
