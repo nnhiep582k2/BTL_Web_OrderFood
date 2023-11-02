@@ -1,5 +1,5 @@
 <template>
-    <div class="base-icon" :class="type">
+    <div class="base-icon" :class="[type, classes]" @click="$emit('click')">
         <slot />
     </div>
 </template>
@@ -9,6 +9,7 @@ import { IconType } from '@/enums/IconType';
 
 interface IProps {
     type?: IconType;
+    classes?: string
 }
 
 const props = withDefaults(defineProps<IProps>(), {

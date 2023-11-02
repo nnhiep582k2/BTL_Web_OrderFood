@@ -31,18 +31,54 @@
                 </RouterLink>
             </div>
             <div class="option">
-                <BaseIcon><i class="fa-solid fa-user"></i></BaseIcon>
+                <BaseIcon
+                    v-if="!authData?.userId"
+                    @click="() => showLog()"
+                    classes="account"
+                    ><i class="fa-solid fa-user"></i>
+                    <ul class="drop-down-select" ref="dropdown">
+                        <li>
+                            <router-link @click="scrollToTop()" to="/login"
+                                >login</router-link
+                            >
+                        </li>
+                        <li>
+                            <router-link @click="scrollToTop()" to="/register"
+                                >register</router-link
+                            >
+                        </li>
+                    </ul>
+                </BaseIcon>
+
+                <BaseIcon v-else @click="() => showLog()" classes="account">
+                    <i class="fa-solid fa-user"></i>
+                    <ul class="drop-down-select" ref="dropdown">
+                        <li>
+                            <router-link @click="scrollToTop()" to="/order"
+                                >my orders</router-link
+                            >
+                        </li>
+                        <li>
+                            <router-link @click="handleLogout" to="/"
+                                >logout</router-link
+                            >
+                        </li>
+                    </ul>
+                </BaseIcon>
             </div>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { HeaderItem } from '@/mocks/HeaderItem';
-import { useRouter, useRoute } from 'vue-router';
-import { ref, watch } from 'vue';
-import BaseIcon from '@/components/BaseIcon.vue';
+import { HeaderItem } from "@/mocks/HeaderItem";
+import { useRouter, useRoute } from "vue-router";
+import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
+import BaseIcon from "@/components/BaseIcon.vue";
+import { useStore } from "vuex";
+import { LOGOUT_ACTION } from "@/stores/storeConstants";
 
+const store = useStore();
 const router = useRouter();
 const currentTab = ref(HeaderItem[0]);
 const isCurrentTab = (tab: string) => currentTab.value === tab;
@@ -54,7 +90,9 @@ const setActiveTab = (tab: string) => {
 };
 
 const route = useRoute();
-
+const authData = computed(() => store.getters["getAuthData"]);
+const dropdown = ref();
+const excludedElements = ref<any[]>([]);
 watch(
     () => route.name,
     (newValue) => {
@@ -65,6 +103,42 @@ watch(
         }
     }
 );
+
+const showLog = () => {
+    let log = document.querySelector(".drop-down-select") as HTMLElement;
+    log.classList.add("active");
+};
+
+onMounted(() => {
+    window.addEventListener("click", handleClickOutSide);
+    excludedElements.value.push(document.querySelector(".account"))
+    excludedElements.value.push(document.querySelector(".fa-user"))
+});
+
+onBeforeUnmount(() => {
+    window.removeEventListener("click", handleClickOutSide);
+});
+
+const handleClickOutSide = (event) => {
+    if (
+        dropdown.value &&
+        !dropdown.value.contains(event.target) &&
+        !excludedElements.value.some((el)=> el.className==event.target.className)
+    ) {
+        let log = document.querySelector(".drop-down-select") as HTMLElement;
+        log.classList.remove("active");
+    }
+};
+
+const scrollToTop = () => {
+    window.scrollTo(0, 0);
+};
+
+const handleLogout = () => {
+    store.dispatch(`${LOGOUT_ACTION}`, null);
+    localStorage.removeItem("userId");
+    localStorage.removeItem("jwtToken");
+};
 </script>
 
 <style lang="scss" scoped>
@@ -124,6 +198,35 @@ watch(
         .option {
             & + .option {
                 margin-left: 6px;
+            }
+        }
+
+        .account {
+            position: relative;
+
+            .drop-down-select {
+                position: absolute;
+                top: 110%;
+                left: -50%;
+                box-shadow: 0 6px 6px rgba(0, 0, 0, 0.05);
+                border-radius: 4px;
+                display: none;
+                li {
+                    list-style-type: none;
+                    width: 100px;
+                    background: var(--color-background);
+                    padding: 10px 5px 10px 10px;
+
+                    &:hover {
+                        background: var(--color-warning);
+                        a {
+                            color: #fff;
+                        }
+                    }
+                }
+                &.active {
+                    display: block;
+                }
             }
         }
     }

@@ -815,19 +815,7 @@ const closeView = () => {
     showQuickView.value = false;
 };
 
-const handleGetFood = async () => {
-    try {
-        store.dispatch(SET_LOADING, true);
-        await store.dispatch(`${FOOD_ACTION}`);
-    } catch (error: any) {
-        store.dispatch(SET_LOADING, false);
-        notify(`${error.message}`, TypeToast.error);
-    } finally {
-        store.dispatch(SET_LOADING, false);
-    }
-};
 
-handleGetFood();
 </script>
 
 <style lang="scss" scoped>
