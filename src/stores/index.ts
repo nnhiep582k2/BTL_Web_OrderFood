@@ -90,7 +90,7 @@ export default createStore<IRootState>({
 
         async [FOOD_ACTION]({ commit }: any) {
             try {
-                const { data } = await http.get("/Food/GetAllRecord");
+                const { data } = await http.get("/Foods/GetAllRecord");
                 if (data.success) {
                     commit(SET_FOOD_LIST, data.data);
                 }
