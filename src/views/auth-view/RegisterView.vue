@@ -163,6 +163,8 @@ import { notify } from '@/services/Toast';
 import { TypeToast } from '@/enums/TypeToast';
 import { InputType } from '@/enums/TextBoxType';
 import http from '@/services/http/http';
+import { useStore } from 'vuex';
+import { SET_LOADING } from '@/stores/storeConstants';
 
 interface IRegisterObj {
     FullName: string;
@@ -203,7 +205,7 @@ const errorObj = reactive<IErrorObject>({
     phoneErr: [],
     genderErr: [],
 });
-
+const store = useStore();
 const scrollToTop = () => {
     window.scrollTo(0, 0);
 };
@@ -393,6 +395,7 @@ const handleSubmitSignUp = async (event: Event): Promise<void> => {
                 phoneNumber: registerObj.phone,
                 gender: registerObj.gender,
             };
+            store.dispatch(SET_LOADING, true);
             const data: any = await http.post(
                 '/Auth/register',
                 JSON.stringify(payload)
@@ -403,12 +406,16 @@ const handleSubmitSignUp = async (event: Event): Promise<void> => {
             } else {
                 notify(`${data?.response?.data?.message}`, TypeToast.error);
             }
+            store.dispatch(SET_LOADING, false);
         } catch (error: any) {
+            store.dispatch(SET_LOADING, false);
             if (error.response.status === 400) {
                 notify(`${error?.response?.data?.message}`, TypeToast.error);
             } else {
                 notify(`${error}`, TypeToast.error);
             }
+        }finally{
+            store.dispatch(SET_LOADING, false);
         }
     }
 };

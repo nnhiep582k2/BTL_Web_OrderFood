@@ -178,12 +178,6 @@ const filterBills = computed(() => {
     return allBills.value.filter((b) => b.status < 6 && b.status > 0);
 });
 
-watch(
-    () => showOrderDetails.value,
-    (newValue) => {
-        console.log(newValue);
-    }
-);
 
 
 const getAllBills = async () => {

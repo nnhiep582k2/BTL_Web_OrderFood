@@ -7,6 +7,8 @@ import {
     FOOD_ACTION,
     SET_FOOD_LIST,
     LOGOUT_ACTION,
+    ADMIN_ACTION,
+    SET_ADMIN,
 } from "./storeConstants";
 import axios from "axios";
 import { notify } from "@/services/Toast";
@@ -34,7 +36,7 @@ export default createStore<IRootState>({
         }),
         isLoading: ref<boolean>(false),
         allFoods: ref([]),
-        admin: undefined,
+        isAdmin: ref<boolean>(false),
     },
     getters: {
         getAuthData: (state: any) => {
@@ -45,6 +47,8 @@ export default createStore<IRootState>({
         toggleLoading(state: IRootState, isOpen: boolean) {
             state.isLoading = isOpen;
         },
+
+        
         [SET_AUTH_DATA](state: any, data: any) {
             if (data) {
                 const newAuthData = {
@@ -54,12 +58,15 @@ export default createStore<IRootState>({
                     token: data?.token,
                 };
                 state.authData = newAuthData;
-            }else{
+            } else {
                 state.authData = data;
             }
         },
         [SET_FOOD_LIST](state: any, data: any) {
             state.allFoods = data;
+        },
+        [SET_ADMIN](state: any, isAdmin: boolean) {
+            state.isAdmin = isAdmin;
         },
     },
     actions: {
@@ -98,6 +105,10 @@ export default createStore<IRootState>({
             } catch (error: any) {
                 notify(`${error?.response?.data?.message}`, TypeToast.error);
             }
+        },
+
+        [ADMIN_ACTION]({ commit }: any, isAdmin: boolean) {
+            commit(SET_ADMIN, isAdmin);
         },
     },
     modules: {},

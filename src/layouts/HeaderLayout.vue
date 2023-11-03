@@ -53,6 +53,11 @@
                 <BaseIcon v-else @click="() => showLog()" classes="account">
                     <i class="fa-solid fa-user"></i>
                     <ul class="drop-down-select" ref="dropdown">
+                        <li v-if="isAdmin">
+                            <router-link @click="scrollToTop()" to="/admin/users"
+                                >Admin page</router-link
+                            >
+                        </li>
                         <li>
                             <router-link @click="scrollToTop()" to="/order"
                                 >my orders</router-link
@@ -76,7 +81,9 @@ import { useRouter, useRoute } from "vue-router";
 import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import BaseIcon from "@/components/BaseIcon.vue";
 import { useStore } from "vuex";
-import { LOGOUT_ACTION } from "@/stores/storeConstants";
+import { ADMIN_ACTION, LOGOUT_ACTION } from "@/stores/storeConstants";
+import { jwtDecode } from "jwt-decode";
+import { Role } from "@/enums/Role";
 
 const store = useStore();
 const router = useRouter();
@@ -93,6 +100,7 @@ const route = useRoute();
 const authData = computed(() => store.getters["getAuthData"]);
 const dropdown = ref();
 const excludedElements = ref<any[]>([]);
+const isAdmin = ref<Boolean>(false);
 watch(
     () => route.name,
     (newValue) => {
@@ -103,6 +111,26 @@ watch(
         }
     }
 );
+watch(
+    authData,
+    (newValue) => {
+        isAdmin.value = clientSideCheckAdminRole(newValue?.token);
+        store.dispatch(ADMIN_ACTION,isAdmin.value);
+    },
+    { deep: true }
+);
+
+const clientSideCheckAdminRole = (jwt: string) => {
+    if (jwt) {
+        const decodedToken: any = jwtDecode(jwt);
+        console.log(decodedToken?.role);
+        if(Array.isArray(decodedToken?.role)){
+            return decodedToken?.role.find((el: string) => el === Role.admin);
+        }
+        return decodedToken?.role === Role.admin
+    }
+    return false;
+};
 
 const showLog = () => {
     let log = document.querySelector(".drop-down-select") as HTMLElement;
@@ -111,8 +139,8 @@ const showLog = () => {
 
 onMounted(() => {
     window.addEventListener("click", handleClickOutSide);
-    excludedElements.value.push(document.querySelector(".account"))
-    excludedElements.value.push(document.querySelector(".fa-user"))
+    excludedElements.value.push(document.querySelector(".account"));
+    excludedElements.value.push(document.querySelector(".fa-user"));
 });
 
 onBeforeUnmount(() => {
@@ -123,7 +151,9 @@ const handleClickOutSide = (event) => {
     if (
         dropdown.value &&
         !dropdown.value.contains(event.target) &&
-        !excludedElements.value.some((el)=> el.className==event.target.className)
+        !excludedElements.value.some(
+            (el) => el.className == event.target.className
+        )
     ) {
         let log = document.querySelector(".drop-down-select") as HTMLElement;
         log.classList.remove("active");
@@ -213,7 +243,7 @@ const handleLogout = () => {
                 display: none;
                 li {
                     list-style-type: none;
-                    width: 100px;
+                    width: 124px;
                     background: var(--color-background);
                     padding: 10px 5px 10px 10px;
 
