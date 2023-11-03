@@ -8,6 +8,7 @@ import RegisterView from '@/views/auth-view/RegisterView.vue';
 import OrderView from '@/views/order-view/OrderView.vue';
 import HomeView from '@/views/home-view/HomeView.vue';
 import CartView from '@/views/cart-view/CartView.vue';
+import AdminView from '@/views/admin-view/AdminView.vue';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -56,6 +57,18 @@ const router = createRouter({
             path: '/login',
             name: 'login',
             component: LoginView,
+        },
+        {
+            path: '/admin',
+            name: 'admin',
+            component: AdminView,
+            children: [
+                {
+                  path: 'users',
+                  name: 'admin.users',
+                  component: () => import('@/views/admin-view/UsersView.vue'),
+                },
+              ],
         },
         {
             path: '/:catchAll(.*)',

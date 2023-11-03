@@ -45,6 +45,7 @@
 import { computed, ref } from "vue";
 import http from "@/services/http/http";
 import { useStore } from "vuex";
+import { SET_LOADING } from "@/stores/storeConstants";
 
 const props = defineProps({
     bill: {
@@ -86,28 +87,47 @@ const matchID = (food, cartArray) => {
 
 const getAllBillDetails = async () => {
     if (props.bill) {
-        let { data } = (
-            await http.get(`/BillDetails/GetAllRecord?recordId=${props.bill}`)
-        ).data;
-        data.forEach((element: any) => {
-            allFoodsInBill.value.push(element?.foodId);
-            item_qty.value.push(element?.quantity);
-        });
+        try {
+            store.dispatch(SET_LOADING, true);
+            let { data } = (
+                await http.get(
+                    `/BillDetails/GetAllRecord?recordId=${props.bill}`
+                )
+            ).data;
+            data.forEach((element: any) => {
+                allFoodsInBill.value.push(element?.foodId);
+                item_qty.value.push(element?.quantity);
+            });
+            store.dispatch(SET_LOADING, false);
+        } catch (error) {
+            store.dispatch(SET_LOADING, false);
+        } finally {
+            store.dispatch(SET_LOADING, false);
+        }
     }
 };
 
 getAllBillDetails();
 
 const getBillStatus = async () => {
-    if (props.bill) {
-        let{data} = (
-            await http.get(`/Bills/GetById?recordId=${ props.bill}`)
-        ).data;
-        billMatch.value = data;
+    try {
+        if (props.bill) {
+            store.dispatch(SET_LOADING, true);
+
+            let { data } = (
+                await http.get(`/Bills/GetById?recordId=${props.bill}`)
+            ).data;
+            billMatch.value = data;
+            store.dispatch(SET_LOADING, false);
+        }
+    } catch (error) {
+        store.dispatch(SET_LOADING, false);
+    } finally {
+        store.dispatch(SET_LOADING, false);
     }
 };
 
-getBillStatus()
+getBillStatus();
 </script>
 
 <style lang="scss" scoped>
