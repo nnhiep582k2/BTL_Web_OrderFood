@@ -6,6 +6,9 @@
 
 <script setup lang="ts">
 
+interface ICategorys{
+    name:string
+}
 </script>
 
 <style scoped>

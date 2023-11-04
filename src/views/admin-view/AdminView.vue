@@ -1,17 +1,21 @@
 <template>
     <div class="admin__container">
         <SidebarAdminLayout />
-        <router-view />
+        <div class="admin__content"><router-view /></div>
     </div>
 </template>
 
 <script setup lang="ts">
-import SidebarAdminLayout from '@/layouts/SidebarAdminLayout.vue';
+import SidebarAdminLayout from "@/layouts/SidebarAdminLayout.vue";
 </script>
 
 <style lang="scss" scoped>
 .admin__container {
     display: flex;
-    column-gap: 20px;
+}
+
+.admin__content{
+    width: 100%;
+    padding: 20px;
 }
 </style>
