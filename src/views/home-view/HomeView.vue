@@ -29,7 +29,7 @@
 
         <div class="home-category">
             <RouterLink
-                v-for="(item, index) in DataHomeCategory"
+                v-for="(item, index) in dataHomeCategory"
                 class="box"
                 :to="`/menu/${item.name}`"
                 :key="index"
@@ -98,7 +98,8 @@ import { DataBaseAds } from '@/mocks/BaseAds';
 import BaseButton from '@/components/BaseButton.vue';
 import BaseAds from '@/components/BaseAds.vue';
 import { ServicesData } from '@/mocks/HomeServices';
-import { DataHomeCategory } from '@/mocks/HomeCategory';
+import http from '@/services/http/http';
+import { onMounted, ref } from 'vue';
 
 const scrollToTop = () => {
     window.scrollTo(0, 0);
@@ -107,6 +108,14 @@ const scrollToTop = () => {
 scrollToTop();
 
 document.title = 'Home | Orod - Order Food';
+
+const dataHomeCategory = ref<any[]>([]);
+
+onMounted(async () => {
+    dataHomeCategory.value = (
+        await http.get('/Categories/GetAllRecord')
+    ).data?.data;
+});
 </script>
 
 <style scoped lang="scss">
