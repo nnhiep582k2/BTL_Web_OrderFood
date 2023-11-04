@@ -210,3 +210,50 @@ BEGIN
 	FROM Roles r
 	WHERE r.RoleId = @Id
 END
+
+-- CRUD Order
+CREATE or alter PROCEDURE AddOrder
+	@OrderId uniqueidentifier,
+	@UserId uniqueidentifier,
+    @PickupDate datetime2(7),
+	@CreatedDate datetime2(7),
+	@CreatedBy nvarchar(max),
+	@ModifiedDate datetime2(7),
+	@ModifiedBy  nvarchar(max)
+AS
+BEGIN
+INSERT INTO Orders(OrderId,UserId,PickupDate,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy)
+     VALUES
+           (@OrderId,@UserId,@PickupDate, GETDATE(),'NTKIEN',null,null)
+END
+
+-- update
+CREATE or ALTER PROCEDURE UpdateOrder
+	@OrderId uniqueidentifier,
+	@UserId uniqueidentifier,
+    @PickupDate datetime2(7),
+	@CreatedDate datetime2(7),
+	@CreatedBy nvarchar(max),
+	@ModifiedDate datetime2(7),
+	@ModifiedBy  nvarchar(max)
+AS
+BEGIN
+    UPDATE Orders
+    SET
+		UserId = @UserId,
+        PickupDate = @PickupDate,
+		ModifiedDate = GETDATE(),
+		ModifiedBy = 'NTKIEN'
+    WHERE
+        OrderId = @OrderId;
+END;
+
+-- get by id
+CREATE or ALTER PROCEDURE GetOrders
+    @Id uniqueidentifier
+AS
+BEGIN
+   SELECT *  
+	FROM Orders o
+	WHERE o.OrderId = @Id
+END
