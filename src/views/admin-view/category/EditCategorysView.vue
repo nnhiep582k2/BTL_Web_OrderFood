@@ -1,49 +1,74 @@
 <template>
-    <div v-if="errors.length" class="row error-box">
-        <ul>
-            <li v-for="(error, index) in errors" :key="index">
-                {{ error }}
-            </li>
-        </ul>
-    </div>
+        <div v-if="errors.length" class="row error-box">
+            <ul>
+                <li v-for="(error, index) in errors" :key="index">
+                    {{ error }}
+                </li>
+            </ul>
+        </div>
 
-    <div class="row">
-        <div class="col-md-12">
-            <BaseTextBox
-                width="100%"
-                label="Name"
-                :inputType="InputType.text"
-                v-model:model-value="models.name"
-            />
+        <div class="row">
+            <div class="col-md-12">
+                <BaseTextBox
+                    width="100%"
+                    label="Name"
+                    :inputType="InputType.text"
+                    v-model:model-value="models.name"
+                />
+            </div>
+            <div class="col-md-12 mt-3">
+                <button class="btn_add btn btn-success" @click="handleSubmit">
+                    Edit
+                </button>
+            </div>
         </div>
-        <div class="col-md-12 mt-3">
-            <button class="btn_add btn btn-success" @click="handleSubmit">
-                Add
-            </button>
-        </div>
-    </div>
 </template>
 
 <script setup lang="ts">
 import BaseTextBox from "@/components/BaseTextBox.vue";
 
 import { useStore } from "vuex";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { InputType } from "@/enums/TextBoxType";
 import { SET_LOADING } from "@/stores/storeConstants";
 import http from "@/services/http/http";
 import { notify } from "@/services/Toast";
 import { TypeToast } from "@/enums/TypeToast";
+import { useRoute } from "vue-router";
+import router from "@/router";
 
 interface ICategorys {
     name: string;
 }
-
+const route = useRoute();
 const store = useStore();
 const models = ref<ICategorys>({
     name: "",
 });
 const errors = ref<String[]>([]);
+const categoryId = ref("");
+
+onMounted(async () => {
+    if (route.query.id) {
+        categoryId.value = route.query.id.toString();
+    }
+    if (categoryId.value) {
+        try {
+            store.dispatch(SET_LOADING, true);
+            let { data } = (await http.get(`/Categories/GetById?recordId=${categoryId.value}`))
+                .data;
+            models.value = {
+                name : data?.name
+            };
+            store.dispatch(SET_LOADING, false);
+        } catch (error) {
+            store.dispatch(SET_LOADING, false);
+        } finally {
+            store.dispatch(SET_LOADING, false);
+        }
+    }
+});
+
 
 const handleSubmit = async () => {
     try {
@@ -62,24 +87,23 @@ const handleSubmit = async () => {
 
         if (errors.value.length == 0) {
             const payload = {
+                categoryId: categoryId.value,
                 name: models.value.name,
             };
             store.dispatch(SET_LOADING, true);
-            const { data } = await http.post(
-                "/Categories/addRecord",
+            const { data } = await http.put(
+                "Categories/updateRecord",
                 JSON.stringify(payload)
             );
             if (data.success) {
-                notify("Add success!", TypeToast.success);
-                models.value = {
-                    name: "",
-                };
+                notify("Edit success!", TypeToast.success);
+                router.push({ path: `/admin/categorys` });
             }
             store.dispatch(SET_LOADING, false);
         }
     } catch (error) {
         console.log(error);
-        notify("Add fail!", TypeToast.error);
+        notify("Edit fail!", TypeToast.error);
         store.dispatch(SET_LOADING, false);
     }
 };
@@ -105,7 +129,7 @@ const handleSubmit = async () => {
     }
 }
 
-label{
+label {
     font-size: 20px;
 }
 </style>

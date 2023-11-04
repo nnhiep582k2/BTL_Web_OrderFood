@@ -115,6 +115,14 @@ export const router = createRouter({
                             "@/views/admin-view/category/CreateCategorysView.vue"
                         ),
                 },
+                {
+                    path: "edit-categorys",
+                    name: "admin.edit-categorys",
+                    component: () =>
+                        import("@/views/admin-view/category/EditCategorysView.vue"),
+                    props: true,
+                },
+                
             ],
         },
         {
