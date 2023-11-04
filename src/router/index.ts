@@ -74,13 +74,7 @@ export const router = createRouter({
                     component: () => import("@/views/admin-view/FoodsView.vue"),
                 },
 
-                {
-                    path: "orders",
-                    name: "admin.orders",
-                    component: () =>
-                        import("@/views/admin-view/OrdersView.vue"),
-                },
-
+                // bill
                 {
                     path: "bills",
                     name: "admin.bills",
@@ -101,6 +95,7 @@ export const router = createRouter({
                     props: true,
                 },
 
+                // category
                 {
                     path: "categorys",
                     name: "admin.categorys",
@@ -119,9 +114,13 @@ export const router = createRouter({
                     path: "edit-categorys",
                     name: "admin.edit-categorys",
                     component: () =>
-                        import("@/views/admin-view/category/EditCategorysView.vue"),
+                        import(
+                            "@/views/admin-view/category/EditCategorysView.vue"
+                        ),
                     props: true,
                 },
+
+                // role
                 {
                     path: "roles",
                     name: "admin.roles",
@@ -132,9 +131,7 @@ export const router = createRouter({
                     path: "create-roles",
                     name: "admin.create-roles",
                     component: () =>
-                        import(
-                            "@/views/admin-view/role/CreateRolesView.vue"
-                        ),
+                        import("@/views/admin-view/role/CreateRolesView.vue"),
                 },
                 {
                     path: "edit-roles",
@@ -143,7 +140,28 @@ export const router = createRouter({
                         import("@/views/admin-view/role/EditRolesView.vue"),
                     props: true,
                 },
-                
+
+                // order
+                {
+                    path: "orders",
+                    name: "admin.orders",
+                    component: () =>
+                        import("@/views/admin-view/order/OrdersView.vue"),
+                },
+
+                {
+                    path: "create-orders",
+                    name: "admin.create-orders",
+                    component: () =>
+                        import("@/views/admin-view/order/CreateOrdersView.vue"),
+                },
+                {
+                    path: "edit-orders",
+                    name: "admin.edit-orders",
+                    component: () =>
+                        import("@/views/admin-view/order/EditOrdersView.vue"),
+                    props: true,
+                },
             ],
         },
         {
