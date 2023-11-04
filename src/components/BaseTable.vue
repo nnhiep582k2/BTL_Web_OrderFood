@@ -1,4 +1,5 @@
 <template>
+    <vue-basic-alert :duration="300" :closeIn="300" ref="alert" />
     <div class="table-responsive">
         <table class="table colored-header datatable project-list">
             <thead>
@@ -16,11 +17,13 @@
                     </td>
                     <td class="action">
                         <BaseButton
-                            v-for="(btn, index) in buttonAction"
-                            :key="index"
+                            v-for="(btn, i) in buttonAction"
+                            :key="i"
                             :type="btn.type"
                             :text="btn.text"
-                            @click="handleActionClick(item.text, item)"
+                            @click="
+                                handleActionClick(btn.text, item[headers[0]])
+                            "
                         />
                     </td>
                 </tr>
@@ -30,9 +33,11 @@
 </template>
 
 <script lang="ts" setup>
-import type { PropType } from 'vue';
-import BaseButton from './BaseButton.vue';
-import { ButtonType } from '@/enums/ButtonType';
+import { ref, type PropType } from "vue";
+import BaseButton from "./BaseButton.vue";
+import { ButtonType } from "@/enums/ButtonType";
+import Swal from "sweetalert2";
+
 
 const props = defineProps({
     headers: {
@@ -44,7 +49,7 @@ const props = defineProps({
         required: true,
     },
 });
-
+const alert = ref();
 const buttonAction = [
     {
         text: 'Add',
@@ -61,9 +66,22 @@ const buttonAction = [
 ];
 
 const handleActionClick = (action: string, item: any) => {
-    if (action === 'Add') {
-    } else if (action === 'Edit') {
-    } else if (action === 'Delete') {
+    if (action === "Add") {
+    } else if (action === "Edit") {
+    } else if (action === "Delete") {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire("Deleted!", "Your file has been deleted.", "success");
+            }
+        });
     }
 };
 </script>
@@ -97,8 +115,7 @@ const handleActionClick = (action: string, item: any) => {
 
 .action {
     display: flex;
-    align-items: center;
-    justify-content: center;
     column-gap: 2px;
+    height: 100%;
 }
 </style>
