@@ -38,6 +38,7 @@ import BaseButton from "./BaseButton.vue";
 import { ButtonType } from "@/enums/ButtonType";
 import Swal from "sweetalert2";
 
+
 const props = defineProps({
     headers: {
         type: Array as PropType<string[]>,
@@ -51,15 +52,15 @@ const props = defineProps({
 const alert = ref();
 const buttonAction = [
     {
-        text: "Add",
+        text: 'Add',
         type: ButtonType.success,
     },
     {
-        text: "Edit",
+        text: 'Edit',
         type: ButtonType.information,
     },
     {
-        text: "Delete",
+        text: 'Delete',
         type: ButtonType.warning,
     },
 ];

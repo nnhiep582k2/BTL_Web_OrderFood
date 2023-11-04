@@ -8,17 +8,15 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
-import { useStore } from "vuex";
-import HeaderLayout from "./layouts/HeaderLayout.vue";
-import FooterLayout from "./layouts/FooterLayout.vue";
-import ContentLayout from "./layouts/ContentLayout.vue";
-import BaseLoading from "./components/BaseLoading.vue";
-import { FOOD_ACTION, SET_LOADING } from "./stores/storeConstants";
-import { notify } from "./services/Toast";
-import { TypeToast } from "./enums/TypeToast";
-
-                        
+import { computed } from 'vue';
+import { useStore } from 'vuex';
+import HeaderLayout from './layouts/HeaderLayout.vue';
+import FooterLayout from './layouts/FooterLayout.vue';
+import ContentLayout from './layouts/ContentLayout.vue';
+import BaseLoading from './components/BaseLoading.vue';
+import { FOOD_ACTION, SET_LOADING } from './stores/storeConstants';
+import { notify } from './services/Toast';
+import { TypeToast } from './enums/TypeToast';
 
 const store = useStore();
 

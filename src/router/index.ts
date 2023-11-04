@@ -10,7 +10,7 @@ import HomeView from "@/views/home-view/HomeView.vue";
 import CartView from "@/views/cart-view/CartView.vue";
 import AdminView from "@/views/admin-view/AdminView.vue";
 
-const router = createRouter({
+export const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
         {
@@ -29,8 +29,9 @@ const router = createRouter({
             component: PromotionsView,
         },
         {
-            path: "/menu",
-            name: "menu",
+
+            path: '/menu/:item',
+            name: 'menu',
             component: MenuView,
         },
         {
@@ -87,6 +88,7 @@ const router = createRouter({
                     component: () =>
                         import("@/views/admin-view/BillsTable.vue"),
                 },
+
             ],
         },
         {

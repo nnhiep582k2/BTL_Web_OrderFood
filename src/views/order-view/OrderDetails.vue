@@ -42,10 +42,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
-import http from "@/services/http/http";
-import { useStore } from "vuex";
-import { SET_LOADING } from "@/stores/storeConstants";
+import { computed, ref } from 'vue';
+import http from '@/services/http/http';
+import { useStore } from 'vuex';
+import { SET_LOADING } from '@/stores/storeConstants';
 
 const props = defineProps({
     bill: {
@@ -61,12 +61,12 @@ interface IBillMatch {
 }
 const store = useStore();
 const allFoods = computed(() => store.state.allFoods);
-const allFoodsInBill = ref([]);
-const item_qty = ref([]);
+const allFoodsInBill = ref<any[]>([]);
+const item_qty = ref<any[]>([]);
 const billMatch = ref<IBillMatch>({
-    discount: "",
-    delivery: "",
-    total: "",
+    discount: '',
+    delivery: '',
+    total: '',
 });
 
 const filterFoods = computed(() => {

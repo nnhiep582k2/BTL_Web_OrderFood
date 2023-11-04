@@ -2,7 +2,12 @@
     <div class="base-list-footer">
         <div class="title">{{ title }}</div>
         <div class="list">
-            <div class="item" v-for="(item, index) in datas" :key="index">
+            <div
+                class="item"
+                v-for="(item, index) in datas"
+                :key="index"
+                @click="emit('onClick', item)"
+            >
                 <span>{{ item }}</span>
             </div>
         </div>
@@ -13,6 +18,8 @@
 import type { ListFooter } from '@/mocks/ListFooter';
 
 const props = defineProps<ListFooter>();
+
+const emit = defineEmits(['onClick']);
 </script>
 
 <style lang="scss" scoped>

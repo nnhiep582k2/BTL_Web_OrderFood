@@ -16,20 +16,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import { useRouter, useRoute } from "vue-router";
-import { useStore } from "vuex";
+import { ref } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import { useStore } from 'vuex';
 
 const sidebarItem = [
-    "Users",
-    "Foods",
-    "Food images",
-    "Categorys",
-    "Bills",
-    "Carts",
-    "Orders",
-    "Payment orders",
-    "Payments",
+    'Users',
+    'Foods',
+    'Food images',
+    'Categorys',
+    'Bills',
+    'Carts',
+    'Orders',
+    'Payment orders',
+    'Payments',
 ];
 const router = useRouter();
 const currentSidebar = ref(sidebarItem[0]);

@@ -33,18 +33,18 @@
             <div class="option">
                 <BaseIcon
                     v-if="!authData?.userId"
-                    @click="() => showLog()"
                     classes="account"
+                    @click="() => showLog()"
                     ><i class="fa-solid fa-user"></i>
                     <ul class="drop-down-select" ref="dropdown">
                         <li>
                             <router-link @click="scrollToTop()" to="/login"
-                                >login</router-link
+                                >Login</router-link
                             >
                         </li>
                         <li>
                             <router-link @click="scrollToTop()" to="/register"
-                                >register</router-link
+                                >Register</router-link
                             >
                         </li>
                     </ul>
@@ -57,6 +57,7 @@
                             <router-link
                                 @click="scrollToTop()"
                                 to="/admin/users"
+
                                 >Admin page</router-link
                             >
                         </li>
@@ -91,22 +92,32 @@ import {
 import { Role } from "@/enums/Role";
 import http from "@/services/http/http";
 
+
 const store = useStore();
 const router = useRouter();
 const currentTab = ref(HeaderItem[0]);
 const isCurrentTab = (tab: string) => currentTab.value === tab;
 
 const setActiveTab = (tab: string) => {
-    router.push({
-        name: tab.toLowerCase(),
-    });
+    if (tab == 'Menu') {
+        router.push({
+            name: tab.toLowerCase(),
+            params: {
+                item: 'all',
+            },
+        });
+    } else
+        router.push({
+            name: tab.toLowerCase(),
+        });
 };
 
 const route = useRoute();
-const authData = computed(() => store.getters["getAuthData"]);
+const authData = computed(() => store.getters['getAuthData']);
 const dropdown = ref();
 const excludedElements = ref<any[]>([]);
-const isAdmin = ref<Boolean>(false);
+const isAdmin = ref<boolean>(false);
+
 watch(
     () => route.name,
     (newValue) => {
@@ -117,10 +128,12 @@ watch(
         }
     }
 );
+
 watch(
     authData,
     async(newValue) => {
         isAdmin.value = await clientSideCheckAdminRole(newValue?.token);
+
         store.dispatch(ADMIN_ACTION, isAdmin.value);
     },
     { deep: true }
@@ -136,23 +149,24 @@ const clientSideCheckAdminRole = async (jwt: string) => {
         } catch (error) {
             store.dispatch(SET_LOADING, false);
         }
+
     }
     return false;
 };
 
 const showLog = () => {
-    let log = document.querySelector(".drop-down-select") as HTMLElement;
-    log.classList.add("active");
+    let log = document.querySelector('.drop-down-select') as HTMLElement;
+    log.classList.add('active');
 };
 
 onMounted(() => {
-    window.addEventListener("click", handleClickOutSide);
-    excludedElements.value.push(document.querySelector(".account"));
-    excludedElements.value.push(document.querySelector(".fa-user"));
+    window.addEventListener('click', handleClickOutSide);
+    excludedElements.value.push(document.querySelector('.account'));
+    excludedElements.value.push(document.querySelector('.fa-user'));
 });
 
 onBeforeUnmount(() => {
-    window.removeEventListener("click", handleClickOutSide);
+    window.removeEventListener('click', handleClickOutSide);
 });
 
 const handleClickOutSide = (event) => {
@@ -163,8 +177,8 @@ const handleClickOutSide = (event) => {
             (el) => el.className == event.target.className
         )
     ) {
-        let log = document.querySelector(".drop-down-select") as HTMLElement;
-        log.classList.remove("active");
+        let log = document.querySelector('.drop-down-select') as HTMLElement;
+        log.classList.remove('active');
     }
 };
 
@@ -174,8 +188,8 @@ const scrollToTop = () => {
 
 const handleLogout = () => {
     store.dispatch(`${LOGOUT_ACTION}`, null);
-    localStorage.removeItem("userId");
-    localStorage.removeItem("jwtToken");
+    localStorage.removeItem('userId');
+    localStorage.removeItem('jwtToken');
 };
 </script>
 
