@@ -54,7 +54,9 @@
                     <i class="fa-solid fa-user"></i>
                     <ul class="drop-down-select" ref="dropdown">
                         <li v-if="isAdmin">
-                            <router-link @click="scrollToTop()" to="/admin/users"
+                            <router-link
+                                @click="scrollToTop()"
+                                to="/admin/users"
                                 >Admin page</router-link
                             >
                         </li>
@@ -81,9 +83,13 @@ import { useRouter, useRoute } from "vue-router";
 import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import BaseIcon from "@/components/BaseIcon.vue";
 import { useStore } from "vuex";
-import { ADMIN_ACTION, LOGOUT_ACTION } from "@/stores/storeConstants";
-import { jwtDecode } from "jwt-decode";
+import {
+    ADMIN_ACTION,
+    LOGOUT_ACTION,
+    SET_LOADING,
+} from "@/stores/storeConstants";
 import { Role } from "@/enums/Role";
+import http from "@/services/http/http";
 
 const store = useStore();
 const router = useRouter();
@@ -113,21 +119,23 @@ watch(
 );
 watch(
     authData,
-    (newValue) => {
-        isAdmin.value = clientSideCheckAdminRole(newValue?.token);
-        store.dispatch(ADMIN_ACTION,isAdmin.value);
+    async(newValue) => {
+        isAdmin.value = await clientSideCheckAdminRole(newValue?.token);
+        store.dispatch(ADMIN_ACTION, isAdmin.value);
     },
     { deep: true }
 );
 
-const clientSideCheckAdminRole = (jwt: string) => {
+const clientSideCheckAdminRole = async (jwt: string) => {
     if (jwt) {
-        const decodedToken: any = jwtDecode(jwt);
-        console.log(decodedToken?.role);
-        if(Array.isArray(decodedToken?.role)){
-            return decodedToken?.role.find((el: string) => el === Role.admin);
+        try {
+            store.dispatch(SET_LOADING, true);
+            const { data } = (await http.post("/Auth/CheckRole?jwt=" + jwt))
+            store.dispatch(SET_LOADING, false);
+            return data;
+        } catch (error) {
+            store.dispatch(SET_LOADING, false);
         }
-        return decodedToken?.role === Role.admin
     }
     return false;
 };

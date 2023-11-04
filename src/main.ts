@@ -6,6 +6,7 @@ import App from './App.vue';
 import router from './router';
 import i18n from '@/locales/i18n';
 import stores from './stores';
+import VueBasicAlert from 'vue-basic-alert'
 
 const app = createApp(App);
 
@@ -15,6 +16,7 @@ app.use(Vue3Toasity, {
 } as ToastOptions);
 app.use(router);
 app.use(stores);
+app.use(VueBasicAlert)
 app.use(i18n);
 
 app.mount('#app');
