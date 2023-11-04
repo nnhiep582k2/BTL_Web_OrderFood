@@ -125,7 +125,7 @@
                         </div>
 
                         <div class="box-content row">
-                            <RouterLink to="/menu" class="btn shop-btn"
+                            <RouterLink to="/menu/all" class="btn shop-btn"
                                 ><i class="fa fa-arrow-left"></i>Continue
                                 shopping</RouterLink
                             >

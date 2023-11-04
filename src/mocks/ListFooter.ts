@@ -5,10 +5,6 @@ export interface ListFooter {
 
 export const DataListFooter: ListFooter[] = [
     {
-        title: 'Our Menu',
-        datas: ['Taco', 'Burrito', 'Nachos', 'Side Food', 'Dessert', 'Drink'],
-    },
-    {
         title: 'Quick Links',
         datas: ['Home', 'About', 'Promotions', 'Menu', 'Book A Table'],
     },

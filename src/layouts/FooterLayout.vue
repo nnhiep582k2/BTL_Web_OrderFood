@@ -11,7 +11,7 @@
         </p>
         <div class="wrapper d-flex">
             <BaseListFooter
-                v-for="(item, index) in DataListFooter"
+                v-for="(item, index) in dataFooters"
                 :key="index"
                 :title="item.title"
                 :datas="item.datas"
@@ -41,9 +41,10 @@ import BaseListFooter from '@/components/BaseListFooter.vue';
 import BaseIcon from '@/components/BaseIcon.vue';
 import { DataListFooter } from '@/mocks/ListFooter';
 import { TextBoxType } from '@/enums/TextBoxType';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { IconType } from '@/enums/IconType';
 import { useRouter } from 'vue-router';
+import http from '@/services/http/http';
 
 const router = useRouter();
 const emailValue = ref<string>('');
@@ -92,6 +93,19 @@ const handleClickItem = (item: any, e: any) => {
             break;
     }
 };
+
+let dataFooters = ref<any[]>([]);
+
+onMounted(async () => {
+    let categories = (await http.get('/Categories/GetAllRecord')).data?.data;
+    dataFooters.value = [
+        {
+            title: 'Our Menu',
+            datas: [...categories.map((category) => category.name)],
+        },
+        ...DataListFooter,
+    ];
+});
 </script>
 
 <style lang="scss" scoped>
