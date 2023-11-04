@@ -122,6 +122,27 @@ export const router = createRouter({
                         import("@/views/admin-view/category/EditCategorysView.vue"),
                     props: true,
                 },
+                {
+                    path: "roles",
+                    name: "admin.roles",
+                    component: () =>
+                        import("@/views/admin-view/role/RolesView.vue"),
+                },
+                {
+                    path: "create-roles",
+                    name: "admin.create-roles",
+                    component: () =>
+                        import(
+                            "@/views/admin-view/role/CreateRolesView.vue"
+                        ),
+                },
+                {
+                    path: "edit-roles",
+                    name: "admin.edit-roles",
+                    component: () =>
+                        import("@/views/admin-view/role/EditRolesView.vue"),
+                    props: true,
+                },
                 
             ],
         },

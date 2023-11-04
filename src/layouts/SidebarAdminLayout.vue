@@ -22,6 +22,7 @@ import { useStore } from 'vuex';
 
 const sidebarItem = [
     'Users',
+    'Roles',
     'Foods',
     'Food images',
     'Categorys',
