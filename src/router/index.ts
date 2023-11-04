@@ -29,9 +29,8 @@ export const router = createRouter({
             component: PromotionsView,
         },
         {
-
-            path: '/menu/:item',
-            name: 'menu',
+            path: "/menu/:item",
+            name: "menu",
             component: MenuView,
         },
         {
@@ -81,14 +80,41 @@ export const router = createRouter({
                     component: () =>
                         import("@/views/admin-view/OrdersView.vue"),
                 },
-                
+
                 {
                     path: "bills",
                     name: "admin.bills",
                     component: () =>
-                        import("@/views/admin-view/BillsTable.vue"),
+                        import("@/views/admin-view/bill/BillsView.vue"),
+                },
+                {
+                    path: "create-bills",
+                    name: "admin.create-bills",
+                    component: () =>
+                        import("@/views/admin-view/bill/CreateBillsView.vue"),
+                },
+                {
+                    path: "edit-bills",
+                    name: "admin.edit-bills",
+                    component: () =>
+                        import("@/views/admin-view/bill/EditBillsView.vue"),
+                    props: true,
                 },
 
+                {
+                    path: "categorys",
+                    name: "admin.categorys",
+                    component: () =>
+                        import("@/views/admin-view/category/CategorysView.vue"),
+                },
+                {
+                    path: "create-categorys",
+                    name: "admin.create-Categorys",
+                    component: () =>
+                        import(
+                            "@/views/admin-view/category/CreateCategorysView.vue"
+                        ),
+                },
             ],
         },
         {

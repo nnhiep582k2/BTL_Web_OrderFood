@@ -1,5 +1,5 @@
 <template>
-    <BaseTable :headers="titleList" :items="items"> </BaseTable>
+    <BaseTable :headers="titleList" :items="items" entity="Foods"> </BaseTable>
 </template>
 
 <script setup lang="ts">
