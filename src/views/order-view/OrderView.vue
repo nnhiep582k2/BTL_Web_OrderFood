@@ -28,11 +28,11 @@
                     class="d-flex flex-wrap flex-sm-nowrap justify-content-between card-summary"
                 >
                     <div class="w-100 text-center py-1 px-2">
-                        <span>Paid:</span>{{ " " + b?.paid }}
+                        <span>Paid:</span>{{ ' ' + b?.paid }}
                     </div>
                     <div class="w-100 text-center py-1 px-2">
                         <span>Status:</span
-                        >{{ " " + avaiableStatus[b?.status] }}
+                        >{{ ' ' + avaiableStatus[b?.status] }}
                     </div>
                     <div class="w-100 text-center py-1 px-2">
                         <span>When:</span> {{ b?.createdDate }}
@@ -45,10 +45,10 @@
                         <span>Total:</span> ${{ b?.total }}
                     </div>
                     <div class="w-100 text-center py-1 px-2">
-                        <span>Address:</span>{{ " " + b?.address }}
+                        <span>Address:</span>{{ ' ' + b?.address }}
                     </div>
                     <div class="w-100 text-center py-1 px-2">
-                        <span>Phone:</span>{{ " " + b?.phoneNumber }}
+                        <span>Phone:</span>{{ ' ' + b?.phoneNumber }}
                     </div>
                 </div>
 
@@ -139,46 +139,44 @@
 </template>
 
 <script setup lang="ts">
-import BaseButton from "@/components/BaseButton.vue";
-import { computed, reactive, ref, watch } from "vue";
-import OrderDetails from "./OrderDetails.vue";
-import { ButtonType } from "@/enums/ButtonType";
-import http from "@/services/http/http";
-import { useStore } from "vuex";
-import { notify } from "@/services/Toast";
-import { TypeToast } from "@/enums/TypeToast";
-import { SET_LOADING } from "@/stores/storeConstants";
-import BaseNoPermission from '@/components/BaseNoPermission.vue'
+import BaseButton from '@/components/BaseButton.vue';
+import { computed, reactive, ref } from 'vue';
+import OrderDetails from './OrderDetails.vue';
+import { ButtonType } from '@/enums/ButtonType';
+import http from '@/services/http/http';
+import { useStore } from 'vuex';
+import { notify } from '@/services/Toast';
+import { TypeToast } from '@/enums/TypeToast';
+import { SET_LOADING } from '@/stores/storeConstants';
+import BaseNoPermission from '@/components/BaseNoPermission.vue';
+
 const avaiableStatus = reactive([
-    "cancel",
-    "confirmed",
-    "preparing",
-    "checking",
-    "delivering",
-    "delivered",
+    'cancel',
+    'confirmed',
+    'preparing',
+    'checking',
+    'delivering',
+    'delivered',
 ]);
 
-interface IBills{
-    billId: string,
-    paid: string,
-    status: number,
-    createdDate: string,
-    address: string,
-    total: number,
-    phoneNumber: string
+interface IBills {
+    billId: string;
+    paid: string;
+    status: number;
+    createdDate: string;
+    address: string;
+    total: number;
+    phoneNumber: string;
 }
 
 const store = useStore();
 const allBills = ref<IBills[]>([]);
 const showOrderDetails = ref<boolean>(false);
-const sendId = ref<string>("");
-const interval = ref<string>("");
-const authData = computed(() => store.getters["getAuthData"]);
+const sendId = ref<string>('');
+const authData = computed(() => store.getters['getAuthData']);
 const filterBills = computed(() => {
     return allBills.value.filter((b) => b.status < 6 && b.status > 0);
 });
-
-
 
 const getAllBills = async () => {
     try {
@@ -189,8 +187,8 @@ const getAllBills = async () => {
             );
             if (data?.success) {
                 allBills.value = data.data;
-                allBills.value.map(el=>{
-                    if(el.createdDate){
+                allBills.value.map((el) => {
+                    if (el.createdDate) {
                         const dateTime = new Date(el.createdDate);
                         const date = dateTime.getDate();
                         const month = dateTime.getMonth() + 1;
@@ -198,10 +196,10 @@ const getAllBills = async () => {
                         const hours = dateTime.getHours();
                         const minutes = dateTime.getMinutes();
                         const seconds = dateTime.getSeconds();
-                        el.createdDate =  `${hours}:${minutes}:${seconds} - ${date}/${month}/${year}`;
+                        el.createdDate = `${hours}:${minutes}:${seconds} - ${date}/${month}/${year}`;
                     }
                     return el;
-                })
+                });
             }
         }
     } catch (error: any) {
@@ -218,7 +216,7 @@ const closeView = () => {
 };
 
 const sendBillId = (id?: string) => {
-    sendId.value = id || "23423";
+    sendId.value = id || '23423';
     showOrderDetails.value = true;
 };
 </script>

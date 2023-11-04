@@ -15,6 +15,7 @@
                 :key="index"
                 :title="item.title"
                 :datas="item.datas"
+                @on-click="handleClickItem(item, $event)"
             />
         </div>
         <div class="d-flex link">
@@ -42,8 +43,55 @@ import { DataListFooter } from '@/mocks/ListFooter';
 import { TextBoxType } from '@/enums/TextBoxType';
 import { ref } from 'vue';
 import { IconType } from '@/enums/IconType';
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 const emailValue = ref<string>('');
+
+const handleClickQuickLink = (item: any) => {
+    if (item == 'Menu')
+        router.push({
+            name: `${item.toLowerCase()}`,
+            params: {
+                item: 'all',
+            },
+        });
+    else router.push({ path: `/${item.toLowerCase()}` });
+};
+
+const handleClickExtraLink = (item: any) => {
+    if (item == 'Login')
+        router.push({
+            path: '/login',
+        });
+    else
+        router.push({
+            path: '/register',
+        });
+};
+
+const handleClickItem = (item: any, e: any) => {
+    switch (item.title) {
+        case 'Our Menu':
+            console.log(e);
+            router.push({
+                name: 'menu',
+                params: {
+                    item: e,
+                },
+            });
+            break;
+        case 'Quick Links':
+            handleClickQuickLink(e == 'Book A Table' ? 'Table' : e);
+            break;
+        case 'Extra Links':
+            console.log(e);
+            handleClickExtraLink(e);
+            break;
+        default:
+            break;
+    }
+};
 </script>
 
 <style lang="scss" scoped>

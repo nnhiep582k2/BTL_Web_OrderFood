@@ -33,18 +33,18 @@
             <div class="option">
                 <BaseIcon
                     v-if="!authData?.userId"
-                    @click="() => showLog()"
                     classes="account"
+                    @click="() => showLog()"
                     ><i class="fa-solid fa-user"></i>
                     <ul class="drop-down-select" ref="dropdown">
                         <li>
                             <router-link @click="scrollToTop()" to="/login"
-                                >login</router-link
+                                >Login</router-link
                             >
                         </li>
                         <li>
                             <router-link @click="scrollToTop()" to="/register"
-                                >register</router-link
+                                >Register</router-link
                             >
                         </li>
                     </ul>
@@ -54,7 +54,9 @@
                     <i class="fa-solid fa-user"></i>
                     <ul class="drop-down-select" ref="dropdown">
                         <li v-if="isAdmin">
-                            <router-link @click="scrollToTop()" to="/admin/users"
+                            <router-link
+                                to="/admin/users"
+                                @click="scrollToTop()"
                                 >Admin page</router-link
                             >
                         </li>
@@ -76,14 +78,14 @@
 </template>
 
 <script setup lang="ts">
-import { HeaderItem } from "@/mocks/HeaderItem";
-import { useRouter, useRoute } from "vue-router";
-import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
-import BaseIcon from "@/components/BaseIcon.vue";
-import { useStore } from "vuex";
-import { ADMIN_ACTION, LOGOUT_ACTION } from "@/stores/storeConstants";
-import { jwtDecode } from "jwt-decode";
-import { Role } from "@/enums/Role";
+import { HeaderItem } from '@/mocks/HeaderItem';
+import { useRouter, useRoute } from 'vue-router';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import BaseIcon from '@/components/BaseIcon.vue';
+import { useStore } from 'vuex';
+import { ADMIN_ACTION, LOGOUT_ACTION } from '@/stores/storeConstants';
+import { jwtDecode } from 'jwt-decode';
+import { Role } from '@/enums/Role';
 
 const store = useStore();
 const router = useRouter();
@@ -91,16 +93,25 @@ const currentTab = ref(HeaderItem[0]);
 const isCurrentTab = (tab: string) => currentTab.value === tab;
 
 const setActiveTab = (tab: string) => {
-    router.push({
-        name: tab.toLowerCase(),
-    });
+    if (tab == 'Menu') {
+        router.push({
+            name: tab.toLowerCase(),
+            params: {
+                item: 'all',
+            },
+        });
+    } else
+        router.push({
+            name: tab.toLowerCase(),
+        });
 };
 
 const route = useRoute();
-const authData = computed(() => store.getters["getAuthData"]);
+const authData = computed(() => store.getters['getAuthData']);
 const dropdown = ref();
 const excludedElements = ref<any[]>([]);
-const isAdmin = ref<Boolean>(false);
+const isAdmin = ref<boolean>(false);
+
 watch(
     () => route.name,
     (newValue) => {
@@ -111,11 +122,12 @@ watch(
         }
     }
 );
+
 watch(
     authData,
     (newValue) => {
         isAdmin.value = clientSideCheckAdminRole(newValue?.token);
-        store.dispatch(ADMIN_ACTION,isAdmin.value);
+        store.dispatch(ADMIN_ACTION, isAdmin.value);
     },
     { deep: true }
 );
@@ -124,27 +136,27 @@ const clientSideCheckAdminRole = (jwt: string) => {
     if (jwt) {
         const decodedToken: any = jwtDecode(jwt);
         console.log(decodedToken?.role);
-        if(Array.isArray(decodedToken?.role)){
+        if (Array.isArray(decodedToken?.role)) {
             return decodedToken?.role.find((el: string) => el === Role.admin);
         }
-        return decodedToken?.role === Role.admin
+        return decodedToken?.role === Role.admin;
     }
     return false;
 };
 
 const showLog = () => {
-    let log = document.querySelector(".drop-down-select") as HTMLElement;
-    log.classList.add("active");
+    let log = document.querySelector('.drop-down-select') as HTMLElement;
+    log.classList.add('active');
 };
 
 onMounted(() => {
-    window.addEventListener("click", handleClickOutSide);
-    excludedElements.value.push(document.querySelector(".account"));
-    excludedElements.value.push(document.querySelector(".fa-user"));
+    window.addEventListener('click', handleClickOutSide);
+    excludedElements.value.push(document.querySelector('.account'));
+    excludedElements.value.push(document.querySelector('.fa-user'));
 });
 
 onBeforeUnmount(() => {
-    window.removeEventListener("click", handleClickOutSide);
+    window.removeEventListener('click', handleClickOutSide);
 });
 
 const handleClickOutSide = (event) => {
@@ -155,8 +167,8 @@ const handleClickOutSide = (event) => {
             (el) => el.className == event.target.className
         )
     ) {
-        let log = document.querySelector(".drop-down-select") as HTMLElement;
-        log.classList.remove("active");
+        let log = document.querySelector('.drop-down-select') as HTMLElement;
+        log.classList.remove('active');
     }
 };
 
@@ -166,8 +178,8 @@ const scrollToTop = () => {
 
 const handleLogout = () => {
     store.dispatch(`${LOGOUT_ACTION}`, null);
-    localStorage.removeItem("userId");
-    localStorage.removeItem("jwtToken");
+    localStorage.removeItem('userId');
+    localStorage.removeItem('jwtToken');
 };
 </script>
 

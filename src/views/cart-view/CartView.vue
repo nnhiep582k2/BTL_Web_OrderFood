@@ -223,6 +223,8 @@ let allFoods: any[] = [];
 let user: any = {};
 const router = useRouter();
 
+window.scrollTo(0, 0);
+
 const matchID = (food, cartArray) => {
     let temp = '';
     cartArray.forEach((element) => {

@@ -9,7 +9,7 @@ import { IconType } from '@/enums/IconType';
 
 interface IProps {
     type?: IconType;
-    classes?: string
+    classes?: string;
 }
 
 const props = withDefaults(defineProps<IProps>(), {

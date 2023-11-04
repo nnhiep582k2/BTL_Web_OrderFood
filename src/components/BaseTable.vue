@@ -30,9 +30,9 @@
 </template>
 
 <script lang="ts" setup>
-import  type { PropType } from "vue";
-import BaseButton from "./BaseButton.vue";
-import { ButtonType } from "@/enums/ButtonType";
+import type { PropType } from 'vue';
+import BaseButton from './BaseButton.vue';
+import { ButtonType } from '@/enums/ButtonType';
 
 const props = defineProps({
     headers: {
@@ -47,15 +47,15 @@ const props = defineProps({
 
 const buttonAction = [
     {
-        text: "Add",
+        text: 'Add',
         type: ButtonType.success,
     },
     {
-        text: "Edit",
+        text: 'Edit',
         type: ButtonType.information,
     },
     {
-        text: "Delete",
+        text: 'Delete',
         type: ButtonType.warning,
     },
 ];
@@ -73,12 +73,12 @@ const handleActionClick = (action: string, item: any) => {
     margin-top: 10px;
 }
 
-.project-list>tbody>tr>td {
+.project-list > tbody > tr > td {
     padding: 12px 8px;
-    border: 1px solid #CCC;
+    border: 1px solid #ccc;
 }
 
-.project-list>tbody>tr>td .avatar {
+.project-list > tbody > tr > td .avatar {
     width: 22px;
     border: 1px solid #dee2e6;
 }
@@ -88,16 +88,14 @@ const handleActionClick = (action: string, item: any) => {
     border: 1px solid #dee2e6;
 }
 
-
 .table td,
 .table th {
-    padding: .75rem;
+    padding: 0.75rem;
     vertical-align: top;
     border-top: 1px solid #dee2e6;
 }
 
-
-.action{
+.action {
     display: flex;
     align-items: center;
     justify-content: center;
