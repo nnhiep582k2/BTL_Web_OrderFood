@@ -9,7 +9,7 @@
                     Customers will enjoy Mexican cuisine with explosive,
                     sophisticated flavors.
                 </p>
-                <RouterLink to="/menu" class="btn" @click="scrollToTop()">
+                <RouterLink to="/menu/all" class="btn" @click="scrollToTop()">
                     <BaseButton text="Order Now" :type="ButtonType.success" />
                 </RouterLink>
             </div>
@@ -30,8 +30,8 @@
         <div class="home-category">
             <RouterLink
                 v-for="(item, index) in DataHomeCategory"
-                to="/menu"
                 class="box"
+                :to="`/menu/${item.name}`"
                 :key="index"
                 @click="scrollToTop()"
             >
@@ -50,7 +50,7 @@
                 <template #content>
                     <div class="title">{{ item.title }}</div>
                     <div class="discount">{{ item.discount }}</div>
-                    <RouterLink to="/menu">
+                    <RouterLink to="/menu/all">
                         <BaseButton
                             :type="item.button.type"
                             :text="item.button.text"

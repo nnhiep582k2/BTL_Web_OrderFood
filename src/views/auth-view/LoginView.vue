@@ -138,6 +138,8 @@ const handleSubmit = async (e: Event) => {
 const scrollToTop = () => {
     window.scrollTo(0, 0);
 };
+
+scrollToTop();
 </script>
 
 <style lang="scss" scoped>

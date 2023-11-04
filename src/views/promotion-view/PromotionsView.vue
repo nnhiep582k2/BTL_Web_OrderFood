@@ -164,7 +164,7 @@ document.title = 'Promotions | Orod - Order Food';
 
 const handleClickButton = () => {
     router.push({
-        name: 'menu',
+        path: 'menu/all',
     });
 };
 </script>

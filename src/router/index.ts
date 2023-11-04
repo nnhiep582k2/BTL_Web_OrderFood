@@ -10,7 +10,7 @@ import HomeView from '@/views/home-view/HomeView.vue';
 import CartView from '@/views/cart-view/CartView.vue';
 import AdminView from '@/views/admin-view/AdminView.vue';
 
-const router = createRouter({
+export const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
         {
@@ -29,7 +29,7 @@ const router = createRouter({
             component: PromotionsView,
         },
         {
-            path: '/menu',
+            path: '/menu/:item',
             name: 'menu',
             component: MenuView,
         },
@@ -64,11 +64,11 @@ const router = createRouter({
             component: AdminView,
             children: [
                 {
-                  path: 'users',
-                  name: 'admin.users',
-                  component: () => import('@/views/admin-view/UsersView.vue'),
+                    path: 'users',
+                    name: 'admin.users',
+                    component: () => import('@/views/admin-view/UsersView.vue'),
                 },
-              ],
+            ],
         },
         {
             path: '/:catchAll(.*)',

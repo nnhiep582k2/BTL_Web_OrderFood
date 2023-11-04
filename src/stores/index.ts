@@ -1,5 +1,5 @@
-import { ref } from "vue";
-import { createStore } from "vuex";
+import { ref } from 'vue';
+import { createStore } from 'vuex';
 import {
     LOGIN_ACTION,
     SET_AUTH_DATA,
@@ -9,11 +9,10 @@ import {
     LOGOUT_ACTION,
     ADMIN_ACTION,
     SET_ADMIN,
-} from "./storeConstants";
-import axios from "axios";
-import { notify } from "@/services/Toast";
-import { TypeToast } from "@/enums/TypeToast";
-import http from "@/services/http/http";
+} from './storeConstants';
+import { notify } from '@/services/Toast';
+import { TypeToast } from '@/enums/TypeToast';
+import http from '@/services/http/http';
 
 interface IAuthData {
     userId: string;
@@ -29,10 +28,10 @@ interface IRootState {
 export default createStore<IRootState>({
     state: {
         authData: ref<IAuthData>({
-            userId: "",
-            fullName: "",
-            email: "",
-            token: "",
+            userId: '',
+            fullName: '',
+            email: '',
+            token: '',
         }),
         isLoading: ref<boolean>(false),
         allFoods: ref([]),
@@ -48,7 +47,6 @@ export default createStore<IRootState>({
             state.isLoading = isOpen;
         },
 
-        
         [SET_AUTH_DATA](state: any, data: any) {
             if (data) {
                 const newAuthData = {
@@ -71,13 +69,13 @@ export default createStore<IRootState>({
     },
     actions: {
         [SET_LOADING]({ commit }: any, isOpen: boolean) {
-            commit("toggleLoading", isOpen);
+            commit('toggleLoading', isOpen);
         },
 
         async [LOGIN_ACTION]({ commit }: any, payload: object) {
             try {
                 const { data } = await http.post(
-                    "/Auth/login",
+                    '/Auth/login',
                     JSON.stringify(payload)
                 );
                 if (data?.success) {
@@ -90,7 +88,7 @@ export default createStore<IRootState>({
 
         async [FOOD_ACTION]({ commit }: any) {
             try {
-                const { data } = await http.get("/Foods/GetAllRecord");
+                const { data } = await http.get('/Foods/GetAllRecord');
                 if (data.success) {
                     commit(SET_FOOD_LIST, data.data);
                 }

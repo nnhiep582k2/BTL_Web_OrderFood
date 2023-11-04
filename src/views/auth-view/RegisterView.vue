@@ -210,6 +210,8 @@ const scrollToTop = () => {
     window.scrollTo(0, 0);
 };
 
+scrollToTop();
+
 const checkForm = () => {
     resetCheckErr();
     // FullName validate
@@ -414,7 +416,7 @@ const handleSubmitSignUp = async (event: Event): Promise<void> => {
             } else {
                 notify(`${error}`, TypeToast.error);
             }
-        }finally{
+        } finally {
             store.dispatch(SET_LOADING, false);
         }
     }

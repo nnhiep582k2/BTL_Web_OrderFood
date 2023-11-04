@@ -230,7 +230,7 @@
                             <label
                                 for="mtPrice"
                                 class="d-flex justify-content-between"
-                                >{{ ">" }} $12
+                                >{{ '>' }} $12
                                 <button
                                     class="unselect-btn"
                                     @click="unselectPriceBtn($event)"
@@ -252,7 +252,7 @@
                             <label
                                 for="ltPrice"
                                 class="d-flex justify-content-between"
-                                >{{ "<" }} $2
+                                >{{ '<' }} $2
                                 <button
                                     class="unselect-btn"
                                     @click="unselectPriceBtn($event)"
@@ -452,23 +452,26 @@
                         :type="ButtonType.success"
                         text="<"
                         class="action-btn"
-                        @click="()=>previous()"
+                        @click="() => previous()"
                     />
                     <div
                         v-for="(p, i) in calculatePages"
                         :key="i"
                         class="d-inline"
                     >
-                        <span v-if="i == pageNum" class="highlight" @click="set(i)">{{
-                            i + 1
-                        }}</span>
+                        <span
+                            v-if="i == pageNum"
+                            class="highlight"
+                            @click="set(i)"
+                            >{{ i + 1 }}</span
+                        >
                         <span v-else @click="set(i)">{{ i + 1 }}</span>
                     </div>
 
                     <BaseButton
                         v-if="pageNum != calculatePages - 1"
                         :type="ButtonType.success"
-                        @click="()=>next()" 
+                        @click="() => next()"
                         text=">"
                         class="action-btn"
                     />
@@ -488,21 +491,19 @@
 </template>
 
 <script setup lang="ts">
-import BaseTextBox from "@/components/BaseTextBox.vue";
-import { reactive, ref, computed } from "vue";
-import BaseEmpty from "@/components/BaseEmpty.vue";
-import BaseButton from "@/components/BaseButton.vue";
-import QuickView from "./QuickView.vue";
-import { ButtonType } from "@/enums/ButtonType";
-import { FOOD_ACTION, SET_LOADING } from "@/stores/storeConstants";
-import { useStore } from "vuex";
-import { notify } from "@/services/Toast";
-import { TypeToast } from "@/enums/TypeToast";
+import BaseTextBox from '@/components/BaseTextBox.vue';
+import { reactive, ref, computed } from 'vue';
+import BaseEmpty from '@/components/BaseEmpty.vue';
+import BaseButton from '@/components/BaseButton.vue';
+import QuickView from './QuickView.vue';
+import { ButtonType } from '@/enums/ButtonType';
+import { useStore } from 'vuex';
 
 window.scrollTo(0, 0);
+document.title = 'Menu | Orod - Order Food';
 
-document.title = "Menu | Orod - Order Food";
 const store = useStore();
+
 interface IFoodObj {
     name: string;
     category: string;
@@ -522,11 +523,11 @@ interface IcurrentPageItems {
 }
 
 const foodObj = reactive<IFoodObj>({
-    name: "",
-    category: "",
+    name: '',
+    category: '',
     status: [],
-    price: "",
-    type: "",
+    price: '',
+    type: '',
 });
 
 const showQuickView = ref<boolean>(false);
@@ -535,9 +536,9 @@ const endId = ref<string | null>(null);
 const sendId = ref<string | undefined>();
 const perPage = ref<number>(1);
 const pageNum = ref<number>(0);
-const previousCategoryClicked = ref<Event | string | null>("");
-const previousPriceClicked = ref<Event | string | null>("");
-const previousTypeClicked = ref<Event | string | null>("");
+const previousCategoryClicked = ref<Event | string | null | any>('');
+const previousPriceClicked = ref<Event | string | null | any>('');
+const previousTypeClicked = ref<Event | string | null | any>('');
 
 const allFoods = computed(() => store.state.allFoods);
 const filterFoods = computed(() => {
@@ -548,8 +549,8 @@ const filterFoods = computed(() => {
             evaluatePrice(f, foodObj.price) &&
             f.foodType.toLowerCase().match(foodObj.type.toLowerCase()) &&
             (f.name.match(foodObj.category) ||
-                foodObj.category == "all" ||
-                foodObj.category == "")
+                foodObj.category == 'all' ||
+                foodObj.category == '')
     );
 });
 
@@ -568,18 +569,18 @@ const calculatePages = computed(() => {
     }
 });
 
-const set = (val)=> {
+const set = (val) => {
     pageNum.value = val;
-}
+};
 const next = () => {
     pageNum.value = pageNum.value + 1;
-}
+};
 const previous = () => {
     pageNum.value = pageNum.value - 1;
-}
+};
 
 const checkSale = (food, statusArray) => {
-    if (statusArray.includes("Sale Off")) {
+    if (statusArray.includes('Sale Off')) {
         if (parseFloat(food.foodDiscount) > 0) {
             return true;
         } else {
@@ -589,8 +590,8 @@ const checkSale = (food, statusArray) => {
     return true;
 };
 const checkBest = (food, statusArray) => {
-    if (statusArray.includes("Best Seller")) {
-        if (food.foodStatus.toLowerCase().includes("best seller")) {
+    if (statusArray.includes('Best Seller')) {
+        if (food.foodStatus.toLowerCase().includes('best seller')) {
             return true;
         } else {
             return false;
@@ -600,8 +601,8 @@ const checkBest = (food, statusArray) => {
 };
 
 const checkOnl = (food, statusArray) => {
-    if (statusArray.includes("Online Only")) {
-        if (food.foodStatus.toLowerCase().includes("online only")) {
+    if (statusArray.includes('Online Only')) {
+        if (food.foodStatus.toLowerCase().includes('online only')) {
             return true;
         } else {
             return false;
@@ -611,8 +612,8 @@ const checkOnl = (food, statusArray) => {
 };
 
 const checkSeason = (food, statusArray) => {
-    if (statusArray.includes("Seasonal Dishes")) {
-        if (food.foodStatus.toLowerCase().includes("seasonal dishes")) {
+    if (statusArray.includes('Seasonal Dishes')) {
+        if (food.foodStatus.toLowerCase().includes('seasonal dishes')) {
             return true;
         } else {
             return false;
@@ -621,8 +622,8 @@ const checkSeason = (food, statusArray) => {
     return true;
 };
 const checkNew = (food, statusArray) => {
-    if (statusArray.includes("New Dishes")) {
-        if (food.foodStatus.toLowerCase().includes("new dishes")) {
+    if (statusArray.includes('New Dishes')) {
+        if (food.foodStatus.toLowerCase().includes('new dishes')) {
             return true;
         } else {
             return false;
@@ -651,27 +652,27 @@ const evaluateStatus = (food, statusArray) => {
 const evaluatePrice = (food, priceRange) => {
     pageNum.value = 0;
     var cal = parseFloat(food.price) - parseFloat(food.foodDiscount);
-    if (priceRange == "2,5") {
+    if (priceRange == '2,5') {
         if (2 <= cal && cal <= 5) {
             return food;
         }
-    } else if (priceRange == "5,10") {
+    } else if (priceRange == '5,10') {
         if (5 <= cal && cal <= 10) {
             return food;
         }
-    } else if (priceRange == "10,12") {
+    } else if (priceRange == '10,12') {
         if (10 <= cal && cal <= 12) {
             return food;
         }
-    } else if (priceRange == "2") {
+    } else if (priceRange == '2') {
         if (cal <= 2) {
             return food;
         }
-    } else if (priceRange == "12") {
+    } else if (priceRange == '12') {
         if (cal >= 12) {
             return food;
         }
-    } else if (priceRange == "") {
+    } else if (priceRange == '') {
         return food;
     }
 };
@@ -693,15 +694,15 @@ const filterStatusBtn = (e: Event) => {
         ) as HTMLLabelElement;
 
         if (labelElement) {
-            labelElement.style.background = "#057835fa";
-            labelElement.style.color = "white";
+            labelElement.style.background = '#057835fa';
+            labelElement.style.color = 'white';
 
             const buttonElement = labelElement.querySelector(
-                ":scope > button"
+                ':scope > button'
             ) as HTMLElement;
 
             if (buttonElement) {
-                buttonElement.style.display = "block";
+                buttonElement.style.display = 'block';
             }
         }
     }
@@ -709,60 +710,60 @@ const filterStatusBtn = (e: Event) => {
 
 const filterPriceBtn = (e: Event) => {
     pageNum.value = 0; // Assuming pageNum.value is a string
-    foodObj.price = "";
+    foodObj.price = '';
     foodObj.price += (e.target as HTMLInputElement).value; // Assuming e.target is an input element
 
     const targetLabel = document.querySelector(
         `[for=${(e.target as HTMLElement).id}]`
     ) as HTMLLabelElement;
-    targetLabel.style.background = "#057835fa";
-    targetLabel.style.color = "white";
+    targetLabel.style.background = '#057835fa';
+    targetLabel.style.color = 'white';
 
     const targetButton = targetLabel.querySelector(
-        ":scope > button"
+        ':scope > button'
     ) as HTMLButtonElement;
-    targetButton.style.display = "block";
+    targetButton.style.display = 'block';
 
-    if (previousPriceClicked.value !== "") {
+    if (previousPriceClicked.value !== '') {
         const previousTargetLabel = document.querySelector(
-            `[for=${(previousPriceClicked.value.target as HTMLElement).id}]`
+            `[for=${(previousPriceClicked.value?.target as HTMLElement).id}]`
         ) as HTMLLabelElement;
-        previousTargetLabel.style.background = "inherit";
-        previousTargetLabel.style.color = "inherit";
+        previousTargetLabel.style.background = 'inherit';
+        previousTargetLabel.style.color = 'inherit';
 
         const previousTargetButton = previousTargetLabel.querySelector(
-            ":scope > button"
+            ':scope > button'
         ) as HTMLButtonElement;
-        previousTargetButton.style.display = "none";
+        previousTargetButton.style.display = 'none';
     }
     previousPriceClicked.value = e;
 };
 
 const filterTypeBtn = (e: Event) => {
     pageNum.value = 0;
-    foodObj.type = "";
+    foodObj.type = '';
     foodObj.type += (e.target as HTMLInputElement).value;
     const targetLabel = document.querySelector(
         `[for=${(e.target as HTMLElement).id}]`
     ) as HTMLLabelElement;
-    targetLabel.style.background = "#057835fa";
-    targetLabel.style.color = "white";
+    targetLabel.style.background = '#057835fa';
+    targetLabel.style.color = 'white';
 
     const targetButton = targetLabel.querySelector(
-        ":scope > button"
+        ':scope > button'
     ) as HTMLButtonElement;
-    targetButton.style.display = "block";
-    if (previousTypeClicked.value != "") {
+    targetButton.style.display = 'block';
+    if (previousTypeClicked.value != '') {
         const previousTargetLabel = document.querySelector(
-            `[for=${(previousTypeClicked.value.target as HTMLElement).id}]`
+            `[for=${(previousTypeClicked.value?.target as HTMLElement).id}]`
         ) as HTMLLabelElement;
-        previousTargetLabel.style.background = "inherit";
-        previousTargetLabel.style.color = "inherit";
+        previousTargetLabel.style.background = 'inherit';
+        previousTargetLabel.style.color = 'inherit';
 
         const previousTargetButton = previousTargetLabel.querySelector(
-            ":scope > button"
+            ':scope > button'
         ) as HTMLButtonElement;
-        previousTargetButton.style.display = "none";
+        previousTargetButton.style.display = 'none';
     }
     previousTypeClicked.value = e;
 };
@@ -771,14 +772,15 @@ const filterFoodBtn = (e) => {
     pageNum.value = 0;
     if (
         foodObj.category != e.target.value &&
-        previousCategoryClicked.value != ""
+        previousCategoryClicked.value != ''
     ) {
-        (previousCategoryClicked.value.target as HTMLElement).style.background =
-            "#27ae60";
+        (
+            previousCategoryClicked.value?.target as HTMLElement
+        ).style.background = '#27ae60';
     }
     foodObj.category = e.target.value;
     previousCategoryClicked.value = e;
-    e.target.style.background = "#057835fa";
+    e.target.style.background = '#057835fa';
 };
 
 const unselectStatusBtn = (e) => {
@@ -786,25 +788,25 @@ const unselectStatusBtn = (e) => {
     foodObj.status = foodObj.status.filter(function (a) {
         return a !== e.target.value;
     });
-    e.target.parentNode.style.background = "inherit";
-    e.target.parentNode.style.color = "inherit";
-    e.target.parentNode.querySelector(":scope > button").style.display = "none";
+    e.target.parentNode.style.background = 'inherit';
+    e.target.parentNode.style.color = 'inherit';
+    e.target.parentNode.querySelector(':scope > button').style.display = 'none';
 };
 const unselectPriceBtn = (e) => {
     pageNum.value = 0;
-    foodObj.price = "";
-    e.target.parentNode.style.background = "inherit";
-    e.target.parentNode.style.color = "inherit";
-    e.target.parentNode.querySelector(":scope > button").style.display = "none";
+    foodObj.price = '';
+    e.target.parentNode.style.background = 'inherit';
+    e.target.parentNode.style.color = 'inherit';
+    e.target.parentNode.querySelector(':scope > button').style.display = 'none';
     previousPriceClicked.value = e;
 };
 
 const unselectTypeBtn = (e) => {
     pageNum.value = 0;
-    foodObj.type = "";
-    e.target.parentNode.style.background = "inherit";
-    e.target.parentNode.style.color = "inherit";
-    e.target.parentNode.querySelector(":scope > button").style.display = "none";
+    foodObj.type = '';
+    e.target.parentNode.style.background = 'inherit';
+    e.target.parentNode.style.color = 'inherit';
+    e.target.parentNode.querySelector(':scope > button').style.display = 'none';
     previousTypeClicked.value = e;
 };
 
@@ -814,8 +816,6 @@ const addItem = (index: Number) => {
 const closeView = () => {
     showQuickView.value = false;
 };
-
-
 </script>
 
 <style lang="scss" scoped>

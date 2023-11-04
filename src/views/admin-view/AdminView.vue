@@ -6,12 +6,11 @@
 </template>
 
 <script setup lang="ts">
-import SidebarAdminLayout from '@/layouts/SidebarAdminLayout.vue'
-
+import SidebarAdminLayout from '@/layouts/SidebarAdminLayout.vue';
 </script>
 
 <style lang="scss" scoped>
-.admin__container{
+.admin__container {
     display: flex;
     column-gap: 20px;
 }
