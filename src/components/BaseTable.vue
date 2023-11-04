@@ -35,35 +35,28 @@
         </table>
 
         <div v-if="calculatePages > 1" class="action-row">
-                    <BaseButton
-                        v-if="pageNum != 0"
-                        :type="ButtonType.success"
-                        text="<"
-                        class="action-btn"
-                        @click="() => previous()"
-                    />
-                    <div
-                        v-for="(p, i) in calculatePages"
-                        :key="i"
-                        class="d-inline"
-                    >
-                        <span
-                            v-if="i == pageNum"
-                            class="highlight"
-                            @click="set(i)"
-                            >{{ i + 1 }}</span
-                        >
-                        <span v-else @click="set(i)">{{ i + 1 }}</span>
-                    </div>
+            <BaseButton
+                v-if="pageNum != 0"
+                :type="ButtonType.success"
+                text="<"
+                class="action-btn"
+                @click="() => previous()"
+            />
+            <div v-for="(p, i) in calculatePages" :key="i" class="d-inline">
+                <span v-if="i == pageNum" class="highlight" @click="set(i)">{{
+                    i + 1
+                }}</span>
+                <span v-else @click="set(i)">{{ i + 1 }}</span>
+            </div>
 
-                    <BaseButton
-                        v-if="pageNum != calculatePages - 1"
-                        :type="ButtonType.success"
-                        @click="() => next()"
-                        text=">"
-                        class="action-btn"
-                    />
-                </div>
+            <BaseButton
+                v-if="pageNum != calculatePages - 1"
+                :type="ButtonType.success"
+                @click="() => next()"
+                text=">"
+                class="action-btn"
+            />
+        </div>
     </div>
 </template>
 
@@ -160,8 +153,6 @@ const previous = () => {
     pageNum.value = pageNum.value - 1;
 };
 
-
-
 const handleDelete = async (id: string) => {
     try {
         store.dispatch(SET_LOADING, true);
@@ -217,29 +208,29 @@ const handleDelete = async (id: string) => {
 }
 
 .action-row {
-        padding-top: 30px;
-        width: 100%;
-        text-align: center;
-        font-size: 20px;
-        .action-btn {
-            background-color: var(--color-primary);
-            padding: 3px;
-            border: 2px solid var(--color-primary);
-            border-radius: 30%;
-            color: white;
-        }
-        span {
-            margin-right: 15px;
+    padding-top: 30px;
+    width: 100%;
+    text-align: center;
+    font-size: 20px;
+    .action-btn {
+        background-color: var(--color-primary);
+        padding: 3px;
+        border: 2px solid var(--color-primary);
+        border-radius: 30%;
+        color: white;
+    }
+    span {
+        margin-right: 15px;
 
-            &:hover {
-                cursor: pointer;
-            }
-            &.highlight {
-                color: #f38609;
-            }
-            &:first-of-type {
-                margin-left: 15px;
-            }
+        &:hover {
+            cursor: pointer;
+        }
+        &.highlight {
+            color: #f38609;
+        }
+        &:first-of-type {
+            margin-left: 15px;
         }
     }
+}
 </style>

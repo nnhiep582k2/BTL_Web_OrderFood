@@ -172,7 +172,7 @@ onMounted(async () => {
     if (route.query.id) {
         billId.value = route.query.id.toString();
     }
-    if (billId) {
+    if (billId.value) {
         try {
             store.dispatch(SET_LOADING, true);
             let { data } = (await http.get(`/Bills/GetById?recordId=${billId.value}`))
