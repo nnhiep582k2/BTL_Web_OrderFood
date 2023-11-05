@@ -9,7 +9,6 @@
 </template>
 
 <script setup lang="ts">
-
 import BaseTable from '@/components/BaseTable.vue';
 import { ref } from 'vue';
 import http from '@/services/http/http';
@@ -18,7 +17,6 @@ import { useStore } from 'vuex';
 import { SET_LOADING } from '@/stores/storeConstants';
 import { ButtonType } from '@/enums/ButtonType';
 import router from '@/router';
-
 
 const titleList = [
     'foodImageId',
@@ -48,6 +46,4 @@ const getFoodImages = async () => {
 getFoodImages();
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
