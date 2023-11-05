@@ -16,27 +16,31 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
-import { useStore } from 'vuex';
+import { ref } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import { useStore } from "vuex";
 
 const sidebarItem = [
-    'Users',
-    'Roles',
-    'Foods',
-    'Food images',
-    'Categorys',
-    'Bills',
-    'Carts',
-    'Orders',
-    'Payment orders',
-    'Payments',
+    "Users",
+    "Roles",
+    "Foods",
+    "Food images",
+    "Categorys",
+    "Bills",
+    "Carts",
+    "Orders",
+    "Payment orders",
+    "Payments",
 ];
 const router = useRouter();
 const currentSidebar = ref(sidebarItem[0]);
 const isCurrentSidebar = (tab: string) => currentSidebar.value === tab;
 const setActiveSidebar = (tab: string) => {
-    router.push({ path: `/admin/${tab.toLowerCase()}` });
+    if (tab.toLocaleLowerCase() === "users") {
+        router.push({ path: `/admin/auth` });
+    } else {
+        router.push({ path: `/admin/${tab.toLowerCase()}` });
+    }
 };
 </script>
 
@@ -44,7 +48,6 @@ const setActiveSidebar = (tab: string) => {
 .sidebar__container {
     width: 15%;
     background: var(--color-primary-bolder);
-    height: calc(100vh - 60px - 100px);
     display: flex;
     flex-direction: column;
     row-gap: 10px;
