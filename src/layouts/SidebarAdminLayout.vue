@@ -24,12 +24,12 @@ const sidebarItem = [
     "Users",
     "Roles",
     "Foods",
-    "Food images",
+    "FoodImages",
     "Categorys",
     "Bills",
     "Carts",
     "Orders",
-    "Payment orders",
+    "PaymentOrders",
     "Payments",
 ];
 const router = useRouter();
@@ -39,7 +39,7 @@ const setActiveSidebar = (tab: string) => {
     if (tab.toLocaleLowerCase() === "users") {
         router.push({ path: `/admin/auth` });
     } else {
-        router.push({ path: `/admin/${tab.toLowerCase()}` });
+        router.push({ path: `/admin/${ tab.charAt(0).toLowerCase() + tab.slice(1)}` });
     }
 };
 </script>

@@ -82,6 +82,25 @@ export const router = createRouter({
                     component: () =>
                         import("@/views/admin-view/user/EditUsersView.vue"),
                 },
+                // foodImage
+                {
+                    path: "foodImages",
+                    name: "admin.foodImages",
+                    component: () =>
+                        import("@/views/admin-view/foodImage/foodImagesView.vue"),
+                },
+                {
+                    path: "create-foodImages",
+                    name: "admin.create-foodImages",
+                    component: () =>
+                        import("@/views/admin-view/foodImage/CreatefoodImagesView.vue"),
+                },
+                {
+                    path: "edit-foodImages",
+                    name: "admin.edit-foodImages",
+                    component: () =>
+                        import("@/views/admin-view/foodImage/EditfoodImagesView.vue"),
+                },
                 // food
                 {
                     path: "foods",
