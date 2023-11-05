@@ -42,18 +42,22 @@
 
         <div class="home-banner d-flex">
             <BaseAds
-                v-for="(item, index) in DataBaseAds"
-                :src="item.src"
+                v-for="(item, index) in dataDiscount"
+                :src="item.url"
                 :key="index"
                 width="33%"
             >
                 <template #content>
-                    <div class="title">{{ item.title }}</div>
-                    <div class="discount">{{ item.discount }}</div>
+                    <div class="title">
+                        {{ getDiscountType(item.foodDiscountType) }}
+                    </div>
+                    <div class="discount">
+                        {{ `Upto ${item.foodDiscount}%` }}
+                    </div>
                     <RouterLink to="/menu/all">
                         <BaseButton
-                            :type="item.button.type"
-                            :text="item.button.text"
+                            :type="ButtonType.success"
+                            text="Order Now"
                         />
                     </RouterLink>
                 </template>
@@ -94,12 +98,13 @@
 
 <script setup lang="ts">
 import { ButtonType } from '@/enums/ButtonType';
-import { DataBaseAds } from '@/mocks/BaseAds';
 import BaseButton from '@/components/BaseButton.vue';
 import BaseAds from '@/components/BaseAds.vue';
 import { ServicesData } from '@/mocks/HomeServices';
 import http from '@/services/http/http';
 import { onMounted, ref } from 'vue';
+import { notify } from '@/services/Toast';
+import { TypeToast } from '@/enums/TypeToast';
 
 const scrollToTop = () => {
     window.scrollTo(0, 0);
@@ -110,12 +115,39 @@ scrollToTop();
 document.title = 'Home | Orod - Order Food';
 
 const dataHomeCategory = ref<any[]>([]);
+const dataDiscount = ref<any[]>([]);
 
-onMounted(async () => {
-    dataHomeCategory.value = (
-        await http.get('/Categories/GetAllRecord')
-    ).data?.data;
+const getDataCategory = async () => {
+    try {
+        let res = (await http.get('/Categories/GetAllRecord')).data;
+        if (res.success) {
+            dataHomeCategory.value = res.data;
+        }
+    } catch (error: any) {
+        notify('Lỗi lấy dữ liệu danh mục', TypeToast.error);
+    }
+};
+
+const getDataDiscount = async () => {
+    try {
+        let res = (await http.get('/Foods/getTopDiscount/3')).data;
+        if (res.success) {
+            dataDiscount.value = res.datas;
+        }
+    } catch (error: any) {
+        notify('Lỗi lấy dữ liệu giảm giá', TypeToast.error);
+    }
+};
+
+onMounted(() => {
+    getDataCategory();
+    getDataDiscount();
 });
+
+const getDiscountType = (type: number) => {
+    if (type === 1) return 'Special Offer';
+    return 'Limited Offer';
+};
 </script>
 
 <style scoped lang="scss">

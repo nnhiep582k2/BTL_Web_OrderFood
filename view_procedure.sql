@@ -8,10 +8,14 @@ FROM     dbo.Categorys INNER JOIN
                   dbo.Foods ON dbo.Categorys.CategoryId = dbo.Foods.CategoryId INNER JOIN
                   dbo.FoodImages ON dbo.Foods.FoodId = dbo.FoodImages.FoodId
 
+
+
 CREATE or ALTER VIEW [dbo].[ViewCategory]
 AS
 SELECT dbo.Categorys.*
 FROM     dbo.Categorys
+
+
 
 CREATE or ALTER VIEW [dbo].[ViewBill]
 AS
@@ -25,6 +29,8 @@ CREATE or ALTER VIEW [dbo].[ViewRole]
 AS
 SELECT dbo.Roles.*
 FROM     dbo.Roles
+
+
 
 CREATE or ALTER VIEW [dbo].[ViewUser]
 AS
@@ -49,7 +55,6 @@ FROM     dbo.FoodImages
 
 -- PROCEDURE
 
-
 -- CRUD bill
 
 CREATE or ALTER PROCEDURE GetBills
@@ -60,6 +65,8 @@ BEGIN
 	FROM Bills b inner join Users u on u.UserId= b.UserId
 	WHERE b.UserId = @Id
 END
+
+
 
 CREATE or ALTER PROCEDURE GetBillDetails
     @Id uniqueidentifier
@@ -72,6 +79,8 @@ BEGIN
 	WHERE bd.BillId = @Id
 END
 
+
+
 CREATE or ALTER PROCEDURE GetBillStatus
     @Id uniqueidentifier
 AS
@@ -80,6 +89,7 @@ BEGIN
    from Bills b
 	WHERE b.BillId = @Id
 END
+
 
 
 CREATE or alter PROCEDURE AddBill
@@ -97,7 +107,6 @@ CREATE or alter PROCEDURE AddBill
 	@ModifiedBy  nvarchar(max)
 AS
 BEGIN
-    
 INSERT INTO [dbo].[Bills] ([BillId],[UserId],[Status],[Total],[CreatedDate],[CreatedBy],[ModifiedDate],[ModifiedBy],[Delivery],[Discount],[Method],[Paid])
      VALUES
            (@BillId,@userId,@status,@total,GETDATE() ,'NTKIEN',null,null,@delivery,@discount,@method,@Paid)
@@ -136,7 +145,9 @@ BEGIN
 END;
 
 
+
 -- CRUD Category
+
 CREATE or alter PROCEDURE AddCategory
 	@CategoryId uniqueidentifier,
     @Name NVARCHAR(max),
@@ -151,7 +162,10 @@ INSERT INTO Categorys(CategoryId,Name,CreatedDate,CreatedBy,ModifiedDate,Modifie
            (@CategoryId,@Name, GETDATE(),'NTKIEN',null,null)
 END
 
+
+
 -- update
+
 CREATE or ALTER PROCEDURE UpdateCategory
 	@CategoryId uniqueidentifier,
     @Name NVARCHAR(max),
@@ -170,7 +184,10 @@ BEGIN
         CategoryId = @CategoryId;
 END;
 
+
+
 -- get by id
+
 CREATE or ALTER PROCEDURE GetCategorys
     @Id uniqueidentifier
 AS
@@ -183,6 +200,7 @@ END
 
 
 -- CRUD role
+
 CREATE or alter PROCEDURE AddRole
 	@RoleId uniqueidentifier,
     @RoleName NVARCHAR(max),
@@ -197,7 +215,10 @@ INSERT INTO Roles(RoleId,RoleName,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy)
            (@RoleId,@RoleName, GETDATE(),'NTKIEN',null,null)
 END
 
+
+
 -- update
+
 CREATE or ALTER PROCEDURE UpdateRole
 	@RoleId uniqueidentifier,
     @RoleName NVARCHAR(max),
@@ -216,7 +237,10 @@ BEGIN
         RoleId = @RoleId;
 END;
 
+
+
 -- get by id
+
 CREATE or ALTER PROCEDURE GetRoles
     @Id uniqueidentifier
 AS
@@ -229,6 +253,7 @@ END
 
 
 -- CRUD Order
+
 CREATE or alter PROCEDURE AddOrder
 	@OrderId uniqueidentifier,
 	@UserId uniqueidentifier,
@@ -244,7 +269,10 @@ INSERT INTO Orders(OrderId,UserId,PickupDate,CreatedDate,CreatedBy,ModifiedDate,
            (@OrderId,@UserId,@PickupDate, GETDATE(),'NTKIEN',null,null)
 END
 
+
+
 -- update
+
 CREATE or ALTER PROCEDURE UpdateOrder
 	@OrderId uniqueidentifier,
 	@UserId uniqueidentifier,
@@ -265,7 +293,10 @@ BEGIN
         OrderId = @OrderId;
 END;
 
+
+
 -- get by id
+
 CREATE or ALTER PROCEDURE GetOrders
     @Id uniqueidentifier
 AS
@@ -408,3 +439,15 @@ BEGIN
 	WHERE f.FoodImageId = @Id
 END
 
+
+-- Home
+CREATE or ALTER PROCEDURE GetTopDiscount
+	@Number TINYINT
+AS
+BEGIN
+   SELECT TOP(@Number) FoodImages.FoodId, FoodName, FoodDiscount, FoodDiscountType, FoodDesc, STRING_AGG(Url, ';') AS 'Url'
+	FROM dbo.Foods JOIN dbo.FoodImages ON FoodImages.FoodId = Foods.FoodId
+	WHERE dbo.FoodImages.Type = 1
+	GROUP BY FoodImages.FoodId, FoodName, FoodDiscount, FoodDesc, FoodDiscountType
+	ORDER BY FoodDiscount DESC;
+END

@@ -5,7 +5,7 @@
         </div>
         <div class="promotion-right">
             <div class="promotion-title">{{ title }}</div>
-            <div class="promotion-list">
+            <div class="promotion-list" v-if="datas">
                 <div
                     class="promotion-item m-b-20"
                     v-for="(data, index) in datas"
@@ -14,6 +14,7 @@
                     {{ data }}
                 </div>
             </div>
+            <div class="no-item m-b-20" v-else>There is no description</div>
             <BaseButton
                 :type="buttonType"
                 :text="buttonText"
@@ -69,6 +70,22 @@ const props = withDefaults(defineProps<IProps>(), {
             color: var(--color-primary);
             margin-bottom: 20px;
             font-weight: 500;
+        }
+    }
+    .no-item {
+        position: relative;
+        font-size: 20px;
+        margin-left: 16px;
+        &::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: -16px;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            transform: translateY(-50%);
+            background-color: black;
         }
     }
     .promotion-list {
