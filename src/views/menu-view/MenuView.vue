@@ -391,7 +391,7 @@
                             <a href="" class="fas fa-heart"></a>
                             <div class="image">
                                 <img
-                                    :src="`/src/assets/images/template/${f?.url}`"
+                                    :src="f?.url"
                                     alt=""
                                 />
                             </div>
