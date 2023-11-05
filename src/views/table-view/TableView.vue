@@ -139,7 +139,6 @@ import BaseMap from '@/components/BaseMap.vue';
 import { InputType } from '@/enums/TextBoxType';
 
 window.scrollTo(0, 0);
-
 document.title = 'Table | Orod - Order Food';
 
 const orderObj = {

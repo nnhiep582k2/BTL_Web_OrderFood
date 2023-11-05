@@ -153,7 +153,7 @@
 
 <script setup lang="ts">
 import { Gender } from '@/enums/Gender';
-import { reactive, ref } from 'vue';
+import { reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import BaseTextBox from '@/components/BaseTextBox.vue';
 import BaseRadioGroup from '@/components/BaseRadioGroup.vue';

@@ -6,7 +6,7 @@
 </template>
 
 <script setup lang="ts">
-import SidebarAdminLayout from "@/layouts/SidebarAdminLayout.vue";
+import SidebarAdminLayout from '@/layouts/SidebarAdminLayout.vue';
 </script>
 
 <style lang="scss" scoped>
@@ -14,7 +14,7 @@ import SidebarAdminLayout from "@/layouts/SidebarAdminLayout.vue";
     display: flex;
 }
 
-.admin__content{
+.admin__content {
     width: 100%;
     padding: 20px;
 }

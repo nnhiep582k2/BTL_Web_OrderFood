@@ -33,7 +33,6 @@
                 </tr>
             </tbody>
         </table>
-
         <div v-if="calculatePages > 1" class="action-row">
             <BaseButton
                 v-if="pageNum != 0"
@@ -48,7 +47,6 @@
                 }}</span>
                 <span v-else @click="set(i)">{{ i + 1 }}</span>
             </div>
-
             <BaseButton
                 v-if="pageNum != calculatePages - 1"
                 :type="ButtonType.success"
@@ -61,18 +59,16 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, type PropType, computed } from "vue";
-import BaseButton from "./BaseButton.vue";
-import { ButtonType } from "@/enums/ButtonType";
-import Swal from "sweetalert2";
-import http from "@/services/http/http";
-import { useStore } from "vuex";
-import { SET_LOADING } from "@/stores/storeConstants";
-import { router } from "@/router";
-import { useRoute } from "vue-router";
+import { ref, type PropType, computed } from 'vue';
+import BaseButton from './BaseButton.vue';
+import { ButtonType } from '@/enums/ButtonType';
+import Swal from 'sweetalert2';
+import http from '@/services/http/http';
+import { useStore } from 'vuex';
+import { SET_LOADING } from '@/stores/storeConstants';
+import { router } from '@/router';
 
 const store = useStore();
-const route = useRoute();
 const props = defineProps({
     headers: {
         type: Array as PropType<string[]>,
@@ -92,35 +88,35 @@ const perPage = ref<number>(4);
 const pageNum = ref<number>(0);
 const buttonAction = [
     {
-        text: "Edit",
+        text: 'Edit',
         type: ButtonType.information,
     },
     {
-        text: "Delete",
+        text: 'Delete',
         type: ButtonType.warning,
     },
 ];
 
 const handleActionClick = (action: string, item: any, data: string) => {
-    if (action === "Add") {
+    if (action === 'Add') {
         router.push({ path: `/admin/create-${props.entity.toLowerCase()}` });
-    } else if (action === "Edit") {
+    } else if (action === 'Edit') {
         router.push({
             path: `/admin/edit-${props.entity.toLowerCase()}`,
             query: { id: item },
         });
-    } else if (action === "Delete") {
+    } else if (action === 'Delete') {
         Swal.fire({
             title: `Are you sure you want to delete this ${data}?`,
-            icon: "warning",
+            icon: 'warning',
             showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, delete it!",
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
         }).then(async (result) => {
             if (result.isConfirmed) {
                 if (await handleDelete(item)) {
-                    Swal.fire("Deleted!", "Delete successfully.", "success");
+                    Swal.fire('Deleted!', 'Delete successfully.', 'success');
                     window.location.reload();
                 }
             }

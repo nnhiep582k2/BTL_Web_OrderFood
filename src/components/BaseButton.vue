@@ -2,7 +2,7 @@
     <div
         class="base-button"
         :class="[type, disabled ? 'disabled' : '', className]"
-        @click="()=>$emit('click')"
+        @click="() => $emit('click')"
     >
         {{ text }}
     </div>

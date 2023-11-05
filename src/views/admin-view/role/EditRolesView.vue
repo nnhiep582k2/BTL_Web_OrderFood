@@ -1,42 +1,40 @@
 <template>
     <div v-if="errors.length" class="row error-box">
-            <ul>
-                <li v-for="(error, index) in errors" :key="index">
-                    {{ error }}
-                </li>
-            </ul>
-        </div>
+        <ul>
+            <li v-for="(error, index) in errors" :key="index">
+                {{ error }}
+            </li>
+        </ul>
+    </div>
 
-        <div class="row">
-            <div class="col-md-12">
-                <BaseTextBox
-                    width="100%"
-                    label="RoleName"
-                    :inputType="InputType.text"
-                    v-model:model-value="models.roleName"
-                />
-            </div>
-            <div class="col-md-12 mt-3">
-                <button class="btn_add btn btn-success" @click="handleSubmit">
-                    Edit
-                </button>
-            </div>
+    <div class="row">
+        <div class="col-md-12">
+            <BaseTextBox
+                width="100%"
+                label="RoleName"
+                :inputType="InputType.text"
+                v-model:model-value="models.roleName"
+            />
         </div>
+        <div class="col-md-12 mt-3">
+            <button class="btn_add btn btn-success" @click="handleSubmit">
+                Edit
+            </button>
+        </div>
+    </div>
 </template>
 
 <script setup lang="ts">
-
-import BaseTextBox from "@/components/BaseTextBox.vue";
-
-import { useStore } from "vuex";
-import { onMounted, ref } from "vue";
-import { InputType } from "@/enums/TextBoxType";
-import { SET_LOADING } from "@/stores/storeConstants";
-import http from "@/services/http/http";
-import { notify } from "@/services/Toast";
-import { TypeToast } from "@/enums/TypeToast";
-import { useRoute } from "vue-router";
-import router from "@/router";
+import BaseTextBox from '@/components/BaseTextBox.vue';
+import { useStore } from 'vuex';
+import { onMounted, ref } from 'vue';
+import { InputType } from '@/enums/TextBoxType';
+import { SET_LOADING } from '@/stores/storeConstants';
+import http from '@/services/http/http';
+import { notify } from '@/services/Toast';
+import { TypeToast } from '@/enums/TypeToast';
+import { useRoute } from 'vue-router';
+import router from '@/router';
 
 interface IRoles {
     roleName: string;
@@ -44,10 +42,10 @@ interface IRoles {
 const route = useRoute();
 const store = useStore();
 const models = ref<IRoles>({
-    roleName: "",
+    roleName: '',
 });
 const errors = ref<String[]>([]);
-const rolesId = ref("");
+const rolesId = ref('');
 
 onMounted(async () => {
     if (route.query.id) {
@@ -56,10 +54,11 @@ onMounted(async () => {
     if (rolesId.value) {
         try {
             store.dispatch(SET_LOADING, true);
-            let { data } = (await http.get(`/Roles/GetById?recordId=${rolesId.value}`))
-                .data;
+            let { data } = (
+                await http.get(`/Roles/GetById?recordId=${rolesId.value}`)
+            ).data;
             models.value = {
-                roleName : data?.roleName
+                roleName: data?.roleName,
             };
             store.dispatch(SET_LOADING, false);
         } catch (error) {
@@ -70,17 +69,16 @@ onMounted(async () => {
     }
 });
 
-
 const handleSubmit = async () => {
     try {
         if (!models.value.roleName) {
-            if (!errors.value.find((el) => el === "RoleName is required")) {
-                errors.value.push("RoleName is required");
+            if (!errors.value.find((el) => el === 'RoleName is required')) {
+                errors.value.push('RoleName is required');
             }
         } else {
-            if (errors.value.find((el) => el === "RoleName is required")) {
+            if (errors.value.find((el) => el === 'RoleName is required')) {
                 const indexuserRoleName = errors.value.findIndex(
-                    (el) => el === "RoleName is required"
+                    (el) => el === 'RoleName is required'
                 );
                 errors.value.splice(indexuserRoleName, 1);
             }
@@ -93,18 +91,18 @@ const handleSubmit = async () => {
             };
             store.dispatch(SET_LOADING, true);
             const { data } = await http.put(
-                "Roles/updateRecord",
+                'Roles/updateRecord',
                 JSON.stringify(payload)
             );
             if (data.success) {
-                notify("Edit success!", TypeToast.success);
+                notify('Edit success!', TypeToast.success);
                 router.push({ path: `/admin/roles` });
             }
             store.dispatch(SET_LOADING, false);
         }
     } catch (error) {
         console.log(error);
-        notify("Edit fail!", TypeToast.error);
+        notify('Edit fail!', TypeToast.error);
         store.dispatch(SET_LOADING, false);
     }
 };

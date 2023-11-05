@@ -25,15 +25,14 @@
 </template>
 
 <script setup lang="ts">
-import BaseTextBox from "@/components/BaseTextBox.vue";
-
-import { useStore } from "vuex";
-import { ref } from "vue";
-import { InputType } from "@/enums/TextBoxType";
-import { SET_LOADING } from "@/stores/storeConstants";
-import http from "@/services/http/http";
-import { notify } from "@/services/Toast";
-import { TypeToast } from "@/enums/TypeToast";
+import BaseTextBox from '@/components/BaseTextBox.vue';
+import { useStore } from 'vuex';
+import { ref } from 'vue';
+import { InputType } from '@/enums/TextBoxType';
+import { SET_LOADING } from '@/stores/storeConstants';
+import http from '@/services/http/http';
+import { notify } from '@/services/Toast';
+import { TypeToast } from '@/enums/TypeToast';
 
 interface ICategorys {
     name: string;
@@ -41,20 +40,20 @@ interface ICategorys {
 
 const store = useStore();
 const models = ref<ICategorys>({
-    name: "",
+    name: '',
 });
 const errors = ref<String[]>([]);
 
 const handleSubmit = async () => {
     try {
         if (!models.value.name) {
-            if (!errors.value.find((el) => el === "Name is required")) {
-                errors.value.push("Name is required");
+            if (!errors.value.find((el) => el === 'Name is required')) {
+                errors.value.push('Name is required');
             }
         } else {
-            if (errors.value.find((el) => el === "Name is required")) {
+            if (errors.value.find((el) => el === 'Name is required')) {
                 const indexusername = errors.value.findIndex(
-                    (el) => el === "Name is required"
+                    (el) => el === 'Name is required'
                 );
                 errors.value.splice(indexusername, 1);
             }
@@ -66,20 +65,20 @@ const handleSubmit = async () => {
             };
             store.dispatch(SET_LOADING, true);
             const { data } = await http.post(
-                "/Categories/addRecord",
+                '/Categories/addRecord',
                 JSON.stringify(payload)
             );
             if (data.success) {
-                notify("Add success!", TypeToast.success);
+                notify('Add success!', TypeToast.success);
                 models.value = {
-                    name: "",
+                    name: '',
                 };
             }
             store.dispatch(SET_LOADING, false);
         }
     } catch (error) {
         console.log(error);
-        notify("Add fail!", TypeToast.error);
+        notify('Add fail!', TypeToast.error);
         store.dispatch(SET_LOADING, false);
     }
 };
@@ -105,7 +104,7 @@ const handleSubmit = async () => {
     }
 }
 
-label{
+label {
     font-size: 20px;
 }
 </style>

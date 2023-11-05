@@ -1,41 +1,40 @@
 <template>
-        <div v-if="errors.length" class="row error-box">
-            <ul>
-                <li v-for="(error, index) in errors" :key="index">
-                    {{ error }}
-                </li>
-            </ul>
-        </div>
+    <div v-if="errors.length" class="row error-box">
+        <ul>
+            <li v-for="(error, index) in errors" :key="index">
+                {{ error }}
+            </li>
+        </ul>
+    </div>
 
-        <div class="row">
-            <div class="col-md-12">
-                <BaseTextBox
-                    width="100%"
-                    label="Name"
-                    :inputType="InputType.text"
-                    v-model:model-value="models.name"
-                />
-            </div>
-            <div class="col-md-12 mt-3">
-                <button class="btn_add btn btn-success" @click="handleSubmit">
-                    Edit
-                </button>
-            </div>
+    <div class="row">
+        <div class="col-md-12">
+            <BaseTextBox
+                width="100%"
+                label="Name"
+                :inputType="InputType.text"
+                v-model:model-value="models.name"
+            />
         </div>
+        <div class="col-md-12 mt-3">
+            <button class="btn_add btn btn-success" @click="handleSubmit">
+                Edit
+            </button>
+        </div>
+    </div>
 </template>
 
 <script setup lang="ts">
-import BaseTextBox from "@/components/BaseTextBox.vue";
-
-import { useStore } from "vuex";
-import { onMounted, ref } from "vue";
-import { InputType } from "@/enums/TextBoxType";
-import { SET_LOADING } from "@/stores/storeConstants";
-import http from "@/services/http/http";
-import { notify } from "@/services/Toast";
-import { TypeToast } from "@/enums/TypeToast";
-import { useRoute } from "vue-router";
-import router from "@/router";
+import BaseTextBox from '@/components/BaseTextBox.vue';
+import { useStore } from 'vuex';
+import { onMounted, ref } from 'vue';
+import { InputType } from '@/enums/TextBoxType';
+import { SET_LOADING } from '@/stores/storeConstants';
+import http from '@/services/http/http';
+import { notify } from '@/services/Toast';
+import { TypeToast } from '@/enums/TypeToast';
+import { useRoute } from 'vue-router';
+import router from '@/router';
 
 interface ICategorys {
     name: string;
@@ -43,10 +42,10 @@ interface ICategorys {
 const route = useRoute();
 const store = useStore();
 const models = ref<ICategorys>({
-    name: "",
+    name: '',
 });
 const errors = ref<String[]>([]);
-const categoryId = ref("");
+const categoryId = ref('');
 
 onMounted(async () => {
     if (route.query.id) {
@@ -55,10 +54,13 @@ onMounted(async () => {
     if (categoryId.value) {
         try {
             store.dispatch(SET_LOADING, true);
-            let { data } = (await http.get(`/Categories/GetById?recordId=${categoryId.value}`))
-                .data;
+            let { data } = (
+                await http.get(
+                    `/Categories/GetById?recordId=${categoryId.value}`
+                )
+            ).data;
             models.value = {
-                name : data?.name
+                name: data?.name,
             };
             store.dispatch(SET_LOADING, false);
         } catch (error) {
@@ -69,17 +71,16 @@ onMounted(async () => {
     }
 });
 
-
 const handleSubmit = async () => {
     try {
         if (!models.value.name) {
-            if (!errors.value.find((el) => el === "Name is required")) {
-                errors.value.push("Name is required");
+            if (!errors.value.find((el) => el === 'Name is required')) {
+                errors.value.push('Name is required');
             }
         } else {
-            if (errors.value.find((el) => el === "Name is required")) {
+            if (errors.value.find((el) => el === 'Name is required')) {
                 const indexusername = errors.value.findIndex(
-                    (el) => el === "Name is required"
+                    (el) => el === 'Name is required'
                 );
                 errors.value.splice(indexusername, 1);
             }
@@ -92,18 +93,18 @@ const handleSubmit = async () => {
             };
             store.dispatch(SET_LOADING, true);
             const { data } = await http.put(
-                "Categories/updateRecord",
+                'Categories/updateRecord',
                 JSON.stringify(payload)
             );
             if (data.success) {
-                notify("Edit success!", TypeToast.success);
+                notify('Edit success!', TypeToast.success);
                 router.push({ path: `/admin/categorys` });
             }
             store.dispatch(SET_LOADING, false);
         }
     } catch (error) {
         console.log(error);
-        notify("Edit fail!", TypeToast.error);
+        notify('Edit fail!', TypeToast.error);
         store.dispatch(SET_LOADING, false);
     }
 };
