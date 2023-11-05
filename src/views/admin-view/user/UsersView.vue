@@ -3,7 +3,7 @@
         :type="ButtonType.success"
         className="btn_add"
         text="Add"
-        @click="router.push({ path: '/admin/create-bills' })"
+        @click="router.push({ path: '/admin/create-auth' })"
     />
     <BaseTable :headers="titleList" :items="items" entity="Auth" />
 </template>
