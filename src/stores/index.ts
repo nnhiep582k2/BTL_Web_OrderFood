@@ -19,7 +19,7 @@ interface IAuthData {
     fullName: string;
     email: string;
     token: string;
-    avatar:string
+    avatar: string;
 }
 interface IRootState {
     isLoading: boolean;
@@ -33,7 +33,7 @@ export default createStore<IRootState>({
             fullName: '',
             email: '',
             token: '',
-            avatar:''
+            avatar: '',
         }),
         isLoading: ref<boolean>(false),
         allFoods: ref([]),
@@ -56,7 +56,7 @@ export default createStore<IRootState>({
                     fullName: data?.fullName,
                     email: data?.email,
                     token: data?.token,
-                    avatar:data?.avatar
+                    avatar: data?.avatar,
                 };
                 state.authData = newAuthData;
             } else {

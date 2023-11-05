@@ -39,22 +39,22 @@
 </template>
 
 <script setup lang="ts">
-import BaseTextBox from "@/components/BaseTextBox.vue";
-import { useStore } from "vuex";
-import { ref, onMounted } from "vue";
-import { InputType } from "@/enums/TextBoxType";
-import { SET_LOADING } from "@/stores/storeConstants";
-import http from "@/services/http/http";
-import { notify } from "@/services/Toast";
-import { TypeToast } from "@/enums/TypeToast";
-import { storage } from "@/firebase/firebase-config";
-import { useRoute } from "vue-router";
-import router from "@/router";
+import BaseTextBox from '@/components/BaseTextBox.vue';
+import { useStore } from 'vuex';
+import { ref, onMounted } from 'vue';
+import { InputType } from '@/enums/TextBoxType';
+import { SET_LOADING } from '@/stores/storeConstants';
+import http from '@/services/http/http';
+import { notify } from '@/services/Toast';
+import { TypeToast } from '@/enums/TypeToast';
+import { storage } from '@/firebase/firebase-config';
+import { useRoute } from 'vue-router';
+import router from '@/router';
 import {
     getDownloadURL,
     ref as firebaseRef,
     uploadBytesResumable,
-} from "firebase/storage";
+} from 'firebase/storage';
 
 interface IFoodImages {
     foodId: string;
@@ -65,13 +65,13 @@ interface IFoodImages {
 const route = useRoute();
 const store = useStore();
 const models = ref<IFoodImages>({
-    foodId: "",
-    url: "",
-    type: "",
+    foodId: '',
+    url: '',
+    type: '',
 });
 
 const errors = ref<string[]>([]);
-const foodImagesId = ref("");
+const foodImagesId = ref('');
 const myFile = ref();
 
 onMounted(async () => {
@@ -102,26 +102,26 @@ onMounted(async () => {
 
 const handleSubmit = async () => {
     if (!models.value.foodId) {
-        if (!errors.value.find((el) => el === "FoodId is required")) {
-            errors.value.push("FoodId is required");
+        if (!errors.value.find((el) => el === 'FoodId is required')) {
+            errors.value.push('FoodId is required');
         }
     } else {
-        if (errors.value.find((el) => el === "FoodId is required")) {
+        if (errors.value.find((el) => el === 'FoodId is required')) {
             const indexusername = errors.value.findIndex(
-                (el) => el === "FoodId is required"
+                (el) => el === 'FoodId is required'
             );
             errors.value.splice(indexusername, 1);
         }
     }
 
     if (!models.value.type) {
-        if (!errors.value.find((el) => el === "Type is required")) {
-            errors.value.push("Type is required");
+        if (!errors.value.find((el) => el === 'Type is required')) {
+            errors.value.push('Type is required');
         }
     } else {
-        if (errors.value.find((el) => el === "Type is required")) {
+        if (errors.value.find((el) => el === 'Type is required')) {
             const indexusername = errors.value.findIndex(
-                (el) => el === "Type is required"
+                (el) => el === 'Type is required'
             );
             errors.value.splice(indexusername, 1);
         }
@@ -130,7 +130,7 @@ const handleSubmit = async () => {
         // tham chiếu đến thư mục image trong firebase
         const storageRef: any = firebaseRef(
             storage,
-            "images/" + myFile.value.files[0].name
+            'images/' + myFile.value.files[0].name
         );
 
         // được sử dụng để tải lên một tệp tin dưới dạng byte
@@ -140,17 +140,17 @@ const handleSubmit = async () => {
         );
         //  Đây là một phương thức để lắng nghe sự thay đổi trạng thái của quá trình tải lên. Có ba trạng thái có thể xảy ra: "paused" (đã tạm dừng), "running" (đang chạy) và các trạng thái khác.
         uploadTask.on(
-            "state_changed",
+            'state_changed',
             (snapshot) => {
                 switch (snapshot.state) {
-                    case "paused":
-                        console.log("Upload is paused");
+                    case 'paused':
+                        console.log('Upload is paused');
                         break;
-                    case "running":
-                        console.log("Upload is running");
+                    case 'running':
+                        console.log('Upload is running');
                         break;
                     default:
-                        console.log("Nothing at all");
+                        console.log('Nothing at all');
                 }
             },
             (error) => {
@@ -168,21 +168,21 @@ const handleSubmit = async () => {
                         foodImageId: foodImagesId.value,
                         foodId: models.value.foodId,
                         url: models.value.url,
-                        type: Number.parseInt(models?.value?.type)
+                        type: Number.parseInt(models?.value?.type),
                     };
                     store.dispatch(SET_LOADING, true);
                     const { data } = await http.put(
-                        "/FoodImages/updateRecord",
+                        '/FoodImages/updateRecord',
                         JSON.stringify(payload)
                     );
                     if (data.success) {
-                        notify("Edit success!", TypeToast.success);
+                        notify('Edit success!', TypeToast.success);
                         router.push({ path: `/admin/foodImages` });
                     }
                     store.dispatch(SET_LOADING, false);
                 } catch (error) {
                     console.log(error);
-                    notify("Add fail!", TypeToast.error);
+                    notify('Add fail!', TypeToast.error);
                     store.dispatch(SET_LOADING, false);
                 }
             }
@@ -190,7 +190,6 @@ const handleSubmit = async () => {
     }
 };
 </script>
-
 
 <style scoped lang="scss">
 .error-box {

@@ -1,4 +1,3 @@
-
 -- view
 CREATE or ALTER VIEW [dbo].[ViewFood]
 AS
@@ -37,26 +36,32 @@ AS
 SELECT dbo.Users.*
 FROM     dbo.Users
 
+
+
 CREATE or ALTER VIEW [dbo].[ViewOrder]
 AS
 SELECT dbo.Orders.*
 FROM     dbo.Orders
 
-CREATE VIEW [dbo].[ViewFoodImage]
-AS
-SELECT dbo.FoodImages.*
-FROM     dbo.FoodImages
 
 
 CREATE VIEW [dbo].[ViewFoodImage]
 AS
 SELECT dbo.FoodImages.*
 FROM     dbo.FoodImages
+
+
+
+CREATE VIEW [dbo].[ViewFoodImage]
+AS
+SELECT dbo.FoodImages.*
+FROM     dbo.FoodImages
+
+
 
 -- PROCEDURE
 
 -- CRUD bill
-
 CREATE or ALTER PROCEDURE GetBills
     @Id uniqueidentifier
 AS
@@ -147,7 +152,6 @@ END;
 
 
 -- CRUD Category
-
 CREATE or alter PROCEDURE AddCategory
 	@CategoryId uniqueidentifier,
     @Name NVARCHAR(max),
@@ -165,7 +169,6 @@ END
 
 
 -- update
-
 CREATE or ALTER PROCEDURE UpdateCategory
 	@CategoryId uniqueidentifier,
     @Name NVARCHAR(max),
@@ -187,7 +190,6 @@ END;
 
 
 -- get by id
-
 CREATE or ALTER PROCEDURE GetCategorys
     @Id uniqueidentifier
 AS
@@ -200,7 +202,6 @@ END
 
 
 -- CRUD role
-
 CREATE or alter PROCEDURE AddRole
 	@RoleId uniqueidentifier,
     @RoleName NVARCHAR(max),
@@ -218,7 +219,6 @@ END
 
 
 -- update
-
 CREATE or ALTER PROCEDURE UpdateRole
 	@RoleId uniqueidentifier,
     @RoleName NVARCHAR(max),
@@ -240,7 +240,6 @@ END;
 
 
 -- get by id
-
 CREATE or ALTER PROCEDURE GetRoles
     @Id uniqueidentifier
 AS
@@ -253,7 +252,6 @@ END
 
 
 -- CRUD Order
-
 CREATE or alter PROCEDURE AddOrder
 	@OrderId uniqueidentifier,
 	@UserId uniqueidentifier,
@@ -272,7 +270,6 @@ END
 
 
 -- update
-
 CREATE or ALTER PROCEDURE UpdateOrder
 	@OrderId uniqueidentifier,
 	@UserId uniqueidentifier,
@@ -296,7 +293,6 @@ END;
 
 
 -- get by id
-
 CREATE or ALTER PROCEDURE GetOrders
     @Id uniqueidentifier
 AS
@@ -307,8 +303,8 @@ BEGIN
 END
 
 
--- CRUD User
 
+-- CRUD User
 /*
 {
   "fullName": "kien",
@@ -344,6 +340,8 @@ INSERT INTO Users(UserId,FullName,Username, PasswordHash,Email,PhoneNumber,Addre
            (@UserId,@FullName,@Username,@PasswordHash,@Email,@PhoneNumber,@Address,@Avatar,@Gender,@RoleId, GETDATE(),'NTKIEN',null,null)
 END
 
+
+
 -- update
 CREATE or ALTER PROCEDURE UpdateUser
 	@UserId uniqueidentifier,
@@ -378,6 +376,8 @@ BEGIN
         UserId = @UserId;
 END;
 
+
+
 -- get by id
 CREATE or ALTER PROCEDURE GetUsers
     @Id uniqueidentifier
@@ -387,6 +387,7 @@ BEGIN
 	FROM Users u
 	WHERE u.UserId = @Id
 END
+
 
 
 -- CRUD food image
@@ -405,6 +406,8 @@ INSERT INTO FoodImages(FoodImageId,FoodId,Url,Type,CreatedDate,CreatedBy,Modifie
      VALUES
            (@FoodImageId,@FoodId,@Url,@Type, GETDATE(),'NTKIEN',null,null)
 END
+
+
 
 -- update
 CREATE or ALTER PROCEDURE UpdateFoodImage
@@ -429,6 +432,8 @@ BEGIN
         FoodImageId = @FoodImageId;
 END;
 
+
+
 -- get by id
 CREATE or ALTER PROCEDURE GetFoodImages
     @Id uniqueidentifier
@@ -438,6 +443,7 @@ BEGIN
 	FROM FoodImages f
 	WHERE f.FoodImageId = @Id
 END
+
 
 
 -- Home
@@ -450,4 +456,53 @@ BEGIN
 	WHERE dbo.FoodImages.Type = 1
 	GROUP BY FoodImages.FoodId, FoodName, FoodDiscount, FoodDesc, FoodDiscountType
 	ORDER BY FoodDiscount DESC;
+END
+
+
+
+- Book a table
+CREATE or alter PROCEDURE AddBook
+	@BookID uniqueidentifier,
+    @ClientName NVARCHAR(255),
+	@ClientPhone NVARCHAR(255),
+	@ClientEmail NVARCHAR(255),
+	@NumberOfPeople int,
+	@NumberOfTable int,
+	@Note NVARCHAR(255),
+	@CreatedDate datetime2(7),
+	@CreatedBy nvarchar(max),
+	@ModifiedDate datetime2(7),
+	@ModifiedBy  nvarchar(max),
+	@PickupDate datetime2(7)
+AS
+BEGIN
+INSERT INTO dbo.Books
+(
+    BookID,
+    ClientName,
+    ClientPhone,
+    ClientEmail,
+    NumberOfPeople,
+    NumberOfTable,
+    Note,
+    CreatedBy,
+    CreatedDate,
+    ModifiedBy,
+    ModifiedDate,
+	PickupDate
+)
+VALUES
+(   @BookID,         
+    @ClientName, 
+    @ClientPhone,      
+    @ClientEmail,   
+    @NumberOfPeople,  
+    @NumberOfTable,      
+    @Note,   
+    N'nnhiep',     
+    SYSDATETIME(), 
+    N'nnhiep',     
+    SYSDATETIME(),
+	@PickupDate
+    )
 END

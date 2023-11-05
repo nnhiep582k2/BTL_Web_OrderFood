@@ -27,7 +27,7 @@
                 id="bookTableForm"
                 novalidate
                 autocomplete="off"
-                @submit="handleSubmit"
+                @submit="bookATable"
             >
                 <div class="row">
                     <div class="input-box">
@@ -35,10 +35,11 @@
                             width="100%"
                             label="Your name"
                             :inputType="InputType.text"
-                            v-model:model-value="orderObj.name"
+                            id="uName"
+                            v-model:model-value="bookData.clientName"
                         />
-                        <p v-if="errorObj.nameErr.length > 0">
-                            {{ errorObj.nameErr[0] }}
+                        <p v-if="errorObj.clientNameError.length > 0">
+                            {{ errorObj.clientNameError[0] }}
                         </p>
                     </div>
                     <div class="input-box">
@@ -46,10 +47,11 @@
                             width="100%"
                             label="Your phone number"
                             :inputType="InputType.text"
-                            v-model:model-value="orderObj.phone"
+                            id="uPhone"
+                            v-model:model-value="bookData.clientPhone"
                         />
-                        <p v-if="errorObj.phoneErr.length > 0">
-                            {{ errorObj.phoneErr[0] }}
+                        <p v-if="errorObj.clientPhoneError.length > 0">
+                            {{ errorObj.clientPhoneError[0] }}
                         </p>
                     </div>
                 </div>
@@ -59,22 +61,24 @@
                         <BaseTextBox
                             width="100%"
                             label="How many people"
+                            id="oPeople"
                             :inputType="InputType.number"
-                            v-model:model-value="orderObj.people"
+                            v-model:model-value="bookData.numberOfPeople"
                         />
-                        <p v-if="errorObj.peopleErr.length > 0">
-                            {{ errorObj.peopleErr[0] }}
+                        <p v-if="errorObj.numberOfPeopleError.length > 0">
+                            {{ errorObj.numberOfPeopleError[0] }}
                         </p>
                     </div>
                     <div class="input-box">
                         <BaseTextBox
                             width="100%"
                             label="How many tables"
+                            id="oTables"
                             :inputType="InputType.number"
-                            v-model:model-value="orderObj.tables"
+                            v-model:model-value="bookData.numberOfTable"
                         />
-                        <p v-if="errorObj.tablesErr.length > 0">
-                            {{ errorObj.tablesErr[0] }}
+                        <p v-if="errorObj.numberOfTableError.length > 0">
+                            {{ errorObj.numberOfTableError[0] }}
                         </p>
                     </div>
                 </div>
@@ -83,24 +87,26 @@
                     <div class="input-box">
                         <BaseTextBox
                             width="100%"
-                            label="Your membership card"
+                            label="Your Email"
+                            id="uEmail"
                             :inputType="InputType.text"
-                            v-model:model-value="orderObj.card"
+                            v-model:model-value="bookData.clientEmail"
                         />
-                        <p v-if="errorObj.cardErr.length > 0">
-                            {{ errorObj.cardErr[0] }}
+                        <p v-if="errorObj.clientEmailError.length > 0">
+                            {{ errorObj.clientEmailError[0] }}
                         </p>
                     </div>
                     <div class="input-box">
                         <BaseTextBox
                             width="100%"
                             label="When"
+                            id="oWhen"
                             :inputType="InputType.datetimeLocal"
-                            v-model:model-value="orderObj.when"
+                            v-model:model-value="bookData.pickupDate"
                             @click="availableTime()"
                         />
-                        <p v-if="errorObj.whenErr.length > 0">
-                            {{ errorObj.whenErr[0] }}
+                        <p v-if="errorObj.pickupDateError.length > 0">
+                            {{ errorObj.pickupDateError[0] }}
                         </p>
                     </div>
                 </div>
@@ -112,7 +118,7 @@
                             height="180px"
                             label="Note"
                             class="m-b-10"
-                            v-model:model-value="orderObj.note"
+                            v-model:model-value="bookData.note"
                             placeholder="Your message, do you want to decorate your table?"
                         />
                     </div>
@@ -128,7 +134,6 @@
 </template>
 
 <script setup lang="ts">
-import axios from 'axios';
 import { ref } from 'vue';
 import { ButtonType } from '@/enums/ButtonType';
 import VueBasicAlert from 'vue-basic-alert';
@@ -137,27 +142,69 @@ import BaseTextBox from '@/components/BaseTextBox.vue';
 import BaseTextArea from '@/components/BaseTextArea.vue';
 import BaseMap from '@/components/BaseMap.vue';
 import { InputType } from '@/enums/TextBoxType';
+import { notify } from '@/services/Toast';
+import { TypeToast } from '@/enums/TypeToast';
+import http from '@/services/http/http';
 
 window.scrollTo(0, 0);
 document.title = 'Table | Orod - Order Food';
 
-const orderObj = {
-    name: '',
-    phone: '',
-    people: '',
-    tables: '',
-    card: '',
-    when: '',
+const bookData = {
+    clientName: '',
+    clientPhone: '',
+    clientEmail: '',
+    numberOfPeople: '',
+    numberOfTable: '',
     note: '',
+    createdDate: '',
+    createdBy: '',
+    modifiedDate: '',
+    modifiedBy: '',
+    pickupDate: '',
 };
 
 const errorObj: any = {
-    nameErr: [],
-    phoneErr: [],
-    peopleErr: [],
-    tablesErr: [],
-    cardErr: [],
-    whenErr: [],
+    clientNameError: [],
+    clientPhoneError: [],
+    clientEmailError: [],
+    numberOfPeopleError: [],
+    numberOfTableError: [],
+    noteError: [],
+    pickupDateError: [],
+};
+
+const bookATable = async (e) => {
+    checkForm();
+
+    try {
+        if (checkEmptyErr()) {
+            e.preventDefault();
+        } else {
+            e.preventDefault();
+
+            let data = {
+                clientName: bookData.clientName,
+                clientPhone: bookData.clientPhone,
+                clientEmail: bookData.clientEmail,
+                numberOfPeople: Number.parseInt(bookData.numberOfPeople),
+                numberOfTable: Number.parseInt(bookData.numberOfTable),
+                note: bookData.note,
+                pickupDate: bookData.pickupDate,
+            };
+
+            await http.post('/Books/addRecord', JSON.stringify(data));
+
+            alert.value
+                .showAlert(
+                    'success',
+                    'Thank you! We will call you soon to confirm your order',
+                    'Booking Successfully !'
+                )(document.getElementById('bookTableForm') as HTMLFormElement)
+                ?.reset();
+        }
+    } catch (e) {
+        notify('Add fail!', TypeToast.error);
+    }
 };
 
 const availableTime = () => {
@@ -185,12 +232,13 @@ const availableTime = () => {
 };
 
 const resetCheckErr = () => {
-    errorObj.nameErr = [];
-    errorObj.phoneErr = [];
-    errorObj.peopleErr = [];
-    errorObj.tablesErr = [];
-    errorObj.cardErr = [];
-    errorObj.whenErr = [];
+    errorObj.clientNameError = [];
+    errorObj.clientPhoneError = [];
+    errorObj.clientEmailError = [];
+    errorObj.numberOfPeopleError = [];
+    errorObj.numberOfTableError = [];
+    errorObj.noteError = [];
+    errorObj.pickupDateError = [];
 };
 
 const checkEmptyErr = () => {
@@ -208,136 +256,123 @@ const checkForm = () => {
     resetCheckErr();
 
     // Name validate
-    if (!orderObj.name) {
-        errorObj.nameErr.push('Entering a name is required');
+    if (!bookData.clientName) {
+        errorObj.clientNameError.push('Entering a name is required');
     } else {
-        if (!/^[A-Za-z]+$/.test(orderObj.name.replace(/\s/g, ''))) {
-            errorObj.nameErr.push('A name can only contain letters');
+        if (!/^[A-Za-z]+$/.test(bookData.clientName.replace(/\s/g, ''))) {
+            errorObj.clientNameError.push('A name can only contain letters');
         }
     }
 
     // Phone validate
-    if (!orderObj.phone) {
-        errorObj.phoneErr.push('Entering phone number is required');
+    if (!bookData.clientPhone) {
+        errorObj.clientPhoneError.push('Entering phone number is required');
     } else {
-        if (!orderObj.phone.startsWith('84')) {
-            errorObj.phoneErr.push('Phone numbers must start with 84');
+        if (
+            !bookData.clientPhone.startsWith('09') ||
+            !bookData.clientPhone.startsWith('03')
+        ) {
+            errorObj.clientPhoneError.push(
+                'Phone numbers must start with 09 or 03'
+            );
         }
 
-        if (!/[0-9]{10}/.test(orderObj.phone)) {
-            errorObj.phoneErr.push('Phone numbers can only contain numbers');
+        if (!/[0-9]{10}/.test(bookData.clientPhone)) {
+            errorObj.clientPhoneError.push(
+                'Phone numbers can only contain numbers'
+            );
         }
 
-        if (orderObj.phone.length != 11) {
-            errorObj.phoneErr.push('Phone numbers must have exactly 11 digits');
+        if (bookData.clientPhone.length != 10) {
+            errorObj.clientPhoneError.push(
+                'Phone numbers must have exactly 10 digits'
+            );
         }
     }
 
-    if (!orderObj.people) {
+    if (!bookData.numberOfPeople) {
         errorObj.peopleErr.push('Entering number of people is required');
     } else {
-        if (parseInt(orderObj.people) > 100) {
-            errorObj.peopleErr.push(
+        if (parseInt(bookData.numberOfPeople) > 100) {
+            errorObj.numberOfPeopleError.push(
                 'Each store can only serve 100 people at a time'
             );
         }
 
-        if (parseInt(orderObj.people) < 1) {
-            errorObj.peopleErr.push(
+        if (parseInt(bookData.numberOfPeople) < 1) {
+            errorObj.numberOfPeopleError.push(
                 'Number of people must be greater than or equal to 1'
             );
         }
     }
 
-    if (!orderObj.tables) {
-        errorObj.tablesErr.push('Entering number of tables is required');
+    if (!bookData.numberOfTable) {
+        errorObj.numberOfTableError.push(
+            'Entering number of tables is required'
+        );
     } else {
-        if (parseInt(orderObj.tables) > 50) {
-            errorObj.tablesErr.push(
+        if (parseInt(bookData.numberOfTable) > 50) {
+            errorObj.numberOfTableError.push(
                 'Each store can only have maximum 50 tables'
             );
         }
 
-        if (parseInt(orderObj.tables) < 1) {
-            errorObj.tablesErr.push(
+        if (parseInt(bookData.numberOfTable) < 1) {
+            errorObj.numberOfTableError.push(
                 'Number of tables must be greater than or equal to 1'
             );
         }
 
-        if (parseInt(orderObj.people) < parseInt(orderObj.tables)) {
-            errorObj.tablesErr.push(
+        if (
+            parseInt(bookData.numberOfPeople) < parseInt(bookData.numberOfTable)
+        ) {
+            errorObj.numberOfTableError.push(
                 'The number of tables must be less than the number of people'
             );
         }
     }
 
-    if (orderObj.card) {
-        if (!/[0-9]{10}/.test(orderObj.card)) {
-            errorObj.cardErr.push('Card numbers can only contain numbers');
-        }
+    // if (bookData.clientEmail) {
+    //     if (!/[0-9]{10}/.test(bookData.clientEmail)) {
+    //         errorObj.clientEmailError.push(
+    //             'Card numbers can only contain numbers'
+    //         );
+    //     }
 
-        if (orderObj.card.length != 10) {
-            errorObj.cardErr.push('Card number must have exactly 10 digits');
-        }
-    }
+    //     if (bookData.clientEmail.length != 10) {
+    //         errorObj.clientEmailError.push(
+    //             'Card number must have exactly 10 digits'
+    //         );
+    //     }
+    // }
 
-    if (!orderObj.when) {
-        errorObj.whenErr.push('Entering when to serve is required');
+    if (!bookData.pickupDate) {
+        errorObj.pickupDateError.push('Entering when to serve is required');
     } else {
         let minRange = document.getElementById('oWhen')!.getAttribute('min');
         let maxRange = document.getElementById('oWhen')!.getAttribute('max');
         let dateMin = new Date(minRange!);
         let dateMax = new Date(maxRange!);
-        let dateInput = new Date(orderObj.when);
+        let dateInput = new Date(bookData.pickupDate);
 
         if (!dateInput) {
-            errorObj.whenErr.push('Invalid date input');
+            errorObj.pickupDateError.push('Invalid date input');
         }
 
         if (
             dateInput.getTime() < dateMin.getTime() ||
             dateInput.getTime() > dateMax.getTime()
         ) {
-            errorObj.whenErr.push(
+            errorObj.pickupDateError.push(
                 'Available reservation range is from now to next two months'
             );
         }
 
         if (dateInput.getHours() < 7 || dateInput.getHours() > 22) {
-            errorObj.whenErr.push(
+            errorObj.pickupDateError.push(
                 'Store open from 7:00 AM to 10:00 PM everyday'
             );
         }
-    }
-};
-
-const handleSubmit = async (e) => {
-    checkForm();
-
-    if (!checkEmptyErr()) {
-        e.preventDefault();
-    } else {
-        e.preventDefault();
-
-        let data = {
-            book_name: orderObj.name,
-            book_phone: parseInt(orderObj.phone),
-            book_people: parseInt(orderObj.people),
-            book_tables: parseInt(orderObj.tables),
-            user_id: parseInt(orderObj.card),
-            book_when: orderObj.when,
-            book_note: orderObj.note,
-        };
-
-        await axios.post('/booking', data);
-
-        alert.value
-            .showAlert(
-                'success',
-                'Thank you! We will call you soon to confirm your order',
-                'Booking Successfully !'
-            )(document.getElementById('bookTableForm') as HTMLFormElement)
-            ?.reset();
     }
 };
 </script>

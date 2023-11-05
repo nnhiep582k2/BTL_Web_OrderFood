@@ -104,25 +104,24 @@
 </template>
 
 <script setup lang="ts">
-import BaseTextBox from "@/components/BaseTextBox.vue";
-import { useStore } from "vuex";
-import BaseRadioGroup from "@/components/BaseRadioGroup.vue";
-import { onMounted, ref } from "vue";
-import { InputType } from "@/enums/TextBoxType";
-import { SET_LOADING } from "@/stores/storeConstants";
-import http from "@/services/http/http";
-import { notify } from "@/services/Toast";
-import { TypeToast } from "@/enums/TypeToast";
-import { useRoute } from "vue-router";
-import router from "@/router";
-import { Gender } from "@/enums/Gender";
-import { storage } from "@/firebase/firebase-config";
-
+import BaseTextBox from '@/components/BaseTextBox.vue';
+import { useStore } from 'vuex';
+import BaseRadioGroup from '@/components/BaseRadioGroup.vue';
+import { onMounted, ref } from 'vue';
+import { InputType } from '@/enums/TextBoxType';
+import { SET_LOADING } from '@/stores/storeConstants';
+import http from '@/services/http/http';
+import { notify } from '@/services/Toast';
+import { TypeToast } from '@/enums/TypeToast';
+import { useRoute } from 'vue-router';
+import router from '@/router';
+import { Gender } from '@/enums/Gender';
+import { storage } from '@/firebase/firebase-config';
 import {
     getDownloadURL,
     ref as firebaseRef,
     uploadBytesResumable,
-} from "firebase/storage";
+} from 'firebase/storage';
 
 interface IUsers {
     fullName: string;
@@ -137,17 +136,17 @@ interface IUsers {
 const route = useRoute();
 const store = useStore();
 const models = ref<IUsers>({
-    fullName: "",
-    username: "",
-    email: "",
-    phoneNumber: "",
-    address: "",
-    avatar: "",
-    gender: "",
-    roleId: "",
+    fullName: '',
+    username: '',
+    email: '',
+    phoneNumber: '',
+    address: '',
+    avatar: '',
+    gender: '',
+    roleId: '',
 });
 const errors = ref<string[]>([]);
-const userId = ref("");
+const userId = ref('');
 const myFile = ref();
 onMounted(async () => {
     if (route.query.id) {
@@ -180,65 +179,65 @@ onMounted(async () => {
 
 const handleSubmit = async () => {
     if (!models.value.fullName) {
-        if (!errors.value.find((el) => el === "FullName is required")) {
-            errors.value.push("FullName is required");
+        if (!errors.value.find((el) => el === 'FullName is required')) {
+            errors.value.push('FullName is required');
         }
     } else {
-        if (errors.value.find((el) => el === "FullName is required")) {
+        if (errors.value.find((el) => el === 'FullName is required')) {
             const indexusername = errors.value.findIndex(
-                (el) => el === "FullName is required"
+                (el) => el === 'FullName is required'
             );
             errors.value.splice(indexusername, 1);
         }
     }
 
     if (!models.value.username) {
-        if (!errors.value.find((el) => el === "Username is required")) {
-            errors.value.push("Username is required");
+        if (!errors.value.find((el) => el === 'Username is required')) {
+            errors.value.push('Username is required');
         }
     } else {
-        if (errors.value.find((el) => el === "Username is required")) {
+        if (errors.value.find((el) => el === 'Username is required')) {
             const indexusername = errors.value.findIndex(
-                (el) => el === "Username is required"
+                (el) => el === 'Username is required'
             );
             errors.value.splice(indexusername, 1);
         }
     }
 
     if (!models.value.email) {
-        if (!errors.value.find((el) => el === "Email is required")) {
-            errors.value.push("Email is required");
+        if (!errors.value.find((el) => el === 'Email is required')) {
+            errors.value.push('Email is required');
         }
     } else {
-        if (errors.value.find((el) => el === "Email is required")) {
+        if (errors.value.find((el) => el === 'Email is required')) {
             const indexusername = errors.value.findIndex(
-                (el) => el === "Email is required"
+                (el) => el === 'Email is required'
             );
             errors.value.splice(indexusername, 1);
         }
     }
 
     if (!models.value.phoneNumber) {
-        if (!errors.value.find((el) => el === "PhoneNumber is required")) {
-            errors.value.push("PhoneNumber is required");
+        if (!errors.value.find((el) => el === 'PhoneNumber is required')) {
+            errors.value.push('PhoneNumber is required');
         }
     } else {
-        if (errors.value.find((el) => el === "PhoneNumber is required")) {
+        if (errors.value.find((el) => el === 'PhoneNumber is required')) {
             const indexusername = errors.value.findIndex(
-                (el) => el === "PhoneNumber is required"
+                (el) => el === 'PhoneNumber is required'
             );
             errors.value.splice(indexusername, 1);
         }
     }
 
     if (!models.value.roleId) {
-        if (!errors.value.find((el) => el === "RoleId is required")) {
-            errors.value.push("RoleId is required");
+        if (!errors.value.find((el) => el === 'RoleId is required')) {
+            errors.value.push('RoleId is required');
         }
     } else {
-        if (errors.value.find((el) => el === "RoleId is required")) {
+        if (errors.value.find((el) => el === 'RoleId is required')) {
             const indexusername = errors.value.findIndex(
-                (el) => el === "RoleId is required"
+                (el) => el === 'RoleId is required'
             );
             errors.value.splice(indexusername, 1);
         }
@@ -247,7 +246,7 @@ const handleSubmit = async () => {
         // tham chiếu đến thư mục image trong firebase
         const storageRef: any = firebaseRef(
             storage,
-            "images/" + myFile.value.files[0].name
+            'images/' + myFile.value.files[0].name
         );
 
         // được sử dụng để tải lên một tệp tin dưới dạng byte
@@ -257,17 +256,17 @@ const handleSubmit = async () => {
         );
         //  Đây là một phương thức để lắng nghe sự thay đổi trạng thái của quá trình tải lên. Có ba trạng thái có thể xảy ra: "paused" (đã tạm dừng), "running" (đang chạy) và các trạng thái khác.
         uploadTask.on(
-            "state_changed",
+            'state_changed',
             (snapshot) => {
                 switch (snapshot.state) {
-                    case "paused":
-                        console.log("Upload is paused");
+                    case 'paused':
+                        console.log('Upload is paused');
                         break;
-                    case "running":
-                        console.log("Upload is running");
+                    case 'running':
+                        console.log('Upload is running');
                         break;
                     default:
-                        console.log("Nothing at all");
+                        console.log('Nothing at all');
                 }
             },
             (error) => {
@@ -294,17 +293,17 @@ const handleSubmit = async () => {
                     };
                     store.dispatch(SET_LOADING, true);
                     const { data } = await http.put(
-                        "/Auth/updateRecord",
+                        '/Auth/updateRecord',
                         JSON.stringify(payload)
                     );
                     if (data.success) {
-                        notify("Edit success!", TypeToast.success);
+                        notify('Edit success!', TypeToast.success);
                         router.push({ path: `/admin/auth` });
                     }
                     store.dispatch(SET_LOADING, false);
                 } catch (error) {
                     console.log(error);
-                    notify("Add fail!", TypeToast.error);
+                    notify('Add fail!', TypeToast.error);
                     store.dispatch(SET_LOADING, false);
                 }
             }

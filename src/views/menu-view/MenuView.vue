@@ -390,10 +390,7 @@
                         <div class="box">
                             <a href="" class="fas fa-heart"></a>
                             <div class="image">
-                                <img
-                                    :src="f?.url"
-                                    alt=""
-                                />
+                                <img :src="f?.url" alt="" />
                             </div>
                             <div class="content">
                                 <h3>{{ f?.foodName }}</h3>
@@ -439,8 +436,8 @@
                                 <BaseButton
                                     class="btn"
                                     :type="ButtonType.success"
-                                    @click="() => addItem(index)"
                                     text="Add to cart"
+                                    @click="() => addItem(index)"
                                 />
                             </div>
                         </div>
