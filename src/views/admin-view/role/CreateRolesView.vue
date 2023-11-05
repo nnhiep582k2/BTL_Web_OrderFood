@@ -1,5 +1,5 @@
 <template>
-   <div v-if="errors.length" class="row error-box">
+    <div v-if="errors.length" class="row error-box">
         <ul>
             <li v-for="(error, index) in errors" :key="index">
                 {{ error }}
@@ -25,23 +25,21 @@
 </template>
 
 <script setup lang="ts">
-
-import BaseTextBox from "@/components/BaseTextBox.vue";
-
-import { useStore } from "vuex";
-import { ref } from "vue";
-import { InputType } from "@/enums/TextBoxType";
-import { SET_LOADING } from "@/stores/storeConstants";
-import http from "@/services/http/http";
-import { notify } from "@/services/Toast";
-import { TypeToast } from "@/enums/TypeToast";
+import BaseTextBox from '@/components/BaseTextBox.vue';
+import { useStore } from 'vuex';
+import { ref } from 'vue';
+import { InputType } from '@/enums/TextBoxType';
+import { SET_LOADING } from '@/stores/storeConstants';
+import http from '@/services/http/http';
+import { notify } from '@/services/Toast';
+import { TypeToast } from '@/enums/TypeToast';
 
 interface IRoles {
     roleName: string;
 }
 const store = useStore();
 const models = ref<IRoles>({
-    roleName: "",
+    roleName: '',
 });
 
 const errors = ref<String[]>([]);
@@ -49,18 +47,17 @@ const errors = ref<String[]>([]);
 const handleSubmit = async () => {
     try {
         if (!models.value.roleName) {
-            if (!errors.value.find((el) => el === "RoleName is required")) {
-                errors.value.push("RoleName is required");
+            if (!errors.value.find((el) => el === 'RoleName is required')) {
+                errors.value.push('RoleName is required');
             }
         } else {
-            if (errors.value.find((el) => el === "RoleName is required")) {
+            if (errors.value.find((el) => el === 'RoleName is required')) {
                 const indexuserRoleName = errors.value.findIndex(
-                    (el) => el === "RoleName is required"
+                    (el) => el === 'RoleName is required'
                 );
                 errors.value.splice(indexuserRoleName, 1);
             }
         }
-
 
         if (errors.value.length == 0) {
             const payload = {
@@ -68,25 +65,24 @@ const handleSubmit = async () => {
             };
             store.dispatch(SET_LOADING, true);
             const { data } = await http.post(
-                "/Roles/addRecord",
+                '/Roles/addRecord',
                 JSON.stringify(payload)
             );
             if (data.success) {
-                notify("Add success!", TypeToast.success);
+                notify('Add success!', TypeToast.success);
                 models.value = {
-                    roleName: "",
+                    roleName: '',
                 };
             }
             store.dispatch(SET_LOADING, false);
         }
     } catch (error) {
         console.log(error);
-        notify("Add fail!", TypeToast.error);
+        notify('Add fail!', TypeToast.error);
         store.dispatch(SET_LOADING, false);
     }
 };
 </script>
-
 
 <style scoped lang="scss">
 .error-box {
@@ -108,7 +104,7 @@ const handleSubmit = async () => {
     }
 }
 
-label{
+label {
     font-size: 20px;
 }
 </style>

@@ -5,27 +5,26 @@
         text="Add"
         @click="router.push({ path: '/admin/create-categorys' })"
     />
-    <BaseTable :headers="titleList" :items="items" entity="Categorys">
-    </BaseTable>
+    <BaseTable :headers="titleList" :items="items" entity="Categorys" />
 </template>
 
 <script setup lang="ts">
-import BaseTable from "@/components/BaseTable.vue";
-import { ref } from "vue";
-import http from "@/services/http/http";
-import BaseButton from "@/components/BaseButton.vue";
-import { useStore } from "vuex";
-import { SET_LOADING } from "@/stores/storeConstants";
-import { ButtonType } from "@/enums/ButtonType";
-import router from "@/router";
+import BaseTable from '@/components/BaseTable.vue';
+import { ref } from 'vue';
+import http from '@/services/http/http';
+import BaseButton from '@/components/BaseButton.vue';
+import { useStore } from 'vuex';
+import { SET_LOADING } from '@/stores/storeConstants';
+import { ButtonType } from '@/enums/ButtonType';
+import router from '@/router';
 
 const titleList = [
-    "categoryId",
-    "name",
-    "createdDate",
-    "createdBy",
-    "modifiedDate",
-    "modifiedBy",
+    'categoryId',
+    'name',
+    'createdDate',
+    'createdBy',
+    'modifiedDate',
+    'modifiedBy',
 ];
 
 const items = ref([]);
@@ -33,7 +32,7 @@ const store = useStore();
 const getCategorys = async () => {
     try {
         store.dispatch(SET_LOADING, true);
-        let { data } = (await http.get("/Categories/GetAllRecord")).data;
+        let { data } = (await http.get('/Categories/GetAllRecord')).data;
         items.value = data;
     } catch (error) {
         store.dispatch(SET_LOADING, false);

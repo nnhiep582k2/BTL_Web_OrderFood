@@ -123,27 +123,25 @@
         />
     </div>
     <div class="col-md-12 mt-3">
-        <button
-            class="btn_add btn btn-success"
-            @click="handleSubmit"
-        >Edit</button>
+        <button class="btn_add btn btn-success" @click="handleSubmit">
+            Edit
+        </button>
     </div>
 </template>
 
 <script setup lang="ts">
-import BaseTextBox from "@/components/BaseTextBox.vue";
-import { InputType } from "@/enums/TextBoxType";
-import { onBeforeMount, onMounted, ref } from "vue";
-import http from "@/services/http/http";
-import { ButtonType } from "@/enums/ButtonType";
-import { useStore } from "vuex";
-import { SET_LOADING } from "@/stores/storeConstants";
-import { notify } from "@/services/Toast";
-import { TypeToast } from "@/enums/TypeToast";
-import BaseRadioGroup from "@/components/BaseRadioGroup.vue";
-import { StatusBill } from "@/enums/StatusBill";
-import router from "@/router";
-import { useRoute } from "vue-router";
+import BaseTextBox from '@/components/BaseTextBox.vue';
+import { InputType } from '@/enums/TextBoxType';
+import { onMounted, ref } from 'vue';
+import http from '@/services/http/http';
+import { useStore } from 'vuex';
+import { SET_LOADING } from '@/stores/storeConstants';
+import { notify } from '@/services/Toast';
+import { TypeToast } from '@/enums/TypeToast';
+import BaseRadioGroup from '@/components/BaseRadioGroup.vue';
+import { StatusBill } from '@/enums/StatusBill';
+import router from '@/router';
+import { useRoute } from 'vue-router';
 
 const route = useRoute();
 interface IBill {
@@ -158,16 +156,17 @@ interface IBill {
 
 const store = useStore();
 const models = ref<IBill>({
-    userId: "",
-    paid: "",
-    status: "",
-    total: "",
-    method: "",
-    discount: "",
-    delivery: "",
+    userId: '',
+    paid: '',
+    status: '',
+    total: '',
+    method: '',
+    discount: '',
+    delivery: '',
 });
 const errors = ref<String[]>([]);
-const billId = ref("");
+const billId = ref('');
+
 onMounted(async () => {
     if (route.query.id) {
         billId.value = route.query.id.toString();
@@ -175,8 +174,9 @@ onMounted(async () => {
     if (billId.value) {
         try {
             store.dispatch(SET_LOADING, true);
-            let { data } = (await http.get(`/Bills/GetById?recordId=${billId.value}`))
-                .data;
+            let { data } = (
+                await http.get(`/Bills/GetById?recordId=${billId.value}`)
+            ).data;
             models.value = {
                 userId: data?.userId,
                 paid: data?.paid,
@@ -198,46 +198,46 @@ onMounted(async () => {
 const handleSubmit = async () => {
     try {
         if (!models.value.userId) {
-            if (!errors.value.find((el) => el === "userId is required")) {
-                errors.value.push("userId is required");
+            if (!errors.value.find((el) => el === 'userId is required')) {
+                errors.value.push('userId is required');
             }
         } else {
-            if (errors.value.find((el) => el === "userId is required")) {
+            if (errors.value.find((el) => el === 'userId is required')) {
                 const indexusername = errors.value.findIndex(
-                    (el) => el === "userId is required"
+                    (el) => el === 'userId is required'
                 );
                 errors.value.splice(indexusername, 1);
             }
         }
 
         if (!models.value.status) {
-            if (!errors.value.find((el) => el === "Status is required")) {
-                errors.value.push("Status is required");
+            if (!errors.value.find((el) => el === 'Status is required')) {
+                errors.value.push('Status is required');
             }
         } else {
-            if (errors.value.find((el) => el === "Status is required")) {
+            if (errors.value.find((el) => el === 'Status is required')) {
                 const indexusername = errors.value.findIndex(
-                    (el) => el === "Status is required"
+                    (el) => el === 'Status is required'
                 );
                 errors.value.splice(indexusername, 1);
             }
         }
 
         if (!models.value.total) {
-            if (!errors.value.find((el) => el === "Total is required")) {
-                errors.value.push("Total is required");
+            if (!errors.value.find((el) => el === 'Total is required')) {
+                errors.value.push('Total is required');
             }
         } else {
-            if (errors.value.find((el) => el === "Total is required")) {
+            if (errors.value.find((el) => el === 'Total is required')) {
                 const indexusername = errors.value.findIndex(
-                    (el) => el === "Total is required"
+                    (el) => el === 'Total is required'
                 );
                 errors.value.splice(indexusername, 1);
             }
         }
         if (errors.value.length == 0) {
             const payload = {
-                billId:billId.value,
+                billId: billId.value,
                 userId: models.value.userId,
                 paid: models.value.paid.toString(),
                 status: Number.parseInt(models.value.status),
@@ -248,18 +248,18 @@ const handleSubmit = async () => {
             };
             store.dispatch(SET_LOADING, true);
             const { data } = await http.put(
-                "/Bills/updateRecord",
+                '/Bills/updateRecord',
                 JSON.stringify(payload)
             );
             if (data.success) {
-                notify("Edit success!", TypeToast.success);
+                notify('Edit success!', TypeToast.success);
                 router.push({ path: `/admin/bills` });
             }
             store.dispatch(SET_LOADING, false);
         }
     } catch (error) {
         console.log(error);
-        notify("Edit fail!", TypeToast.error);
+        notify('Edit fail!', TypeToast.error);
         store.dispatch(SET_LOADING, false);
     }
 };

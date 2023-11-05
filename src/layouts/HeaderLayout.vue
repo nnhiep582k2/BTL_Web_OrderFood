@@ -57,7 +57,6 @@
                             <router-link
                                 @click="scrollToTop()"
                                 to="/admin/users"
-
                                 >Admin page</router-link
                             >
                         </li>
@@ -79,19 +78,17 @@
 </template>
 
 <script setup lang="ts">
-import { HeaderItem } from "@/mocks/HeaderItem";
-import { useRouter, useRoute } from "vue-router";
-import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
-import BaseIcon from "@/components/BaseIcon.vue";
-import { useStore } from "vuex";
 import {
     ADMIN_ACTION,
     LOGOUT_ACTION,
     SET_LOADING,
-} from "@/stores/storeConstants";
-import { Role } from "@/enums/Role";
-import http from "@/services/http/http";
-
+} from '@/stores/storeConstants';
+import { HeaderItem } from '@/mocks/HeaderItem';
+import { useRouter, useRoute } from 'vue-router';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import BaseIcon from '@/components/BaseIcon.vue';
+import { useStore } from 'vuex';
+import http from '@/services/http/http';
 
 const store = useStore();
 const router = useRouter();
@@ -131,7 +128,7 @@ watch(
 
 watch(
     authData,
-    async(newValue) => {
+    async (newValue) => {
         isAdmin.value = await clientSideCheckAdminRole(newValue?.token);
 
         store.dispatch(ADMIN_ACTION, isAdmin.value);
@@ -143,13 +140,12 @@ const clientSideCheckAdminRole = async (jwt: string) => {
     if (jwt) {
         try {
             store.dispatch(SET_LOADING, true);
-            const { data } = (await http.post("/Auth/CheckRole?jwt=" + jwt))
+            const { data } = await http.post('/Auth/CheckRole?jwt=' + jwt);
             store.dispatch(SET_LOADING, false);
             return data;
         } catch (error) {
             store.dispatch(SET_LOADING, false);
         }
-
     }
     return false;
 };
