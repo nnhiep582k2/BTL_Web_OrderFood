@@ -1,11 +1,12 @@
 
 -- view
-CREATE  or ALTER VIEW [dbo].[ViewFood]
+CREATE or ALTER VIEW [dbo].[ViewFood]
 AS
 SELECT dbo.Categorys.Name, dbo.Categorys.CategoryId, dbo.Foods.FoodId, dbo.Foods.FoodName, dbo.Foods.Price, dbo.Foods.Quantity, dbo.Foods.CreatedDate, dbo.Foods.CreatedBy, dbo.Foods.ModifiedDate, dbo.Foods.ModifiedBy, 
-                  dbo.Foods.FoodDesc, dbo.Foods.FoodDiscount, dbo.Foods.FoodStar, dbo.Foods.FoodType, dbo.Foods.FoodStatus, dbo.Foods.FoodVote
+                  dbo.Foods.FoodDesc, dbo.Foods.FoodDiscount, dbo.Foods.FoodStar, dbo.Foods.FoodType, dbo.Foods.FoodStatus, dbo.Foods.FoodVote, dbo.FoodImages.Url
 FROM     dbo.Categorys INNER JOIN
-                  dbo.Foods ON dbo.Categorys.CategoryId = dbo.Foods.CategoryId
+                  dbo.Foods ON dbo.Categorys.CategoryId = dbo.Foods.CategoryId INNER JOIN
+                  dbo.FoodImages ON dbo.Foods.FoodId = dbo.FoodImages.FoodId
 
 
 
@@ -36,7 +37,21 @@ AS
 SELECT dbo.Users.*
 FROM     dbo.Users
 
+CREATE or ALTER VIEW [dbo].[ViewOrder]
+AS
+SELECT dbo.Orders.*
+FROM     dbo.Orders
 
+CREATE VIEW [dbo].[ViewFoodImage]
+AS
+SELECT dbo.FoodImages.*
+FROM     dbo.FoodImages
+
+
+CREATE VIEW [dbo].[ViewFoodImage]
+AS
+SELECT dbo.FoodImages.*
+FROM     dbo.FoodImages
 
 -- PROCEDURE
 
@@ -291,6 +306,138 @@ BEGIN
 	WHERE o.OrderId = @Id
 END
 
+
+-- CRUD User
+
+/*
+{
+  "fullName": "kien",
+  "username": "kren",
+  "passwordHash": "123456789@",
+  "email": "string",
+  "phoneNumber": "849309234",
+  "address": "string",
+  "avatar": "string",
+  "gender": 0,
+  "roleId": "BFE39821-2BA0-4902-9186-5DDABCB98221"
+}
+*/
+CREATE or alter PROCEDURE AddUser
+	@UserId uniqueidentifier,
+	@FullName nvarchar(max),
+	@Username nvarchar(max),
+	@PasswordHash nvarchar(max),
+	@Email nvarchar(max),
+	@PhoneNumber nvarchar(max),
+	@Address nvarchar(max),
+	@Avatar nvarchar(max),
+	@Gender int,
+	@RoleId uniqueidentifier,
+	@CreatedDate datetime2(7),
+	@CreatedBy nvarchar(max),
+	@ModifiedDate datetime2(7),
+	@ModifiedBy  nvarchar(max)
+AS
+BEGIN
+INSERT INTO Users(UserId,FullName,Username, PasswordHash,Email,PhoneNumber,Address, Avatar, Gender, RoleId,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy)
+     VALUES
+           (@UserId,@FullName,@Username,@PasswordHash,@Email,@PhoneNumber,@Address,@Avatar,@Gender,@RoleId, GETDATE(),'NTKIEN',null,null)
+END
+
+-- update
+CREATE or ALTER PROCEDURE UpdateUser
+	@UserId uniqueidentifier,
+	@FullName nvarchar(max),
+	@Username nvarchar(max),
+	@PasswordHash nvarchar(max),
+	@Email nvarchar(max),
+	@PhoneNumber nvarchar(max),
+	@Address nvarchar(max) = null,
+	@Avatar nvarchar(max) = null,
+	@Gender int = null,
+	@RoleId uniqueidentifier,
+	@CreatedDate datetime2(7),
+	@CreatedBy nvarchar(max),
+	@ModifiedDate datetime2(7),
+	@ModifiedBy  nvarchar(max)
+AS
+BEGIN
+    UPDATE Users
+    SET
+        FullName = @FullName,
+		Username = @Username,
+		Email = @Email,
+		PhoneNumber = @PhoneNumber,
+		Address = @Address,
+		Avatar = @Avatar, 
+		Gender = @Gender, 
+		RoleId = @RoleId,
+		ModifiedDate = GETDATE(),
+		ModifiedBy = 'NTKIEN'
+    WHERE
+        UserId = @UserId;
+END;
+
+-- get by id
+CREATE or ALTER PROCEDURE GetUsers
+    @Id uniqueidentifier
+AS
+BEGIN
+   SELECT *  
+	FROM Users u
+	WHERE u.UserId = @Id
+END
+
+
+-- CRUD food image
+CREATE or alter PROCEDURE AddFoodImage
+	@FoodImageId uniqueidentifier,
+	@FoodId uniqueidentifier,
+	@Url nvarchar(max),
+	@Type int = null,
+	@CreatedDate datetime2(7),
+	@CreatedBy nvarchar(max),
+	@ModifiedDate datetime2(7),
+	@ModifiedBy  nvarchar(max)
+AS
+BEGIN
+INSERT INTO FoodImages(FoodImageId,FoodId,Url,Type,CreatedDate,CreatedBy,ModifiedDate,ModifiedBy)
+     VALUES
+           (@FoodImageId,@FoodId,@Url,@Type, GETDATE(),'NTKIEN',null,null)
+END
+
+-- update
+CREATE or ALTER PROCEDURE UpdateFoodImage
+	@FoodImageId uniqueidentifier,
+	@FoodId uniqueidentifier,
+	@Url nvarchar(max),
+	@Type int = null,
+	@CreatedDate datetime2(7),
+	@CreatedBy nvarchar(max),
+	@ModifiedDate datetime2(7),
+	@ModifiedBy  nvarchar(max)
+AS
+BEGIN
+    UPDATE FoodImages
+    SET
+        FoodId = @FoodId,
+		Url = @Url,
+		Type = @Type,
+		ModifiedDate = GETDATE(),
+		ModifiedBy = 'NTKIEN'
+    WHERE
+        FoodImageId = @FoodImageId;
+END;
+
+-- get by id
+CREATE or ALTER PROCEDURE GetFoodImages
+    @Id uniqueidentifier
+AS
+BEGIN
+   SELECT *  
+	FROM FoodImages f
+	WHERE f.FoodImageId = @Id
+END
 
 
 -- Home
