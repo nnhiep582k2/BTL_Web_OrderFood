@@ -66,12 +66,12 @@
                         </li>
                         <li>
                             <router-link @click="scrollToTop()" to="/order"
-                                >my orders</router-link
+                                >My orders</router-link
                             >
                         </li>
                         <li>
                             <router-link @click="handleLogout" to="/"
-                                >logout</router-link
+                                >Logout</router-link
                             >
                         </li>
                     </ul>

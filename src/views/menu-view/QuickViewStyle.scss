@@ -10,9 +10,15 @@
     align-items: center;
     justify-content: center;
 
+    .header-quick-view {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
     .quick-view-inner {
         width: 45vw;
-        height: 45vh;
+        max-height: calc(100vh - 30px);
         background-color: #fff;
         padding: 32px;
         h2 {

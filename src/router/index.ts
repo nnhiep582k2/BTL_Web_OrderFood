@@ -9,6 +9,7 @@ import OrderView from '@/views/order-view/OrderView.vue';
 import HomeView from '@/views/home-view/HomeView.vue';
 import CartView from '@/views/cart-view/CartView.vue';
 import AdminView from '@/views/admin-view/AdminView.vue';
+import CheckoutView from '@/views/checkout-view/CheckoutView.vue';
 
 export const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -59,6 +60,11 @@ export const router = createRouter({
             component: LoginView,
         },
         {
+            path: '/checkout',
+            name: 'checkout',
+            component: CheckoutView,
+        },
+        {
             path: '/admin',
             name: 'admin',
             component: AdminView,
@@ -88,7 +94,7 @@ export const router = createRouter({
                     name: 'admin.foodImages',
                     component: () =>
                         import(
-                            '@/views/admin-view/foodImage/foodImagesView.vue'
+                            '@/views/admin-view/foodImage/FoodImagesView.vue'
                         ),
                 },
                 {

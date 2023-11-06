@@ -123,7 +123,7 @@
             <div>
                 <img src="/src/assets/images/template/no-orders.png" alt="" />
             </div>
-            <RouterLink class="btn" to="/menu">Order now!</RouterLink>
+            <RouterLink class="btn" to="/menu/all">Order now!</RouterLink>
         </div>
 
         <OrderDetails v-if="showOrderDetails" :bill="sendId">
