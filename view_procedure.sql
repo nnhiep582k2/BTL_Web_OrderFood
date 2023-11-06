@@ -45,17 +45,17 @@ FROM     dbo.Orders
 
 
 
-CREATE VIEW [dbo].[ViewFoodImage]
+CREATE or ALTER VIEW [dbo].[ViewFoodImage]
 AS
 SELECT dbo.FoodImages.*
 FROM     dbo.FoodImages
 
 
 
-CREATE VIEW [dbo].[ViewFoodImage]
-AS
-SELECT dbo.FoodImages.*
-FROM     dbo.FoodImages
+-- CREATE or ALTER VIEW [dbo].[ViewFoodImage]
+-- AS
+-- SELECT dbo.FoodImages.*
+-- FROM     dbo.FoodImages
 
 
 
@@ -460,7 +460,7 @@ END
 
 
 
-- Book a table
+-- Book a table
 CREATE or alter PROCEDURE AddBook
 	@BookID uniqueidentifier,
     @ClientName NVARCHAR(255),
