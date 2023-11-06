@@ -14,6 +14,7 @@
                 :style="`width: ${width}`"
                 :placeholder="placeholder"
                 :class="classes"
+                :id="id"
                 @change="handleChangeValue"
             />
         </label>
@@ -42,6 +43,7 @@ interface IProps {
     placeholder?: string;
     label?: string;
     labelSize?: string;
+    id?: string;
 }
 
 const props = withDefaults(defineProps<IProps>(), {

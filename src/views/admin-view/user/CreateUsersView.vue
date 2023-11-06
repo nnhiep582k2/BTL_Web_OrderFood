@@ -65,11 +65,7 @@
         </div>
         <div class="col-md-6" style="display: flex; flex-direction: column">
             <label for="">Avatar</label>
-            <input
-                width="100%"
-                type="file"
-                ref="myFile"
-            />
+            <input width="100%" type="file" ref="myFile" />
         </div>
     </div>
 
@@ -117,22 +113,22 @@
 </template>
 
 <script setup lang="ts">
-import BaseTextBox from "@/components/BaseTextBox.vue";
-import { useStore } from "vuex";
-import BaseRadioGroup from "@/components/BaseRadioGroup.vue";
-import { ref } from "vue";
-import { InputType } from "@/enums/TextBoxType";
-import { SET_LOADING } from "@/stores/storeConstants";
-import http from "@/services/http/http";
-import { notify } from "@/services/Toast";
-import { TypeToast } from "@/enums/TypeToast";
-import { storage } from "@/firebase/firebase-config";
-import { Gender } from "@/enums/Gender";
+import BaseTextBox from '@/components/BaseTextBox.vue';
+import { useStore } from 'vuex';
+import BaseRadioGroup from '@/components/BaseRadioGroup.vue';
+import { ref } from 'vue';
+import { InputType } from '@/enums/TextBoxType';
+import { SET_LOADING } from '@/stores/storeConstants';
+import http from '@/services/http/http';
+import { notify } from '@/services/Toast';
+import { TypeToast } from '@/enums/TypeToast';
+import { storage } from '@/firebase/firebase-config';
+import { Gender } from '@/enums/Gender';
 import {
     getDownloadURL,
     ref as firebaseRef,
     uploadBytesResumable,
-} from "firebase/storage";
+} from 'firebase/storage';
 
 interface IUsers {
     fullName: string;
@@ -147,92 +143,92 @@ interface IUsers {
 }
 const store = useStore();
 const models = ref<IUsers>({
-    fullName: "",
-    username: "",
-    passwordHash: "string",
-    email: "",
-    phoneNumber: "",
-    address: "",
-    avatar: "",
-    gender: "",
-    roleId: "",
+    fullName: '',
+    username: '',
+    passwordHash: 'string',
+    email: '',
+    phoneNumber: '',
+    address: '',
+    avatar: '',
+    gender: '',
+    roleId: '',
 });
 const errors = ref<string[]>([]);
 const myFile = ref();
 const handleSubmit = async () => {
     if (!models.value.fullName) {
-        if (!errors.value.find((el) => el === "FullName is required")) {
-            errors.value.push("FullName is required");
+        if (!errors.value.find((el) => el === 'FullName is required')) {
+            errors.value.push('FullName is required');
         }
     } else {
-        if (errors.value.find((el) => el === "FullName is required")) {
+        if (errors.value.find((el) => el === 'FullName is required')) {
             const indexusername = errors.value.findIndex(
-                (el) => el === "FullName is required"
+                (el) => el === 'FullName is required'
             );
             errors.value.splice(indexusername, 1);
         }
     }
 
     if (!models.value.username) {
-        if (!errors.value.find((el) => el === "Username is required")) {
-            errors.value.push("Username is required");
+        if (!errors.value.find((el) => el === 'Username is required')) {
+            errors.value.push('Username is required');
         }
     } else {
-        if (errors.value.find((el) => el === "Username is required")) {
+        if (errors.value.find((el) => el === 'Username is required')) {
             const indexusername = errors.value.findIndex(
-                (el) => el === "Username is required"
+                (el) => el === 'Username is required'
             );
             errors.value.splice(indexusername, 1);
         }
     }
 
     if (!models.value.passwordHash) {
-        if (!errors.value.find((el) => el === "PasswordHash is required")) {
-            errors.value.push("PasswordHash is required");
+        if (!errors.value.find((el) => el === 'PasswordHash is required')) {
+            errors.value.push('PasswordHash is required');
         }
     } else {
-        if (errors.value.find((el) => el === "PasswordHash is required")) {
+        if (errors.value.find((el) => el === 'PasswordHash is required')) {
             const indexusername = errors.value.findIndex(
-                (el) => el === "PasswordHash is required"
+                (el) => el === 'PasswordHash is required'
             );
             errors.value.splice(indexusername, 1);
         }
     }
 
     if (!models.value.email) {
-        if (!errors.value.find((el) => el === "Email is required")) {
-            errors.value.push("Email is required");
+        if (!errors.value.find((el) => el === 'Email is required')) {
+            errors.value.push('Email is required');
         }
     } else {
-        if (errors.value.find((el) => el === "Email is required")) {
+        if (errors.value.find((el) => el === 'Email is required')) {
             const indexusername = errors.value.findIndex(
-                (el) => el === "Email is required"
+                (el) => el === 'Email is required'
             );
             errors.value.splice(indexusername, 1);
         }
     }
 
     if (!models.value.phoneNumber) {
-        if (!errors.value.find((el) => el === "PhoneNumber is required")) {
-            errors.value.push("PhoneNumber is required");
+        if (!errors.value.find((el) => el === 'PhoneNumber is required')) {
+            errors.value.push('PhoneNumber is required');
         }
     } else {
-        if (errors.value.find((el) => el === "PhoneNumber is required")) {
+        if (errors.value.find((el) => el === 'PhoneNumber is required')) {
             const indexusername = errors.value.findIndex(
-                (el) => el === "PhoneNumber is required"
+                (el) => el === 'PhoneNumber is required'
             );
             errors.value.splice(indexusername, 1);
         }
     }
 
     if (!models.value.roleId) {
-        if (!errors.value.find((el) => el === "RoleId is required")) {
-            errors.value.push("RoleId is required");
+        if (!errors.value.find((el) => el === 'RoleId is required')) {
+            errors.value.push('RoleId is required');
         }
     } else {
-        if (errors.value.find((el) => el === "RoleId is required")) {
+        if (errors.value.find((el) => el === 'RoleId is required')) {
             const indexusername = errors.value.findIndex(
-                (el) => el === "RoleId is required"
+                (el) => el === 'RoleId is required'
             );
             errors.value.splice(indexusername, 1);
         }
@@ -241,7 +237,7 @@ const handleSubmit = async () => {
         // tham chiếu đến thư mục image trong firebase
         const storageRef: any = firebaseRef(
             storage,
-            "images/" + myFile.value.files[0].name
+            'images/' + myFile.value.files[0].name
         );
 
         // được sử dụng để tải lên một tệp tin dưới dạng byte
@@ -251,17 +247,17 @@ const handleSubmit = async () => {
         );
         //  Đây là một phương thức để lắng nghe sự thay đổi trạng thái của quá trình tải lên. Có ba trạng thái có thể xảy ra: "paused" (đã tạm dừng), "running" (đang chạy) và các trạng thái khác.
         uploadTask.on(
-            "state_changed",
+            'state_changed',
             (snapshot) => {
                 switch (snapshot.state) {
-                    case "paused":
-                        console.log("Upload is paused");
+                    case 'paused':
+                        console.log('Upload is paused');
                         break;
-                    case "running":
-                        console.log("Upload is running");
+                    case 'running':
+                        console.log('Upload is running');
                         break;
                     default:
-                        console.log("Nothing at all");
+                        console.log('Nothing at all');
                 }
             },
             (error) => {
@@ -288,27 +284,27 @@ const handleSubmit = async () => {
                     };
                     store.dispatch(SET_LOADING, true);
                     const { data } = await http.post(
-                        "/Auth/addRecord",
+                        '/Auth/addRecord',
                         JSON.stringify(payload)
                     );
                     if (data.success) {
-                        notify("Add success!", TypeToast.success);
+                        notify('Add success!', TypeToast.success);
                         models.value = {
-                            fullName: "",
-                            username: "",
-                            passwordHash: "",
-                            email: "",
-                            phoneNumber: "",
-                            address: "",
-                            avatar: "",
-                            gender: "",
-                            roleId: "",
+                            fullName: '',
+                            username: '',
+                            passwordHash: '',
+                            email: '',
+                            phoneNumber: '',
+                            address: '',
+                            avatar: '',
+                            gender: '',
+                            roleId: '',
                         };
                     }
                     store.dispatch(SET_LOADING, false);
                 } catch (error) {
                     console.log(error);
-                    notify("Add fail!", TypeToast.error);
+                    notify('Add fail!', TypeToast.error);
                     store.dispatch(SET_LOADING, false);
                 }
             }

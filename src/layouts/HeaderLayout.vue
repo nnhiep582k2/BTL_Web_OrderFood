@@ -86,13 +86,13 @@ import {
     ADMIN_ACTION,
     LOGOUT_ACTION,
     SET_LOADING,
-} from "@/stores/storeConstants";
-import { HeaderItem } from "@/mocks/HeaderItem";
-import { useRouter, useRoute } from "vue-router";
-import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
-import BaseIcon from "@/components/BaseIcon.vue";
-import { useStore } from "vuex";
-import http from "@/services/http/http";
+} from '@/stores/storeConstants';
+import { HeaderItem } from '@/mocks/HeaderItem';
+import { useRouter, useRoute } from 'vue-router';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import BaseIcon from '@/components/BaseIcon.vue';
+import { useStore } from 'vuex';
+import http from '@/services/http/http';
 
 const store = useStore();
 const router = useRouter();
@@ -100,11 +100,11 @@ const currentTab = ref(HeaderItem[0]);
 const isCurrentTab = (tab: string) => currentTab.value === tab;
 
 const setActiveTab = (tab: string) => {
-    if (tab == "Menu") {
+    if (tab == 'Menu') {
         router.push({
             name: tab.toLowerCase(),
             params: {
-                item: "all",
+                item: 'all',
             },
         });
     } else
@@ -114,7 +114,7 @@ const setActiveTab = (tab: string) => {
 };
 
 const route = useRoute();
-const authData = computed(() => store.getters["getAuthData"]);
+const authData = computed(() => store.getters['getAuthData']);
 const dropdown = ref();
 const excludedElements = ref<any[]>([]);
 const isAdmin = ref<boolean>(false);
@@ -135,8 +135,8 @@ watch(
     async (newValue) => {
         isAdmin.value = await clientSideCheckAdminRole(newValue?.token);
         store.dispatch(ADMIN_ACTION, isAdmin.value);
-        document.querySelector(".avatar") &&
-            excludedElements.value.push(document.querySelector(".avatar"));
+        document.querySelector('.avatar') &&
+            excludedElements.value.push(document.querySelector('.avatar'));
     },
     { deep: true }
 );
@@ -145,7 +145,7 @@ const clientSideCheckAdminRole = async (jwt: string) => {
     if (jwt) {
         try {
             store.dispatch(SET_LOADING, true);
-            const { data } = await http.post("/Auth/CheckRole?jwt=" + jwt);
+            const { data } = await http.post('/Auth/CheckRole?jwt=' + jwt);
             store.dispatch(SET_LOADING, false);
             return data;
         } catch (error) {
@@ -156,19 +156,19 @@ const clientSideCheckAdminRole = async (jwt: string) => {
 };
 
 const showLog = () => {
-    let log = document.querySelector(".drop-down-select") as HTMLElement;
-    log.classList.add("active");
+    let log = document.querySelector('.drop-down-select') as HTMLElement;
+    log.classList.add('active');
 };
 
 onMounted(() => {
-    window.addEventListener("click", handleClickOutSide);
-    excludedElements.value.push(document.querySelector(".account"));
-    document.querySelector(".fa-user") &&
-        excludedElements.value.push(document.querySelector(".fa-user"));
+    window.addEventListener('click', handleClickOutSide);
+    excludedElements.value.push(document.querySelector('.account'));
+    document.querySelector('.fa-user') &&
+        excludedElements.value.push(document.querySelector('.fa-user'));
 });
 
 onBeforeUnmount(() => {
-    window.removeEventListener("click", handleClickOutSide);
+    window.removeEventListener('click', handleClickOutSide);
 });
 
 const handleClickOutSide = (event) => {
@@ -179,8 +179,8 @@ const handleClickOutSide = (event) => {
             (el) => el.className == event.target.className
         )
     ) {
-        let log = document.querySelector(".drop-down-select") as HTMLElement;
-        log.classList.remove("active");
+        let log = document.querySelector('.drop-down-select') as HTMLElement;
+        log.classList.remove('active');
     }
 };
 
@@ -190,8 +190,8 @@ const scrollToTop = () => {
 
 const handleLogout = () => {
     store.dispatch(`${LOGOUT_ACTION}`, null);
-    localStorage.removeItem("userId");
-    localStorage.removeItem("jwtToken");
+    localStorage.removeItem('userId');
+    localStorage.removeItem('jwtToken');
 };
 </script>
 
