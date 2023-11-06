@@ -64,9 +64,10 @@ const getBills = async () => {
                     default:
                         break;
                 }
-                return el;
             }
+            return el;
         });
+        console.log(items.value);
     } catch (error) {
         store.dispatch(SET_LOADING, false);
     } finally {
