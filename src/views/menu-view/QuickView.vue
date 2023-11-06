@@ -9,7 +9,7 @@
             <div class="product-detail d-flex">
                 <div class="image">
                     <img
-                        :src="`/src/assets/images/template/${food?.url}`"
+                        :src="`${food?.url}`"
                         alt=""
                     />
                 </div>
@@ -67,7 +67,7 @@
 
 <script setup lang="ts">
 import BaseButton from '@/components/BaseButton.vue';
-import { computed, ref } from 'vue';
+import { computed, ref,onMounted } from 'vue';
 import VueBasicAlert from 'vue-basic-alert';
 import { ButtonType } from '@/enums/ButtonType';
 import { useStore } from 'vuex';
@@ -85,7 +85,10 @@ const authData = computed(() => store.getters['getAuthData']);
 const theQuantity = ref<number>(0);
 const alert = ref();
 let firstLoad = ref<boolean>(true);
-
+onMounted(()=>{
+    console.log(props.food.url);
+    
+})
 const addToCart = async () => {
     if (!firstLoad.value) return;
     firstLoad.value = false;
