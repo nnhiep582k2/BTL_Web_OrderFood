@@ -43,9 +43,6 @@ const getBills = async () => {
         items.value = data.map((el) => {
             if (el?.status) {
                 switch (el?.status) {
-                    case StatusBill.cancel:
-                        el.status = 'Cancel';
-                        break;
                     case StatusBill.confirmed:
                         el.status = 'Confirmed';
                         break;
@@ -64,6 +61,8 @@ const getBills = async () => {
                     default:
                         break;
                 }
+            }else if(el?.status === 0){
+                el.status = 'Cancel';
             }
             return el;
         });
