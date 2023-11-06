@@ -5,7 +5,8 @@
             <h3>Best quality with reasonable price</h3>
         </div>
 
-        <div class="promotions-item">
+        <!-- DB chưa đáp ứng, nếu bổ sung thì rất mất thời gian -->
+        <!-- <div class="promotions-item">
             <div class="table-responsive">
                 <table class="table table-bordered text-center">
                     <thead>
@@ -137,15 +138,15 @@
                     </tbody>
                 </table>
             </div>
-        </div>
+        </div> -->
 
         <BasePromotion
             class="m-b-10"
-            v-for="(item, index) in DataBasePromotions"
-            :src="item.src"
+            v-for="(item, index) in dataDiscount"
+            :src="item.url"
             :key="index"
-            :title="item.title"
-            :datas="item.datas"
+            :title="getDiscountType(item)"
+            :datas="item.foodDesc?.split(';')"
             @onClick="handleClickButton"
         />
     </div>
@@ -153,7 +154,10 @@
 
 <script setup lang="ts">
 import BasePromotion from '@/components/BasePromotion.vue';
-import { DataBasePromotions } from '@/mocks/BasePromotions';
+import { TypeToast } from '@/enums/TypeToast';
+import { notify } from '@/services/Toast';
+import http from '@/services/http/http';
+import { onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
@@ -166,6 +170,29 @@ const handleClickButton = () => {
     router.push({
         path: 'menu/all',
     });
+};
+
+const dataDiscount = ref<any[]>([]);
+
+const getDataDiscount = async () => {
+    try {
+        let res = (await http.get('/Foods/getTopDiscount/5')).data;
+        if (res.success) {
+            dataDiscount.value = res.datas;
+        }
+    } catch (error: any) {
+        notify('Lỗi lấy dữ liệu giảm giá', TypeToast.error);
+    }
+};
+
+onMounted(() => {
+    getDataDiscount();
+});
+
+const getDiscountType = (item: any) => {
+    if (item.foodDiscountType === 1)
+        return `Special Offer Upto ${item.foodDiscount}%`;
+    return `Limited Offer Upto ${item.foodDiscount}%`;
 };
 </script>
 
