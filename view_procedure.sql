@@ -449,7 +449,7 @@ CREATE or ALTER PROCEDURE GetTopDiscount
 	@Number TINYINT
 AS
 BEGIN
-   SELECT TOP(@Number) FoodImages.FoodId, FoodName, FoodDiscount, FoodDiscountType, FoodDesc, STRING_AGG(Url, ';') AS 'Url'
+   SELECT TOP(@Number) FoodImages.FoodId, FoodName, FoodDiscount, FoodDiscountType, FoodDesc, STRING_AGG(FoodImages.Url, ';') AS 'Url'
 	FROM dbo.Foods JOIN dbo.FoodImages ON FoodImages.FoodId = Foods.FoodId
 	WHERE dbo.FoodImages.Type = 1
 	GROUP BY FoodImages.FoodId, FoodName, FoodDiscount, FoodDesc, FoodDiscountType
@@ -562,3 +562,129 @@ AS
 BEGIN
 DELETE FROM dbo.Carts WHERE UserId = @UserId
 END
+
+
+
+CREATE or alter PROCEDURE AddNewFood
+@CategoryId UNIQUEIDENTIFIER,
+@FoodName NVARCHAR(255),
+@Price float,
+@Quantity int,
+@FoodDesc NVARCHAR(255),
+@FoodDiscount int,
+@FoodStar float,
+@FoodStatus NVARCHAR(255),
+@FoodType NVARCHAR(255),
+@FoodVote NVARCHAR(255),
+@FoodDiscountType int,
+@Url nvarchar(255)
+AS
+BEGIN
+INSERT INTO dbo.Foods
+(
+    FoodId,
+    CategoryId,
+    FoodName,
+    Price,
+    Quantity,
+    CreatedDate,
+    CreatedBy,
+    ModifiedDate,
+    ModifiedBy,
+    FoodDesc,
+    FoodDiscount,
+    FoodStar,
+    FoodStatus,
+    FoodType,
+    FoodVote,
+    FoodDiscountType,
+	Url
+)
+VALUES
+(   NEWID(),        
+    @CategoryId,      
+    @FoodName,      
+    @Price,          
+    @Quantity,       
+    GETDATE(), 
+    N'nnhiep',     
+    GETDATE(), 
+    N'nnhiep',       
+    @FoodDesc,        
+    @FoodDiscount,        
+    @FoodStar,       
+    @FoodStatus,       
+    @FoodType,       
+    @FoodVote,        
+    @FoodDiscountType,
+	@Url
+) end
+
+
+
+CREATE or alter PROCEDURE GetFoods
+@Id uniqueidentifier
+AS
+BEGIN
+SELECT * FROM dbo.Foods WHERE FoodId = @Id
+end
+
+
+
+CREATE or alter PROCEDURE GetCarts
+@Id uniqueidentifier
+AS
+BEGIN
+SELECT * FROM dbo.Carts WHERE CartId = @Id
+end
+
+
+
+CREATE or alter PROCEDURE UpdateFood
+@FoodId UNIQUEIDENTIFIER,
+@CategoryId UNIQUEIDENTIFIER,
+@FoodName NVARCHAR(255),
+@Price float,
+@Quantity int,
+@FoodDesc NVARCHAR(255),
+@FoodDiscount int,
+@FoodStar float,
+@FoodStatus NVARCHAR(255),
+@FoodType NVARCHAR(255),
+@FoodVote NVARCHAR(255),
+@FoodDiscountType int,
+@Url nvarchar(255)
+AS
+BEGIN
+UPDATE dbo.Foods
+SET CategoryId = @CategoryId,
+FoodName = @FoodName,
+Price = @Price,
+Quantity = @Quantity,
+ModifiedDate = GETDATE(),
+FoodDesc = @FoodDesc,
+FoodDiscount = @FoodDiscount,
+FoodStar = @FoodStar,
+FoodStatus = @FoodStatus,
+FoodType = @FoodType,
+FoodVote = @FoodVote,
+FoodDiscountType = @FoodDiscountType,
+Url = @Url
+WHERE FoodId = @FoodId
+end
+
+
+
+CREATE or alter PROCEDURE UpdateCart
+@CartId UNIQUEIDENTIFIER,
+@FoodId UNIQUEIDENTIFIER,
+@UserId UNIQUEIDENTIFIER,
+@Quantity INT
+AS
+BEGIN
+UPDATE dbo.Carts
+SET FoodId = @FoodId,
+UserId = @UserId,
+Quantity = @Quantity
+WHERE CartId = @CartId
+end

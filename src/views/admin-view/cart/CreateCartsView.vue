@@ -49,6 +49,9 @@ import { SET_LOADING } from '@/stores/storeConstants';
 import http from '@/services/http/http';
 import { notify } from '@/services/Toast';
 import { TypeToast } from '@/enums/TypeToast';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 interface ICarts {
     foodId: string;
@@ -109,11 +112,11 @@ const handleSubmit = async () => {
             const payload = {
                 foodId: models.value.foodId,
                 userId: models.value.userId,
-                quantity: models.value.quantity,
+                quantity: Number.parseInt(models.value.quantity),
             };
             store.dispatch(SET_LOADING, true);
             const { data } = await http.post(
-                '/Carts/addRecord',
+                '/Carts/addToCart',
                 JSON.stringify(payload)
             );
             if (data.success) {
@@ -123,6 +126,9 @@ const handleSubmit = async () => {
                     userId: '',
                     quantity: '',
                 };
+                router.push({
+                    name: 'admin.carts',
+                });
             }
             store.dispatch(SET_LOADING, false);
         }
