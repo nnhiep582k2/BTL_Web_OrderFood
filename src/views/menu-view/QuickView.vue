@@ -1,30 +1,26 @@
 <template>
     <vue-basic-alert :duration="300" :closeIn="2000" ref="alert" />
-    <div v-if="user" class="quick-view">
-        <div
-            class="quick-view-inner"
-            v-for="f in selectedFood"
-            :key="f?.food_desc"
-        >
-            <h2 class="d-flex justify-content-between">
-                {{ f?.food_name }}
+    <div v-if="authData.userId" class="quick-view">
+        <div class="quick-view-inner" :key="food?.foodDesc">
+            <div class="header-quick-view">
+                <h2>{{ food?.foodName }}</h2>
                 <slot></slot>
-            </h2>
+            </div>
             <div class="product-detail d-flex">
                 <div class="image">
                     <img
-                        :src="`/src/assets/images/template/${f?.food_src}`"
+                        :src="`/src/assets/images/template/${food?.url}`"
                         alt=""
                     />
                 </div>
                 <div class="content">
-                    <p class="desc">{{ f?.food_desc }}</p>
+                    <p class="desc">{{ food?.foodDesc }}</p>
                     <p class="money">
                         ${{
-                            parseFloat(f?.food_price) -
-                            parseFloat(f?.food_discount)
-                        }}<span v-if="parseFloat(f?.food_discount) > 0"
-                            >${{ parseFloat(f?.food_price) }}</span
+                            parseFloat(food?.price) -
+                            parseFloat(food?.foodDiscount)
+                        }}<span v-if="parseFloat(food?.FoodDiscount) > 0"
+                            >${{ parseFloat(food?.price) }}</span
                         >
                     </p>
                     <div class="qty">
@@ -33,17 +29,16 @@
                             type="number"
                             name="qty"
                             id="qty"
-                            value="1"
                             min="1"
                             max="1000"
-                            @change="onQtyChange($event)"
+                            v-model="theQuantity"
                         />
                     </div>
                     <BaseButton
                         class="btn"
                         text="Add to cart"
                         :type="ButtonType.success"
-                        @click="addToCart"
+                        @click="addToCart()"
                     />
                 </div>
             </div>
@@ -75,39 +70,49 @@ import BaseButton from '@/components/BaseButton.vue';
 import { computed, ref } from 'vue';
 import VueBasicAlert from 'vue-basic-alert';
 import { ButtonType } from '@/enums/ButtonType';
+import { useStore } from 'vuex';
+import http from '@/services/http/http';
+import { notify } from '@/services/Toast';
+import { TypeToast } from '@/enums/TypeToast';
 
-defineProps({
-    food: {
-        type: String,
-    },
-});
-
-interface IFood {
-    food_name: string;
-    food_src: string;
-    food_desc: string;
-    food_price: string;
-    food_discount: string;
+interface IProps {
+    food: any;
 }
 
-const qty = ref<Number>(1);
-const user = ref('5345');
+const store = useStore();
+const props = defineProps<IProps>();
+const authData = computed(() => store.getters['getAuthData']);
+const theQuantity = ref<number>(0);
+const alert = ref();
+let firstLoad = ref<boolean>(true);
 
-const selectedFood = computed<IFood[]>(() => {
-    return [
-        {
-            food_name: '345345',
-            food_src: '',
-            food_desc: '',
-            food_price: '',
-            food_discount: '',
-        },
-    ];
-});
+const addToCart = async () => {
+    if (!firstLoad.value) return;
+    firstLoad.value = false;
 
-const onQtyChange = (e: Event) => {};
+    try {
+        let cartObj = {
+            foodId: props.food?.foodId,
+            userId: authData.value?.userId,
+            quantity: theQuantity.value,
+        };
 
-const addToCart = async () => {};
+        let response = await http.post(
+            '/Carts/addToCart',
+            JSON.stringify(cartObj)
+        );
+
+        if (response.data?.success) {
+            alert.value.showAlert(
+                'success',
+                'Thank you! We will call you soon to confirm your order',
+                'Add To Cart Successfully!'
+            );
+        }
+    } catch (e) {
+        notify('Add fail!', TypeToast.error);
+    }
+};
 </script>
 
 <style lang="scss" scoped>

@@ -52,13 +52,6 @@ FROM     dbo.FoodImages
 
 
 
-CREATE VIEW [dbo].[ViewFoodImage]
-AS
-SELECT dbo.FoodImages.*
-FROM     dbo.FoodImages
-
-
-
 -- PROCEDURE
 
 -- CRUD bill
@@ -460,7 +453,7 @@ END
 
 
 
-- Book a table
+-- Book a table
 CREATE or alter PROCEDURE AddBook
 	@BookID uniqueidentifier,
     @ClientName NVARCHAR(255),
@@ -505,4 +498,62 @@ VALUES
     SYSDATETIME(),
 	@PickupDate
     )
+END
+
+
+
+-- Cart
+CREATE or ALTER VIEW [dbo].[ViewCart]
+AS
+SELECT dbo.Carts.*
+FROM     dbo.Carts
+
+
+
+CREATE or alter PROCEDURE AddToCart
+@FoodId UNIQUEIDENTIFIER,
+@UserId UNIQUEIDENTIFIER,
+@Quantity int
+AS
+BEGIN
+INSERT INTO dbo.Carts
+(
+    CartId,
+    FoodId,
+    UserId,
+    Quantity,
+    CreatedDate,
+    CreatedBy,
+    ModifiedDate,
+    ModifiedBy
+)
+VALUES
+(   NEWID(),    
+    @FoodId,    
+    @UserId,    
+    @Quantity,  
+    GETDATE(), 
+    N'nnhiep', 
+    GETDATE(), 
+    N'nnhiep'  
+) end
+
+
+
+CREATE or alter PROCEDURE GetCartInfo
+@UserId UNIQUEIDENTIFIER
+AS
+BEGIN
+SELECT CartId, Carts.FoodId, UserId, Carts.Quantity, Carts.CreatedDate, Carts.ModifiedDate, CategoryId, FoodName, Price, FoodDesc, FoodDiscount, FoodStar, FoodStatus, FoodType, FoodVote, FoodDiscountType, (SELECT Url FROM dbo.FoodImages WHERE dbo.FoodImages.FoodId = dbo.Carts.FoodId AND Type = 1)  as 'Url'
+FROM dbo.Carts JOIN dbo.Foods ON Foods.FoodId = Carts.FoodId 
+WHERE UserId = @UserId
+END
+
+
+
+CREATE or alter PROCEDURE RemoveAllCart
+@UserId UNIQUEIDENTIFIER
+AS
+BEGIN
+DELETE FROM dbo.Carts WHERE UserId = @UserId
 END
