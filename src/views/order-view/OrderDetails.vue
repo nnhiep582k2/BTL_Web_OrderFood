@@ -17,7 +17,7 @@
                     <div class="product-detail d-flex">
                         <div class="image">
                             <img
-                                :src="`/src/assets/images/template/${f?.url}`"
+                                :src="f?.url"
                                 alt=""
                             />
                         </div>
