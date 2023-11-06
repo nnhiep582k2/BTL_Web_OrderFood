@@ -26,6 +26,7 @@ const sidebarItem = [
     'FoodImages',
     'Categorys',
     'Bills',
+    'BillDetails',
     'Carts',
     'Orders',
     'PaymentOrders',
