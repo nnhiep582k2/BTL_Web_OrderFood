@@ -126,7 +126,7 @@ const handleSubmit = async (e: Event) => {
             }
         } catch (error: any) {
             store.dispatch(SET_LOADING, false);
-            notify(`${error.message}`, TypeToast.error);
+            notify(`Lỗi đăng nhập`, TypeToast.error);
         } finally {
             store.dispatch(SET_LOADING, false);
         }

@@ -11,9 +11,9 @@
         <div class="col-md-12">
             <BaseTextBox
                 width="100%"
-                label="FoodId"
+                label="foodName"
                 :inputType="InputType.text"
-                v-model:model-value="models.foodId"
+                v-model:model-value="models.foodName"
             />
         </div>
         <div class="col-md-12">
@@ -22,14 +22,6 @@
                 label="categoryId"
                 :inputType="InputType.text"
                 v-model:model-value="models.categoryId"
-            />
-        </div>
-        <div class="col-md-12">
-            <BaseTextBox
-                width="100%"
-                label="quantity"
-                :inputType="InputType.number"
-                v-model:model-value="models.quantity"
             />
         </div>
         <div class="col-md-12">
@@ -59,8 +51,16 @@
         <div class="col-md-12">
             <BaseTextBox
                 width="100%"
-                label="foodDesc"
+                label="foodDiscountType"
                 :inputType="InputType.number"
+                v-model:model-value="models.foodDiscountType"
+            />
+        </div>
+        <div class="col-md-12">
+            <BaseTextBox
+                width="100%"
+                label="foodDesc"
+                :inputType="InputType.text"
                 v-model:model-value="models.foodDesc"
             />
         </div>
@@ -68,7 +68,7 @@
             <BaseTextBox
                 width="100%"
                 label="foodStatus"
-                :inputType="InputType.number"
+                :inputType="InputType.text"
                 v-model:model-value="models.foodStatus"
             />
         </div>
@@ -76,7 +76,7 @@
             <BaseTextBox
                 width="100%"
                 label="foodType"
-                :inputType="InputType.number"
+                :inputType="InputType.text"
                 v-model:model-value="models.foodType"
             />
         </div>
@@ -100,7 +100,7 @@
             <BaseTextBox
                 width="100%"
                 label="url"
-                :inputType="InputType.number"
+                :inputType="InputType.text"
                 v-model:model-value="models.url"
             />
         </div>
@@ -120,15 +120,18 @@ import { InputType } from '@/enums/TextBoxType';
 import { SET_LOADING } from '@/stores/storeConstants';
 import http from '@/services/http/http';
 import { notify } from '@/services/Toast';
+import { useRouter } from 'vue-router';
 import { TypeToast } from '@/enums/TypeToast';
 
+const router = useRouter();
+
 interface IFoods {
-    foodId: string;
     categoryId: string;
     foodName: string;
     foodStar: string;
     foodVote: string;
     foodDiscount: string;
+    foodDiscountType: string;
     foodDesc: string;
     foodStatus: string;
     foodType: string;
@@ -139,12 +142,12 @@ interface IFoods {
 
 const store = useStore();
 const models = ref<IFoods>({
-    foodId: '',
     categoryId: '',
     foodName: '',
     foodStar: '',
     foodVote: '',
     foodDiscount: '',
+    foodDiscountType: '0',
     foodDesc: '',
     foodStatus: '',
     foodType: '',
@@ -156,19 +159,6 @@ const errors = ref<String[]>([]);
 
 const handleSubmit = async () => {
     try {
-        if (!models.value.foodId) {
-            if (!errors.value.find((el) => el === 'FoodId is required')) {
-                errors.value.push('FoodId is required');
-            }
-        } else {
-            if (errors.value.find((el) => el === 'FoodId is required')) {
-                const indexusername = errors.value.findIndex(
-                    (el) => el === 'FoodId is required'
-                );
-                errors.value.splice(indexusername, 1);
-            }
-        }
-
         if (!models.value.categoryId) {
             if (!errors.value.find((el) => el === 'categoryId is required')) {
                 errors.value.push('categoryId is required');
@@ -205,30 +195,6 @@ const handleSubmit = async () => {
                 errors.value.splice(indexusername, 1);
             }
         }
-        if (!models.value.foodVote) {
-            if (!errors.value.find((el) => el === 'foodVote is required')) {
-                errors.value.push('foodVote is required');
-            }
-        } else {
-            if (errors.value.find((el) => el === 'foodVote is required')) {
-                const indexusername = errors.value.findIndex(
-                    (el) => el === 'foodVote is required'
-                );
-                errors.value.splice(indexusername, 1);
-            }
-        }
-        if (!models.value.foodDiscount) {
-            if (!errors.value.find((el) => el === 'foodDiscount is required')) {
-                errors.value.push('foodDiscount is required');
-            }
-        } else {
-            if (errors.value.find((el) => el === 'foodDiscount is required')) {
-                const indexusername = errors.value.findIndex(
-                    (el) => el === 'foodDiscount is required'
-                );
-                errors.value.splice(indexusername, 1);
-            }
-        }
 
         if (!models.value.quantity) {
             if (!errors.value.find((el) => el === 'Quantity is required')) {
@@ -238,18 +204,6 @@ const handleSubmit = async () => {
             if (errors.value.find((el) => el === 'Quantity is required')) {
                 const indexusername = errors.value.findIndex(
                     (el) => el === 'Quantity is required'
-                );
-                errors.value.splice(indexusername, 1);
-            }
-        }
-        if (!models.value.foodDesc) {
-            if (!errors.value.find((el) => el === 'foodDesc is required')) {
-                errors.value.push('foodDesc is required');
-            }
-        } else {
-            if (errors.value.find((el) => el === 'foodDesc is required')) {
-                const indexusername = errors.value.findIndex(
-                    (el) => el === 'foodDesc is required'
                 );
                 errors.value.splice(indexusername, 1);
             }
@@ -291,48 +245,38 @@ const handleSubmit = async () => {
                 errors.value.splice(indexusername, 1);
             }
         }
-        if (!models.value.url) {
-            if (!errors.value.find((el) => el === 'url is required')) {
-                errors.value.push('url is required');
-            }
-        } else {
-            if (errors.value.find((el) => el === 'url is required')) {
-                const indexusername = errors.value.findIndex(
-                    (el) => el === 'url is required'
-                );
-                errors.value.splice(indexusername, 1);
-            }
-        }
 
         if (errors.value.length == 0) {
             const payload = {
-                foodId: models.value?.foodId,
                 categoryId: models.value?.categoryId,
                 foodName: models.value?.foodName,
-                foodStar: models.value?.foodStar,
+                foodStar: Number.parseFloat(models.value?.foodStar),
                 foodVote: models.value?.foodVote,
-                foodDiscount: models.value?.foodDiscount,
+                foodDiscount: Number.parseFloat(models.value?.foodDiscount),
+                foodDiscountType: Number.parseFloat(
+                    models.value?.foodDiscountType
+                ),
                 foodDesc: models.value?.foodDesc,
                 foodStatus: models.value?.foodStatus,
                 foodType: models.value?.foodType,
-                price: models.value?.price,
-                quantity: models.value?.quantity,
+                price: Number.parseFloat(models.value?.price),
+                quantity: Number.parseInt(models.value?.quantity),
                 url: models.value?.url,
             };
             store.dispatch(SET_LOADING, true);
             const { data } = await http.post(
-                '/Foods/addRecord',
+                '/Foods/addNewFood',
                 JSON.stringify(payload)
             );
             if (data.success) {
                 notify('Add success!', TypeToast.success);
                 models.value = {
-                    foodId: '',
                     categoryId: '',
                     foodName: '',
                     foodStar: '',
                     foodVote: '',
                     foodDiscount: '',
+                    foodDiscountType: '0',
                     foodDesc: '',
                     foodStatus: '',
                     foodType: '',
@@ -342,6 +286,9 @@ const handleSubmit = async () => {
                 };
             }
             store.dispatch(SET_LOADING, false);
+            router.push({
+                name: 'admin.foods',
+            });
         }
     } catch (error) {
         console.log(error);

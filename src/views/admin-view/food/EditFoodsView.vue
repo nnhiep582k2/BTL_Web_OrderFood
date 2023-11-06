@@ -11,14 +11,6 @@
         <div class="col-md-12">
             <BaseTextBox
                 width="100%"
-                label="FoodId"
-                :inputType="InputType.text"
-                v-model:model-value="models.foodId"
-            />
-        </div>
-        <div class="col-md-12">
-            <BaseTextBox
-                width="100%"
                 label="categoryId"
                 :inputType="InputType.text"
                 v-model:model-value="models.categoryId"
@@ -54,6 +46,14 @@
                 label="foodDiscount"
                 :inputType="InputType.number"
                 v-model:model-value="models.foodDiscount"
+            />
+        </div>
+        <div class="col-md-12">
+            <BaseTextBox
+                width="100%"
+                label="foodDiscountType"
+                :inputType="InputType.number"
+                v-model:model-value="models.foodDiscountType"
             />
         </div>
         <div class="col-md-12">
@@ -106,7 +106,7 @@
         </div>
         <div class="col-md-12 mt-3">
             <button class="btn_add btn btn-success" @click="handleSubmit">
-                Add
+                Update
             </button>
         </div>
     </div>
@@ -131,6 +131,7 @@ interface IFoods {
     foodStar: string;
     foodVote: string;
     foodDiscount: string;
+    foodDiscountType: string;
     foodDesc: string;
     foodStatus: string;
     foodType: string;
@@ -147,6 +148,7 @@ const models = ref<IFoods>({
     foodStar: '',
     foodVote: '',
     foodDiscount: '',
+    foodDiscountType: '0',
     foodDesc: '',
     foodStatus: '',
     foodType: '',
@@ -155,21 +157,22 @@ const models = ref<IFoods>({
     url: '',
 });
 const errors = ref<String[]>([]);
-const cartId = ref('');
+const foodId = ref('');
 
 onMounted(async () => {
     if (route.query.id) {
-        cartId.value = route.query.id.toString();
+        foodId.value = route.query.id.toString();
     }
-    if (cartId.value) {
+    if (foodId.value) {
         try {
             store.dispatch(SET_LOADING, true);
             let { data } = (
-                await http.get(`/Carts/GetById?recordId=${cartId.value}`)
+                await http.get(`/Foods/GetById?recordId=${foodId.value}`)
             ).data;
             models.value = {
                 foodId: data.foodId,
                 categoryId: data.categoryId,
+                foodDiscountType: data.foodDiscountType,
                 foodName: data.foodName,
                 foodStar: data.foodStar,
                 foodVote: data.foodVote,
@@ -192,19 +195,6 @@ onMounted(async () => {
 
 const handleSubmit = async () => {
     try {
-        if (!models.value.foodId) {
-            if (!errors.value.find((el) => el === 'FoodId is required')) {
-                errors.value.push('FoodId is required');
-            }
-        } else {
-            if (errors.value.find((el) => el === 'FoodId is required')) {
-                const indexusername = errors.value.findIndex(
-                    (el) => el === 'FoodId is required'
-                );
-                errors.value.splice(indexusername, 1);
-            }
-        }
-
         if (!models.value.categoryId) {
             if (!errors.value.find((el) => el === 'categoryId is required')) {
                 errors.value.push('categoryId is required');
@@ -241,30 +231,6 @@ const handleSubmit = async () => {
                 errors.value.splice(indexusername, 1);
             }
         }
-        if (!models.value.foodVote) {
-            if (!errors.value.find((el) => el === 'foodVote is required')) {
-                errors.value.push('foodVote is required');
-            }
-        } else {
-            if (errors.value.find((el) => el === 'foodVote is required')) {
-                const indexusername = errors.value.findIndex(
-                    (el) => el === 'foodVote is required'
-                );
-                errors.value.splice(indexusername, 1);
-            }
-        }
-        if (!models.value.foodDiscount) {
-            if (!errors.value.find((el) => el === 'foodDiscount is required')) {
-                errors.value.push('foodDiscount is required');
-            }
-        } else {
-            if (errors.value.find((el) => el === 'foodDiscount is required')) {
-                const indexusername = errors.value.findIndex(
-                    (el) => el === 'foodDiscount is required'
-                );
-                errors.value.splice(indexusername, 1);
-            }
-        }
 
         if (!models.value.quantity) {
             if (!errors.value.find((el) => el === 'Quantity is required')) {
@@ -274,18 +240,6 @@ const handleSubmit = async () => {
             if (errors.value.find((el) => el === 'Quantity is required')) {
                 const indexusername = errors.value.findIndex(
                     (el) => el === 'Quantity is required'
-                );
-                errors.value.splice(indexusername, 1);
-            }
-        }
-        if (!models.value.foodDesc) {
-            if (!errors.value.find((el) => el === 'foodDesc is required')) {
-                errors.value.push('foodDesc is required');
-            }
-        } else {
-            if (errors.value.find((el) => el === 'foodDesc is required')) {
-                const indexusername = errors.value.findIndex(
-                    (el) => el === 'foodDesc is required'
                 );
                 errors.value.splice(indexusername, 1);
             }
@@ -327,39 +281,31 @@ const handleSubmit = async () => {
                 errors.value.splice(indexusername, 1);
             }
         }
-        if (!models.value.url) {
-            if (!errors.value.find((el) => el === 'url is required')) {
-                errors.value.push('url is required');
-            }
-        } else {
-            if (errors.value.find((el) => el === 'url is required')) {
-                const indexusername = errors.value.findIndex(
-                    (el) => el === 'url is required'
-                );
-                errors.value.splice(indexusername, 1);
-            }
-        }
 
         if (errors.value.length == 0) {
             const payload = {
-                foodId: models.value?.foodId,
+                foodId: models.value.foodId,
                 categoryId: models.value?.categoryId,
                 foodName: models.value?.foodName,
-                foodStar: models.value?.foodStar,
+                foodStar: Number.parseFloat(models.value?.foodStar),
                 foodVote: models.value?.foodVote,
-                foodDiscount: models.value?.foodDiscount,
+                foodDiscount: Number.parseFloat(models.value?.foodDiscount),
+                foodDiscountType: Number.parseFloat(
+                    models.value?.foodDiscountType
+                ),
                 foodDesc: models.value?.foodDesc,
                 foodStatus: models.value?.foodStatus,
                 foodType: models.value?.foodType,
-                price: models.value?.price,
-                quantity: models.value?.quantity,
+                price: Number.parseFloat(models.value?.price),
+                quantity: Number.parseInt(models.value?.quantity),
                 url: models.value?.url,
             };
             store.dispatch(SET_LOADING, true);
-            const { data } = await http.post(
-                '/Foods/updateRecord',
+            const { data } = await http.put(
+                '/Foods/updateFood',
                 JSON.stringify(payload)
             );
+            console.log(data);
             if (data.success) {
                 notify('Edit success!', TypeToast.success);
                 router.push({ path: `/admin/foods` });

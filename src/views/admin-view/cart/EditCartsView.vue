@@ -34,7 +34,7 @@
         </div>
         <div class="col-md-12 mt-3">
             <button class="btn_add btn btn-success" @click="handleSubmit">
-                Add
+                Update
             </button>
         </div>
     </div>
@@ -136,11 +136,11 @@ const handleSubmit = async () => {
             const payload = {
                 foodId: models.value.foodId,
                 userId: models.value.userId,
-                quantity: models.value.quantity,
+                quantity: Number.parseInt(models.value.quantity),
             };
             store.dispatch(SET_LOADING, true);
-            const { data } = await http.post(
-                '/Carts/updateRecord',
+            const { data } = await http.put(
+                '/Carts/updateCart',
                 JSON.stringify(payload)
             );
             if (data.success) {
