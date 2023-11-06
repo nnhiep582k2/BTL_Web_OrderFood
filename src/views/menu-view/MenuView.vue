@@ -437,7 +437,7 @@
                                     class="btn"
                                     :type="ButtonType.success"
                                     text="Add to cart"
-                                    @click="() => addItem(index)"
+                                    @click="() => addItem(f, index)"
                                 />
                             </div>
                         </div>
@@ -476,7 +476,7 @@
             </div>
         </div>
 
-        <QuickView v-if="showQuickView" :food="sendId">
+        <QuickView v-if="showQuickView" :food="tempFood">
             <BaseButton
                 class="btn"
                 text="X"
@@ -498,6 +498,7 @@ import { useStore } from 'vuex';
 
 window.scrollTo(0, 0);
 document.title = 'Menu | Orod - Order Food';
+let tempFood = ref<any>({});
 
 const store = useStore();
 
@@ -807,7 +808,8 @@ const unselectTypeBtn = (e) => {
     previousTypeClicked.value = e;
 };
 
-const addItem = (index: Number) => {
+const addItem = (f: any, index: number) => {
+    tempFood.value = { ...f };
     showQuickView.value = true;
 };
 const closeView = () => {
