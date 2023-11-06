@@ -285,7 +285,6 @@ const removeBtn = async (item: any) => {
     try {
         let response = (await http.delete(`/Carts/deleteById/${item.cartId}`))
             .data;
-        console.log(response.success);
 
         if (response.success) {
             alert.value.showAlert(
