@@ -120,6 +120,85 @@ export const router = createRouter({
                     component: () =>
                         import('@/views/admin-view/food/FoodsView.vue'),
                 },
+                {
+                    path: 'create-foods',
+                    name: 'admin.create-foods',
+                    component: () =>
+                        import('@/views/admin-view/food/CreateFoodsView.vue'),
+                },
+                {
+                    path: 'edit-food',
+                    name: 'admin.edit-food',
+                    component: () =>
+                        import('@/views/admin-view/food/EditFoodsView.vue'),
+                },
+                // cart
+                {
+                    path: 'carts',
+                    name: 'admin.carts',
+                    component: () =>
+                        import('@/views/admin-view/cart/CartsView.vue'),
+                },
+                {
+                    path: 'create-carts',
+                    name: 'admin.create-carts',
+                    component: () =>
+                        import('@/views/admin-view/cart/CreateCartsView.vue'),
+                },
+                {
+                    path: 'edit-carts',
+                    name: 'admin.edit-carts',
+                    component: () =>
+                        import('@/views/admin-view/cart/EditCartsView.vue'),
+                },
+                // payment
+                {
+                    path: 'payments',
+                    name: 'admin.payments',
+                    component: () =>
+                        import('@/views/admin-view/payment/PaymentsView.vue'),
+                },
+                {
+                    path: 'create-payments',
+                    name: 'admin.create-payments',
+                    component: () =>
+                        import(
+                            '@/views/admin-view/payment/CreatePaymentsView.vue'
+                        ),
+                },
+                {
+                    path: 'edit-payments',
+                    name: 'admin.edit-payments',
+                    component: () =>
+                        import(
+                            '@/views/admin-view/payment/EditPaymentsView.vue'
+                        ),
+                },
+                // payment orders
+                {
+                    path: 'paymentOrders',
+                    name: 'admin.paymentOrders',
+                    component: () =>
+                        import(
+                            '@/views/admin-view/payment-order/PaymentOrdersView.vue'
+                        ),
+                },
+                {
+                    path: 'create-paymentOrders',
+                    name: 'admin.create-paymentOrders',
+                    component: () =>
+                        import(
+                            '@/views/admin-view/payment-order/CreatePaymentOrdersView.vue'
+                        ),
+                },
+                {
+                    path: 'edit-paymentOrders',
+                    name: 'admin.edit-paymentOrders',
+                    component: () =>
+                        import(
+                            '@/views/admin-view/payment-order/EditPaymentOrdersView.vue'
+                        ),
+                },
                 // bill
                 {
                     path: 'bills',
@@ -138,6 +217,32 @@ export const router = createRouter({
                     name: 'admin.edit-bills',
                     component: () =>
                         import('@/views/admin-view/bill/EditBillsView.vue'),
+                    props: true,
+                },
+                // bill details
+                {
+                    path: 'billDetails',
+                    name: 'admin.billDetails',
+                    component: () =>
+                        import(
+                            '@/views/admin-view/bill-details/BillDetailsView.vue'
+                        ),
+                },
+                {
+                    path: 'create-billDetails',
+                    name: 'admin.create-billDetails',
+                    component: () =>
+                        import(
+                            '@/views/admin-view/bill-details/CreateBillDetailsView.vue'
+                        ),
+                },
+                {
+                    path: 'edit-billDetails',
+                    name: 'admin.edit-billDetails',
+                    component: () =>
+                        import(
+                            '@/views/admin-view/bill-details/EditBillDetailsView.vue'
+                        ),
                     props: true,
                 },
                 // category

@@ -3,47 +3,31 @@
         :type="ButtonType.success"
         className="btn_add"
         text="Add"
-        @click="router.push({ path: '/admin/create-foods' })"
+        @click="router.push({ path: '/admin/create-carts' })"
     />
-    <BaseTable :headers="titleList" :items="items" entity="Foods" />
+    <BaseTable :headers="titleList" :items="items" entity="Carts" />
 </template>
 
 <script setup lang="ts">
 import BaseButton from '@/components/BaseButton.vue';
 import { ButtonType } from '@/enums/ButtonType';
-import { useRouter } from 'vue-router';
 import BaseTable from '@/components/BaseTable.vue';
 import { SET_LOADING } from '@/stores/storeConstants';
 import { ref } from 'vue';
 import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
 import http from '@/services/http/http';
 
 const router = useRouter();
 
-const titleList = [
-    'foodId',
-    'categoryId',
-    'foodName',
-    'foodStar',
-    'foodVote',
-    'foodDiscount',
-    'foodDesc',
-    'foodStatus',
-    'foodType',
-    'price',
-    'quantity',
-    'name',
-    'url',
-    'createdDate',
-    'createdBy',
-];
+const titleList = ['cartId', 'foodId', 'userId', 'quantity', 'createdDate'];
 
 const items = ref([]);
 const store = useStore();
-const getFoods = async () => {
+const getCarts = async () => {
     try {
         store.dispatch(SET_LOADING, true);
-        let { data } = (await http.get('/Foods/GetAllRecord')).data;
+        let { data } = (await http.get('/Carts/GetAllRecord')).data;
         items.value = data;
     } catch (error) {
         store.dispatch(SET_LOADING, false);
@@ -52,7 +36,7 @@ const getFoods = async () => {
     }
 };
 
-getFoods();
+getCarts();
 </script>
 
 <style scoped lang="scss"></style>

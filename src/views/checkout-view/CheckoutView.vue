@@ -34,43 +34,17 @@
                                 name="address"
                                 placeholder="542 W. 15th Street"
                             />
-                            <label for="city"
-                                ><i class="fa fa-institution"></i> City</label
-                            >
-                            <input
-                                type="text"
-                                id="city"
-                                name="city"
-                                placeholder="New York"
-                            />
-
-                            <div class="row">
-                                <div class="col-50">
-                                    <label for="state">State</label>
-                                    <input
-                                        type="text"
-                                        id="state"
-                                        name="state"
-                                        placeholder="NY"
-                                    />
-                                </div>
-                                <div class="col-50">
-                                    <label for="zip">Zip</label>
-                                    <input
-                                        type="text"
-                                        id="zip"
-                                        name="zip"
-                                        placeholder="10001"
-                                    />
-                                </div>
-                            </div>
                         </div>
 
                         <div class="col-50">
                             <h3>Payment</h3>
-                            <label for="fname">Accepted Cards</label>
-                            <div class="icon-container">
-                                <i
+                            <label for="fname">Pay directly at the store</label>
+                            <div class="icon-container img-wrap">
+                                <img
+                                    src="/src/assets/images/shop.png"
+                                    alt="shop"
+                                />
+                                <!-- <i
                                     class="fa fa-cc-visa"
                                     style="color: navy"
                                 ></i>
@@ -85,9 +59,9 @@
                                 <i
                                     class="fa fa-cc-discover"
                                     style="color: orange"
-                                ></i>
+                                ></i> -->
                             </div>
-                            <label for="cname">Name on Card</label>
+                            <!-- <label for="cname">Name on Card</label>
                             <input
                                 type="text"
                                 id="cname"
@@ -100,41 +74,14 @@
                                 id="ccnum"
                                 name="cardnumber"
                                 placeholder="1111-2222-3333-4444"
-                            />
-                            <label for="expmonth">Exp Month</label>
-                            <input
-                                type="text"
-                                id="expmonth"
-                                name="expmonth"
-                                placeholder="September"
-                            />
-
-                            <div class="row">
-                                <div class="col-50">
-                                    <label for="expyear">Exp Year</label>
-                                    <input
-                                        type="text"
-                                        id="expyear"
-                                        name="expyear"
-                                        placeholder="2018"
-                                    />
-                                </div>
-                                <div class="col-50">
-                                    <label for="cvv">CVV</label>
-                                    <input
-                                        type="text"
-                                        id="cvv"
-                                        name="cvv"
-                                        placeholder="352"
-                                    />
-                                </div>
-                            </div>
+                            /> -->
                         </div>
                     </div>
-                    <input
-                        type="submit"
-                        value="Continue to checkout"
-                        class="btn"
+                    <BaseButton
+                        :type="ButtonType.success"
+                        className="btn"
+                        text="Commit"
+                        @click="handleCommit"
                     />
                 </form>
             </div>
@@ -146,24 +93,117 @@
                     Cart
                     <span class="price" style="color: black">
                         <i class="fa fa-shopping-cart"></i>
-                        <b>4</b>
+                        <b>{{ allFoods.length }}</b>
                     </span>
                 </h4>
-                <p><a href="#">Product 1</a> <span class="price">$15</span></p>
-                <p><a href="#">Product 2</a> <span class="price">$5</span></p>
-                <p><a href="#">Product 3</a> <span class="price">$8</span></p>
-                <p><a href="#">Product 4</a> <span class="price">$2</span></p>
+                <p
+                    class="info-dish-wrapper"
+                    v-for="(item, index) in allFoods"
+                    :key="index"
+                >
+                    <a class="info-dish">
+                        <span>{{ item.foodName }}</span>
+                        <div class="wrapper">
+                            <img :src="item.url" alt="food image" />
+                        </div>
+                    </a>
+                    <span class="price">{{
+                        `$ ${calculateItemPrice(item)}`
+                    }}</span>
+                </p>
+                <p>
+                    <a>Delivery</a>
+                    <span class="price">$ 15.00</span>
+                </p>
                 <hr />
                 <p>
                     Total
-                    <span class="price" style="color: black"><b>$30</b></span>
+                    <span class="price" style="color: black"
+                        ><b>{{ `$ ${calculateSummaryPrice()[3]}` }}</b></span
+                    >
                 </p>
             </div>
         </div>
     </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import http from '@/services/http/http';
+import BaseButton from '@/components/BaseButton.vue';
+import { ButtonType } from '@/enums/ButtonType';
+import { notify } from '@/services/Toast';
+import { TypeToast } from '@/enums/TypeToast';
+import { computed, onMounted, ref } from 'vue';
+import { useStore } from 'vuex';
+
+window.scrollTo(0, 0);
+
+const theData = ref<any>({
+    userId: '',
+    paid: '',
+    status: '',
+    total: '',
+    method: '',
+    discount: '',
+    delivery: '',
+});
+let allFoods = ref<any[]>([]);
+const store = useStore();
+const authData = computed(() => store.getters['getAuthData']);
+
+const getCartInfo = async () => {
+    try {
+        let { data } = (
+            await http.get(
+                `/Carts/getCartInfo?userId=${authData.value?.userId}`
+            )
+        ).data;
+        allFoods.value = [...data];
+    } catch (error) {
+        notify('Lỗi lấy dữ liệu thanh toán', TypeToast.error);
+    }
+};
+
+onMounted(() => {
+    if (authData.value.userId) getCartInfo();
+});
+
+const calculateSummaryPrice = () => {
+    let subtotal: number = allFoods.value.reduce(
+        (total, current) => total + current.price * current.quantity,
+        0
+    );
+    let discount: number = allFoods.value.reduce(
+        (total, current) =>
+            total +
+            ((current.price * current.foodDiscount) / 100) * current.quantity,
+        0
+    );
+    let delivery: number = 15;
+    let total: number = subtotal - discount + delivery;
+
+    theData.value.total = total;
+
+    return [
+        subtotal.toFixed(2),
+        discount.toFixed(2),
+        delivery.toFixed(2),
+        total.toFixed(2),
+    ];
+};
+
+const calculateItemPrice = (item: any) => {
+    return (
+        (parseFloat(item.price) -
+            (parseFloat(item.foodDiscount) * parseFloat(item.price)) / 100) *
+        item.quantity
+    )
+        .toFixed(2)
+        .toString();
+};
+
+const handleCommit = () => {};
+</script>
 
 <style lang="scss" scoped>
 @import url(./style.scss);
