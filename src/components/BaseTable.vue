@@ -11,7 +11,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="item in currentPageItems" :key="item.id">
+                <tr v-for="(item,idx) in currentPageItems" :key="idx">
                     <td v-for="header in headers" :key="header">
                         {{ item[header] }}
                     </td>
