@@ -15,7 +15,7 @@ import SidebarAdminLayout from '@/layouts/SidebarAdminLayout.vue';
 }
 
 .admin__content {
-    width: 100%;
+    width: 85%;
     padding: 20px;
 }
 </style>
