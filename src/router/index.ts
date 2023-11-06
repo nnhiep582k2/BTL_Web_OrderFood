@@ -127,8 +127,8 @@ export const router = createRouter({
                         import('@/views/admin-view/food/CreateFoodsView.vue'),
                 },
                 {
-                    path: 'edit-food',
-                    name: 'admin.edit-food',
+                    path: 'edit-foods',
+                    name: 'admin.edit-foods',
                     component: () =>
                         import('@/views/admin-view/food/EditFoodsView.vue'),
                 },

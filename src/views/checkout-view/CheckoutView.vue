@@ -1,4 +1,5 @@
 <template>
+    <vue-basic-alert :duration="300" :closeIn="2000" ref="alert" />
     <div class="row checkout-view">
         <div class="col-75">
             <div class="container">
@@ -13,7 +14,8 @@
                                 type="text"
                                 id="fname"
                                 name="firstname"
-                                placeholder="John M. Doe"
+                                disabled
+                                v-model="authData.fullName"
                             />
                             <label for="email"
                                 ><i class="fa fa-envelope"></i> Email</label
@@ -22,17 +24,8 @@
                                 type="text"
                                 id="email"
                                 name="email"
-                                placeholder="john@example.com"
-                            />
-                            <label for="adr"
-                                ><i class="fa fa-address-card-o"></i>
-                                Address</label
-                            >
-                            <input
-                                type="text"
-                                id="adr"
-                                name="address"
-                                placeholder="542 W. 15th Street"
+                                disabled
+                                v-model="authData.email"
                             />
                         </div>
 
@@ -135,6 +128,7 @@ import { notify } from '@/services/Toast';
 import { TypeToast } from '@/enums/TypeToast';
 import { computed, onMounted, ref } from 'vue';
 import { useStore } from 'vuex';
+import VueBasicAlert from 'vue-basic-alert';
 
 window.scrollTo(0, 0);
 
@@ -202,7 +196,38 @@ const calculateItemPrice = (item: any) => {
         .toString();
 };
 
-const handleCommit = () => {};
+const alert = ref();
+let isFirstLoad = ref<boolean>(true);
+
+const handleCommit = async () => {
+    if (!isFirstLoad.value) return;
+    isFirstLoad.value = false;
+    let result = {
+        userId: authData.value.userId,
+        status: 0,
+        total: Number.parseFloat(calculateSummaryPrice()[3]),
+        delivery: 15,
+        discount: Number.parseFloat(calculateSummaryPrice()[1]),
+        method: 'card',
+        paid: 'false',
+    };
+    try {
+        const { data } = await http.post(
+            '/Bills/addRecord',
+            JSON.stringify(result)
+        );
+
+        if (data.success) {
+            alert.value.showAlert(
+                'success',
+                'Checkout Successfully!',
+                'Successfully!'
+            );
+        }
+    } catch (e) {
+        notify('Lỗi thanh toán', TypeToast.error);
+    }
+};
 </script>
 
 <style lang="scss" scoped>
